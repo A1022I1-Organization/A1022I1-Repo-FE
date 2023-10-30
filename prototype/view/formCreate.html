@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create</title>
+    <link rel="stylesheet" href="../css/boostrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        label{
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="all">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6 col-sm-12">
+                <div class="border-content">
+                    <div class="form-content">
+                        <div class="header-form">
+                            <h2>Thêm mới vật tư</h2>
+                        </div>
+                        <form style="padding-top: 20px">
+                            <div class="row mb-4">
+                                <div class="col">
+                                    <div class="form-outline">
+                                        <label class="custom-file-upload">
+                                            <input type="file" name="" id="imageFile" accept="image/png, image/jpg, image/jpeg" onchange="chooseFile(this)"/>
+                                            <img class="background-image" src="" alt="" id="image" width="250px" height="250px">
+                                        </label>
+                                        <span class="error-message">Ảnh không được để trống!</span>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3" style="height: 91px">
+                                        <label for="code" class="form-label">Mã vật tư</label>
+                                        <input type="text" class="form-control" id="code" placeholder="Mã vật tư">
+                                        <span class="error-message" >Mã vật tư không được để trống!</span>
+                                    </div>
+                                    <div class="mb-3" style="height: 91px">
+                                        <label for="name" class="form-label">Tên vật tư</label>
+                                        <input type="text" class="form-control" id="name" placeholder="Tên vật tư">
+                                        <span class="error-message">Tên vật tư không được để trống!</span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="quantity" class="form-label">Số lượng</label>
+                                        <input type="text" class="form-control" id="quantity" placeholder="Số lượng">
+                                        <span class="error-message">Số lượng không được để trống!</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4" style="height: 112px">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="price" class="form-label">Đơn giá (VNĐ)</label>
+                                        <input  id="vndInput" type="text" class="form-control" id="price" placeholder="Đơn giá" onkeyup="formatVND()">
+                                        <span class="error-message">Đơn giá không được để trống!</span>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label class="form-label">Đơn vị tính</label>
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option value="1">Gói</option>
+                                            <option value="2">Vĩ</option>
+                                            <option value="3">Thùng</option>
+                                            <option value="4">Chai</option>
+                                            <option value="5">Hộp</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4" style="height: 112px">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label class="form-label">Nhà cung cấp</label>
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option value="1">Công ty Lan Anh</option>
+                                            <option value="2">Công ty Viết Hưng</option>
+                                            <option value="3">Công ty Hải Dương</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label class="form-label">Loại vật tư</label>
+                                        <select class="form-select" aria-label="Default select example">
+                                            <option value="1">Dụng cụ</option>
+                                            <option value="2">Thuốc</option>
+                                            <option value="3">Dung dịch</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4" style="height: 112px">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="nsx" class="form-label">Ngày nhập hàng</label>
+                                        <input type="date" class="form-control" id="nsx">
+                                        <span class="error-message">Ngày nhập hàng không được để trống!</span>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <label for="hsd" class="form-label">Hạn sử dụng</label>
+                                        <input type="date" class="form-control" id="hsd">
+                                        <span class="error-message">Hạn sử dụng không được để trống!</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-green">Tạo mới</button>
+                            <button type="submit" class="btn btn-orange">Huỷ</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script src="../css/boostrap/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    function chooseFile(fileInput){
+        if (fileInput.files && fileInput.files[0]){
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#image').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    }
+    function formatVND() {
+        // Get the input value
+        var inputElement = document.getElementById("vndInput");
+        var inputValue = inputElement.value;
+
+        // Remove any non-numeric characters (if any)
+        var numericValue = inputValue.replace(/[^0-9]/g, '');
+
+        // Format the numeric value as VND
+        var formattedValue = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(numericValue);
+        var result = formattedValue.substring(0, formattedValue.length - 1);
+        // Update the input field with the formatted value
+        inputElement.value = result;
+    }
+</script>
