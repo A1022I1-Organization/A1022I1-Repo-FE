@@ -112,16 +112,6 @@
                             </div>
                             <button type="submit" class="btn btn-green">Lưu</button>
                             <button type="submit" class="btn btn-orange">Huỷ</button>
-                            <button type="submit" class="btn btn-green">Lưu</button>
-                            <button type="submit" class="btn btn-orange">Huỷ</button>
-                            <button type="submit" class="btn btn-green">Lưu</button>
-                            <button type="submit" class="btn btn-orange">Huỷ</button>
-                            <button type="submit" class="btn btn-green">Lưu</button>
-                            <button type="submit" class="btn btn-orange">Huỷ</button>
-                            <button type="submit" class="btn btn-green">Lưu</button>
-                            <button type="submit" class="btn btn-orange">Huỷ</button>
-                            <button type="submit" class="btn btn-green">Lưu</button>
-                            <button type="submit" class="btn btn-orange">Huỷ</button>
                         </form>
                     </div>
                 </div>
@@ -135,6 +125,15 @@
 <script src="../css/boostrap/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
+    function HuyPDG(fileInput){
+        if (fileInput.files && fileInput.files[0]){
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#image').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    }
     function chooseFile(fileInput){
         if (fileInput.files && fileInput.files[0]){
             var reader = new FileReader();
