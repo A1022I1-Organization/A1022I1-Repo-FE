@@ -330,4 +330,85 @@
     // Update the input field with the formatted value
     inputElement.value = result;
   }
+<<<<<<< HEAD
+  function chooseFile(fileInput) {
+    if (fileInput.files && fileInput.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $("#image").attr("src", e.target.result);
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    }
+  }
+  function formatVND() {
+    // Get the input value
+    var inputElement = document.getElementById("vndInput");
+    var inputValue = inputElement.value;
+
+    // Remove any non-numeric characters (if any)
+    var numericValue = inputValue.replace(/[^0-9]/g, "");
+
+    // Format the numeric value as VND
+    var formattedValue = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(numericValue);
+    var result = formattedValue.substring(0, formattedValue.length - 1);
+    // Update the input field with the formatted value
+    inputElement.value = result;
+  }
+  function chooseFile(fileInput) {
+    if (fileInput.files && fileInput.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $("#image").attr("src", e.target.result);
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    }
+  }
+  function formatVND() {
+    // Get the input value
+    var inputElement = document.getElementById("vndInput");
+    var inputValue = inputElement.value;
+
+    // Remove any non-numeric characters (if any)
+    var numericValue = inputValue.replace(/[^0-9]/g, "");
+
+    // Format the numeric value as VND
+    var formattedValue = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(numericValue);
+    var result = formattedValue.substring(0, formattedValue.length - 1);
+    // Update the input field with the formatted value
+    inputElement.value = result;
+  }
+  function chooseFile(fileInput) {
+    if (fileInput.files && fileInput.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $("#image").attr("src", e.target.result);
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    }
+  }
+  function formatVND() {
+    // Get the input value
+    var inputElement = document.getElementById("vndInput");
+    var inputValue = inputElement.value;
+
+    // Remove any non-numeric characters (if any)
+    var numericValue = inputValue.replace(/[^0-9]/g, "");
+
+    // Format the numeric value as VND
+    var formattedValue = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(numericValue);
+    var result = formattedValue.substring(0, formattedValue.length - 1);
+    // Update the input field with the formatted value
+    inputElement.value = result;
+  } Huyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+=======
+>>>>>>> b963f02f7be8d4079d5f19fb9204a78a1a3b77af
 </script>
