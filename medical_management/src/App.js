@@ -1,12 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
-// import {MedicalCreate} from "./layouts/medical_supplies/MedicalCreate";
-import ImageUpload from './layouts/medical_supplies/ImageUpload';
+import "./App.css";
+import { Header } from "./layouts/HeaderLayout";
 
 function App() {
   return (
-    // <MedicalCreate />
-    <ImageUpload />
+    <div>
+      
+      <Header />
+
+    </div>
   );
 }
 

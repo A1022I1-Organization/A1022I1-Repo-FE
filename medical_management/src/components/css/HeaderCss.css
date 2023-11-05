@@ -1,0 +1,247 @@
+
+body{
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+#header{
+    width: 100%;
+    height: 160px;
+}
+#row-hd-top{
+    margin: 0px;
+    height: 20%;
+}
+
+.header-top{
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    width: 100%;
+    height: 17%;
+    padding: 0px;
+    font-size: 14px;
+}
+.header-top a{
+    text-decoration: none;
+    color: black;
+}
+.header-main{
+    width: 100%;
+    height: 50%;
+   
+}
+.header-navbar{
+    width: 100%;
+    height: 32%;
+    background-color: #F58220;
+}
+
+
+.hd-top-sdt{
+    width: 40%;
+    height: 100%;
+    float: left;
+    border-right: 1px solid gainsboro ;
+    display: flex;
+    align-items: center;
+}
+.hd-top-email{
+    float:right ;
+    height: 100%;
+    width: 60%;
+    border-right: 1px solid gainsboro ;
+    display: flex;
+    align-items: center;
+}
+.content-top-sdt{
+    margin: 0 auto;
+}
+.content-top-email{
+    margin: 0 auto;
+}
+
+#hd-item-search{
+    height: 100%;
+    padding: 0;
+    margin-left: 30%;
+    width: 40%;
+    border-top: none ;
+    border-bottom: none ;
+    border-left: none ;
+    border-right: 1px solid gainsboro ;
+}
+#hd-icon-search{
+    position: relative;
+    right: 26px;
+    bottom: 3px;
+}
+#icon-vn{
+    position: relative;
+    bottom: 2px;
+}
+#icon-en{
+    position: relative;
+    bottom: 2px;
+    left: 20px;
+}
+#hd-row-main{
+    height: 100%;
+    width: 100%;
+}
+#hd-main-img-logo{
+    width: 90px;
+    height: 90px;
+    position: relative;
+    bottom: 7px;
+    margin: 0 auto;
+}
+#hd-main-title{
+    margin-bottom: 12px ;
+    font-size: 23px;
+    color:  #F58220;
+    font-weight: 800;
+}
+#hd-row-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: 0;
+}
+
+.hd-content-navbar {
+    flex: 1;
+    text-align: center;
+    padding: 17px 10px 10px;
+    margin: 0 6px; 
+    white-space: nowrap;
+    color: white;
+    font-weight: 500;
+    font-size: 1;
+    border:none ;
+    background-color: #F58220;
+}
+
+.content-navbar {
+    width: 100%;
+}
+
+.hd-content-navbar:hover {
+   background-color: lightyellow;
+   color: #F58220;
+}
+
+
+.hd-img-user {
+    display: flex; 
+    align-items: center; 
+}
+
+#img-user {
+    width: 45px;
+    height: 40px;
+    border: 1px solid black;
+}
+
+#dropdown-img-user {
+    width: 45px;
+    height: 40px;
+}
+
+#dropdown-img-text {
+    margin-left: 10px;
+}
+
+.dropdown .btn {
+    padding: 0;
+    width: 45px; 
+    height: 40px; 
+    border-radius: 50%;
+}
+
+#sign-out {
+    /* background-color: #F58220; */
+    /* margin-left: 10px; */
+    color: black;
+}
+#sign-out:hover {
+    /* background-color: #F58220; */
+    /* margin-left: 10px; */
+    color: red;
+}
+#sign-in {
+    /* background-color: #F58220; */
+    /* margin-left: 10px; */
+    color: black;
+    position: relative;
+    bottom: 55px;
+}
+#sign-in:hover {
+    /* background-color: #F58220; */
+    /* margin-left: 10px; */
+    color: blue;
+    cursor: pointer;
+}
+#text-logo-user{
+    margin-right: 10px;
+}
+
+.col {
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+}
+
+#hd-img-user{
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+/* .hd-img-user, .item-user-cart {
+    display: flex;
+    align-items: center;
+  } */
+  
+  .item-user-cart {
+    /* margin-left: 10px; */
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  /* #cart-item-count {
+    color: red;
+    width: 25px;
+    height: 27px;
+    text-align: center;
+    border-radius: 50%; 
+    position: relative;
+    right: 27px;
+    bottom: 18px;
+    font-weight: 700;} */
+   
+
+.dropdown-menu.show {
+    display: block; /* Hiển thị dropdown menu khi được click */
+}
+
+/* Điều chỉnh padding và margin cho các mục trong dropdown */
+.dropdown-item {
+    padding: 10px;
+    margin: 0;
+}
+
+
+/* CSS cho màn hình có kích thước lớn hơn hoặc bằng 768px */
+@media (min-width: 768px) {
+  
+}
+
+/* CSS cho màn hình có kích thước nhỏ hơn 768px */
+@media (max-width: 1280px) {
+   .header-top{
+    display: none;
+   }
+}
+
