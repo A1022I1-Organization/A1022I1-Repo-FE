@@ -1,0 +1,193 @@
+
+.modal-content .modal-body {
+    margin-right: 0;
+}
+.card-title {
+    font-size: 1.5rem;
+}
+
+.form-label {
+    text-align: center;
+    cursor: pointer;
+}
+/* .card-body{
+    position: relative;
+    le
+} */
+.btn-fomr-login {
+    font-size: 16px;
+    width: 85%;
+    height: 100%;
+    margin: 0 auto;
+    border: 1px solid black;
+    background-color: white;
+
+    padding-top: 2% ;
+    padding-bottom: 2% ;
+    border-radius: 8px ;
+    color: black;
+    font-weight: 400;
+}
+
+.modal-content {
+    background-color: #fff;
+}
+
+.bg-custom {
+    background-color: #e25e0d;
+
+    border-radius: 8px;
+    padding: 2rem;
+}
+
+.modal-content{
+    background-color: #dee2e6;
+}
+
+#modal-login-title{
+    font-size: 35px;
+    text-align: center;
+    font-weight: 500;
+}
+
+#modal-form{
+    margin-top: 40px;
+    font-size: 18px;
+}
+#form-login-forgot-password{
+    font-size: 15px;
+    text-align: center;
+    margin-right: 32px;
+    color: lightslategray;
+    float: right;
+}
+#form-login-forgot-password:hover{
+    color: blue;
+    cursor: pointer;
+}
+#input-password{
+    height: 67px;
+}
+#input-username{
+ height: 67px;
+}
+#form-login-register{
+    margin-top: 0px;
+    font-size: 15px;
+    text-align: center;
+    color: black;
+    font-weight: 600;
+}
+#form-login-register:hover{
+    color: blue;
+}
+.form-login-checkbox{
+    font-size: 15px;
+    margin-left: 32px;
+    margin-top: 0px;
+    margin-bottom: 25px;
+}
+.form-login-input{
+    font-size: 16px;
+    width: 85%;
+    /* height: 100%; */
+    margin: 0 auto;
+    border: 1px solid black;
+    background-color: white;
+    padding-top: 2% ;
+    padding-bottom: 2% ;
+    border-radius: 8px ;
+    margin-left: 32px;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
+
+
+#form-login-logo {
+    width: 85%;
+    margin-left: 32px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-form-fb {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px; 
+}
+#form-icon-center{
+    text-align: center;
+    margin-top: 30px;
+}
+.icon-form-gg {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px; 
+}
+.icon-form-gg:hover {
+    cursor: pointer;
+
+}
+.icon-form-fb:hover {
+    cursor: pointer;
+
+}
+
+#hr-form-login {
+    margin-top: 30px;
+    border: 1px solid black;
+    width: 85%;
+    margin-left: 32px;
+}
+
+
+.icon-form-fb:hover,
+.icon-form-gg:hover {
+  box-shadow: 0 8px 12px rgba(0.2, 0.2, 0.2, 0.2);
+  border-radius: 20px;
+}
+.btn-fomr-login:hover
+ {
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.form-login-error{
+    color: red;
+    margin-left: 32px;
+    
+}
+/* .form-login-input{
+    border-color: red;
+} */
+.modal-content .btn-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+  
+  /* Adjusting the margin of the modal body to account for the moved close button */
+  
+  .modal-content {
+    background-color: white; /* Đặt màu nền thành màu trắng */
+  }
+  .modal-footer {
+    height: 60px;
+  }
+ .modal-content .modal-header {
+    border-bottom: none;
+    text-align: center;
+    height: 100px;
+  }
+ .modal-title{
+    margin: 0 auto;
+    position: relative;
+    top: 20px;
+  }
+
+  /* Đặt màu chữ cho nút Đăng nhập */
+  .btn-primary {
+    color: white; /* Đặt màu chữ thành trắng */
+  }

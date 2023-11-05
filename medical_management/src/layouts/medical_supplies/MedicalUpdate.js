@@ -2,19 +2,19 @@ import '../../components/css/style.css'
 import 'bootstrap/dist/js/bootstrap.bundle';
 import { useState } from 'react';
 
-export function MedicalCreate () {
+export function MedicalUpdate () {
 
-    // const [imageSrc, setImageSrc] = useState("");
-    // const handleFileChange = (e) => {
-    //     const fileInput = e.target;
-    //     if (fileInput.files && fileInput.files[0]) {
-    //         const reader = new FileReader();
-    //         reader.onload = (event) => {
-    //         setImageSrc(event.target.result);
-    //         };
-    //         reader.readAsDataURL(fileInput.files[0]);
-    //     }
-    // };
+    const [imageSrc, setImageSrc] = useState("");
+    const handleFileChange = (e) => {
+    const fileInput = e.target;
+    if (fileInput.files && fileInput.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setImageSrc(event.target.result);
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    }
+  };
     
     return (
         <div>

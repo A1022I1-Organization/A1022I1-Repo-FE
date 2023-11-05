@@ -1,12 +1,15 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Header } from "./layouts/HeaderLayout";
 import {SuppliesList} from "./layouts/medical_supplies/SuppliesList";
 
 function App() {
   return (
-    <>
+    <div>
+      
+      <Header />
         <SuppliesList />
-    </>
+
+    </div>
   );
 }
 
