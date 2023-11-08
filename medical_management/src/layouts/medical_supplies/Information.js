@@ -17,18 +17,19 @@ export function Information () {
     //         reader.readAsDataURL(fileInput.files[0]);
     //     }
     // };
-    // const [supply, setSupply] = useState();
-    // const param = useParams();
-    // const navigate = useNavigate();
-    //
-    // useEffect(() => {
-    //     getSupply();
-    // }, []);
-    //
-    // const getSupply = async () => {
-    //     const supplyDetail = await supplyServices.getSupply(param.id);
-    //     setSupply(supplyDetail);
-    // };
+    const [supply, setSupply] = useState();
+    const param = useParams();
+
+    useEffect(() => {
+        getSupply();
+    }, []);
+
+    const getSupply = async () => {
+        const supplyDetail = await supplyServices.getSupply(param.id);
+        console.log(supplyDetail)
+
+        setSupply(supplyDetail);
+    };
 
     return (
         <div>
@@ -42,6 +43,7 @@ export function Information () {
                                     <div className="header-form">
                                         <h2>Thông tin vật tư</h2>
                                     </div>
+                                    {supply === undefined ? "Vật tư này không tồn tại!" :
                                     <div className="row mb-4">
                                         <div className="col">
                                             <div className="form-outline">
@@ -66,53 +68,49 @@ export function Information () {
                                             <div className="mb-3">
                                                 <div className="fields">
                                                     <label htmlFor="code" className="form-label">Mã vật tư</label>
-                                                    <Field className="form-control" name="code" type="text" />
+                                                    <span>{supply.code}</span>
                                                 </div>
                                                 <div className="fields">
                                                     <label htmlFor="name" className="form-label">Tên vật tư</label>
-                                                    <Field type="text" className="form-control" name="name" />
+                                                    <span>{supply.name}</span>
                                                 </div>
                                                 <div className="fields">
                                                     <label className="form-label">Nhà cung cấp</label>
-                                                    <Field type="text" className="form-control" name="supplier" />
+                                                    <span>{supply.supplier}</span>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="row mb-4">
                                         <div className="col">
                                             <div className="mb-3">
                                                 <label htmlFor="price" className="form-label">Đơn giá (VNĐ)</label>
-                                                <Field type="text" className="form-control" name="price" />
+                                                <span></span>
                                             </div>
                                         </div>
                                         <div className="col">
                                             <div className="mb-3">
                                                 <label htmlFor="price" className="form-label">Số lượng</label>
-                                                <Field type="text" className="form-control" name="quantity" />
+                                                <span></span>
                                             </div>
                                         </div>
                                         <div className="col">
                                             <div className="mb-3">
                                                 <label className="form-label">Loại vật tư</label>
-                                                <Field type="text" className="form-control" name="supplyType" />
+                                                <span></span>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="row mb-4">
                                         <div className="col">
                                             <div className="mb-3">
                                                 <label htmlFor="nsx" className="form-label">Ngày nhập hàng</label>
-                                                <Field type="text" className="form-control" name="import" />
+                                                <span></span>
                                             </div>
                                         </div>
                                         <div className="col">
                                             <div className="mb-3">
                                                 <label htmlFor="hsd" className="form-label">Hạn sử dụng</label>
-                                                <Field type="text" className="form-control" name="expiry" />
+                                                <span></span>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> }
                                     <button type="submit" className="btn-orange">Trở về</button>
                                 </div>
                             </div>
