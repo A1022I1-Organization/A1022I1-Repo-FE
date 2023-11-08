@@ -8,8 +8,8 @@ function App() {
     <div>
       
       {/*<Header />*/}
-      {/*  <SuppliesList />*/}
-        <Information />
+        <SuppliesList />
+      {/*  <Information />*/}
     </div>
   );
 }
