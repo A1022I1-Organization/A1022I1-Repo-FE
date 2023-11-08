@@ -157,7 +157,7 @@
 .form-login-error{
     color: red;
     margin-left: 32px;
-    
+    font-size: 15px;
 }
 /* .form-login-input{
     border-color: red;

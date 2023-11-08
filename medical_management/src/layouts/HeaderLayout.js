@@ -1,18 +1,57 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import "../components/css/HeaderCss.css";
-import logoHeader from "../logo/logoHeader.png";
+import logoHeader from "../components/img/logoHeader.png";
 import { LoginModal } from "../components/modal/LoginModal";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../redux/action/LoginAcction";
+import * as securityService from "../services/security_service/securityService";
+import { getUserLogin } from "../redux/action/LoginAcction";
 export const Header = () => {
   const [openModalLogin, setOpenModalLogin] = useState(false);
+
   const closeModalLogin = () => {
     setOpenModalLogin(false);
   };
+
   const handleOpenModalLogin = () => {
-    console.log("cos cos");
     setOpenModalLogin(true);
   };
+
+  //call store get data
+  const account = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
+  console.log(account);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const username = localStorage.getItem("username");
+    if (token && username !== undefined) {
+      getUserLogins(token, username);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    dispatch(logOut(account.token));
+  };
+  const getUserLogins = async (token, username) => {
+    dispatch(getUserLogin(token, username));
+  };
+  const role = useMemo(() => {
+    if (account === null) {
+      return "guest";
+    } else if (
+      account.accountRole.appRole.name === "ROLE_ADMIN" ||
+      account.accountRole.appRole.name === "ROLE_EMPLOYEE"
+    ) {
+      return "admin";
+    } else if (account.accountRole.appRole.name === "ROLE_USER") {
+      return "user";
+    }
+  }, [account]);
+  console.log(role);
+
   return (
     <div>
+      {role === "admin" && account !== null ? console.log("chuẩn") : ""}
       <div id="header">
         <div className="header-top">
           <div className="row" id="row-hd-top">
@@ -69,40 +108,106 @@ export const Header = () => {
             >
               CÙNG TẠO CƠ HỘI THÀNH CÔNG - HƯỚNG TỚI SỨC KHỎE CỘNG ĐỒNG
             </div>
-            <div className="col">
-              <div className="item-user-cart">
-                <div className="hd-img-user">
-                  <span
-                    id="sign-in"
-                    onClick={() => {
-                      handleOpenModalLogin();
-                    }}
-                  >
-                    Đăng nhâp
-                  </span>
+            {role === "guest" && (
+              <div className="col">
+                <div className="item-user-cart">
+                  <div className="hd-img-user">
+                    <span
+                      id="sign-in"
+                      onClick={() => {
+                        handleOpenModalLogin();
+                      }}
+                    >
+                      Đăng nhâp
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
+            {(role === "admin" || role === "user") && (
+              <div className="col">
+                <div className="item-user-cart">
+                  <div className="hd-img-user">
+                    <div className="dropdown">
+                      <button
+                        className="btn"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <img
+                          id="img-user"
+                          src={account.accountRole.appAccount.imgLink}
+                          className="rounded-circle"
+                          alt
+                        />
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li>
+                          <a className="dropdown-item" href="#">
+                            <img
+                              id="dropdown-img-user"
+                              src={account.accountRole.appAccount.imgLink}
+                              alt
+                              className="rounded-circle"
+                            />
+                            <span id="dropdown-img-text">
+                              {account.accountRole.appAccount.username}
+                            </span>
+                          </a>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        {/* <li>
+      <a class="dropdown-item" href="#">Đổi mật khẩu</a>
+    </li> */}
+                        <li>
+                          <span
+                            className="dropdown-item"
+                            id="sign-out"
+                            onClick={handleLogout}
+                          >
+                            Đăng xuất
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                    {/* <a class="" id="sign-out" href="#">Đăng nhâp</a> */}
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="col" />
           </div>
         </div>
         <div className="header-navbar">
           <div className="row" id="hd-row-navbar">
             <div className="col" />
-            <div className="col-8 d-flex justify-content-center align-items-center">
-              <button className="hd-content-navbar">TRANG CHỦ</button>
-              <button className="hd-content-navbar">GIỚI THIỆU</button>
-              <button className="hd-content-navbar">SẢN PHẨM</button>
-              <button className="hd-content-navbar">ĐỐI TÁC</button>
-              <button className="hd-content-navbar">LIÊN HỆ</button>
-            </div>
+            {(role === "guest" || role === "user") && (
+              <div className="col-8 d-flex justify-content-center align-items-center">
+                <button className="hd-content-navbar">TRANG CHỦ</button>
+                <button className="hd-content-navbar">GIỚI THIỆU</button>
+                <button className="hd-content-navbar">SẢN PHẨM</button>
+                <button className="hd-content-navbar">ĐỐI TÁC</button>
+                <button className="hd-content-navbar">LIÊN HỆ</button>
+              </div>
+            )}
+
+            {role === "admin" && (
+              <div class="col-4 d-flex justify-content-center align-items-center">
+                <button class="hd-content-navbar">QUẢN LÝ</button>
+                <button class="hd-content-navbar">THỐNG KÊ</button>
+              </div>
+            )}
+
             <div className="col" />
           </div>
         </div>
       </div>
       {openModalLogin && (
         <LoginModal
-         openModalLogin={openModalLogin}
+          openModalLogin={openModalLogin}
           closeModalLogin={closeModalLogin}
         />
       )}
