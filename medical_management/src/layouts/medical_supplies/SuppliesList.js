@@ -1,88 +1,18 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {Row, Col, Container, Card, Table, Alert, NavLink} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DeleteConfirmation from "../../components/modal/DeleteConfirmation";
 import {DropdownSearch} from "../../components/bootsrap/DropdownSearch";
 import {MemoryRouter, Route, Routes} from "react-router-dom";
 import {Content} from "../../components/pagination/SupplyPagination";
+import * as suppliesService from "../../services/medical_supplies/MedicalSupplyService";
+import "../../components/css/style.css";
 
 export function SuppliesList() {
     // Set up a list of oldItem and newItem
-    const [oldItems, setOldItems] = useState([
-        { id: 1,
-            code: "VT - 123",
-            oldName: "Bông y tế",
-            quantity: 15,
-            importDate: "17/01/2023",
-            expiry: "17/11/2023"
-        },
-        { id: 2,
-            code: "VT - 124",
-            oldName: "Bông y tế",
-            quantity: 15,
-            importDate: "17/01/2023",
-            expiry: "17/11/2023"
-        },
-        { id: 3,
-            code: "VT - 125",
-            oldName: "Bông y tế",
-            quantity: 15,
-            importDate: "17/01/2023",
-            expiry: "17/11/2023"
-        },
-        { id: 4,
-            code: "VT - 126",
-            oldName: "Bông y tế",
-            quantity: 15,
-            importDate: "17/01/2023",
-            expiry: "17/11/2023"
-        },
-        { id: 5,
-            code: "VT - 127",
-            oldName: "Bông y tế",
-            quantity: 15,
-            importDate: "17/01/2023",
-            expiry: "17/11/2023"
-        },
-    ]);
+    const [oldItems, setOldItems] = useState([]);
 
-    const [newItems, setNewItems] = useState([
-        { id: 6,
-            code: "VT - 345",
-            newName: "Kim tiêm",
-            quantity: 25,
-            importDate: "01/10/2023",
-            expiry: "01/10/2024"
-        },
-        { id: 7,
-            code: "VT - 346",
-            newName: "Kim tiêm",
-            quantity: 25,
-            importDate: "01/10/2023",
-            expiry: "01/10/2024"
-        },
-        { id: 8,
-            code: "VT - 347",
-            newName: "Kim tiêm",
-            quantity: 25,
-            importDate: "01/10/2023",
-            expiry: "01/10/2024"
-        },
-        { id: 9,
-            code: "VT - 348",
-            newName: "Kim tiêm",
-            quantity: 25,
-            importDate: "01/10/2023",
-            expiry: "01/10/2024"
-        },
-        { id: 10,
-            code: "VT - 349",
-            newName: "Kim tiêm",
-            quantity: 25,
-            importDate: "01/10/2023",
-            expiry: "01/10/2024"
-        },
-    ]);
+    const [newItems, setNewItems] = useState([]);
 
     const [type, setType] = useState(null);
     const [delId, setDelId] = useState(null);
@@ -90,6 +20,21 @@ export function SuppliesList() {
     const [deleteMessage, setDeleteMessage] = useState(null);
     const [newItemMessage, setNewItemMessage] = useState(null);
     const [oldItemMessage, setOldItemMessage] = useState(null);
+
+    useEffect(() => {
+        getOldSupplies();
+        getNewSupplies();
+    }, [])
+
+    const getOldSupplies = async () => {
+        const list = await suppliesService.getOldSupplies();
+        setOldItems(list);
+    }
+
+    const getNewSupplies = async () => {
+        const list = await suppliesService.getNewSupplies();
+        setNewItems(list);
+    }
 
     // Handle the displaying of the modal based on type and id
     const showDeleteModal = (type, delId) => {
@@ -99,16 +44,15 @@ export function SuppliesList() {
         setNewItemMessage(null);
         if (type === "oldItem") {
 
-            setDeleteMessage(`Bạn chắc chắn muốn xóa '${oldItems.find((x) => x.id === delId).oldName}' không?`);
+            setDeleteMessage(`Bạn chắc chắn muốn xóa '${oldItems.find((x) => x.id === delId).name}' không?`);
         } else if (type === "newItem") {
 
-            setDeleteMessage(`Bạn chắc chắn muốn xóa '${newItems.find((x) => x.id === delId).newName}' không?`);
+            setDeleteMessage(`Bạn chắc chắn muốn xóa '${newItems.find((x) => x.id === delId).name}' không?`);
         }
         console.log("asd")
 
         setDisplayConfirmationModal(true);
     };
-
     // Hide the modal
     const hideConfirmationModal = () => {
         setDisplayConfirmationModal(false);
@@ -117,16 +61,17 @@ export function SuppliesList() {
     // Handle the actual deletion of the item
     const submitDelete = (type, delId) => {
         if (type === "oldItem") {
-            setOldItemMessage(`Xóa '${oldItems.find((x) => x.id === delId).oldName}' thành công.`);
+            setOldItemMessage(`Xóa '${oldItems.find((x) => x.id === delId).name}' thành công.`);
             setOldItems(oldItems.filter((oldItem) => oldItem.id !== delId));
         } else if (type === "newItem") {
-            setNewItemMessage(`Xóa '${newItems.find((x) => x.id === delId).newName}' thành công.`);
+            setNewItemMessage(`Xóa '${newItems.find((x) => x.id === delId).name}' thành công.`);
             setNewItems(newItems.filter((newItem) => newItem.id !== delId));
         }
         setDisplayConfirmationModal(false);
     };
-
+    console.log(oldItems)
     return (
+
         <>
             <Container>
                  {/*Search menu*/}
@@ -156,29 +101,30 @@ export function SuppliesList() {
                                     <Table table hover size="sm">
                                         <thead>
                                         <tr>
-                                            <th scope="col"> Mã vật tư </th>
-                                            <th scope="col"> Tên vật tư </th>
-                                            <th scope="col"> Số lượng</th>
-                                            <th scope="col"> Ngày nhập kho </th>
-                                            <th scope="col"> Hạn sử dụng </th>
+                                            <th scope="col" style={{verticalAlign: "middle"}}> Mã vật tư </th>
+                                            <th scope="col" style={{verticalAlign: "middle"}}> Tên vật tư </th>
+                                            <th scope="col" style={{verticalAlign: "middle"}}> Số lượng</th>
+                                            <th scope="col" style={{verticalAlign: "middle"}}> Ngày nhập kho </th>
+                                            <th scope="col" style={{verticalAlign: "middle"}}> Hạn sử dụng </th>
                                             <th> </th>
                                         </tr>
                                         </thead>
+                                        {oldItems ?
                                         <tbody>
                                         {oldItems.map((oldItem) => {
                                             return (
                                                 <tr key={oldItem.id}>
-                                                    <td>{oldItem.code}</td>
-                                                    <td>
+                                                    <td style={{verticalAlign: "middle"}}>{oldItem.code}</td>
+                                                    <td style={{verticalAlign: "middle"}}>
                                                         <NavLink to={'#'}
                                                                  style={{textDecoration: "none", color: "black"}}>
-                                                            {oldItem.oldName}
+                                                            {oldItem.name}
                                                         </NavLink>
                                                     </td>
-                                                    <td>{oldItem.quantity}</td>
-                                                    <td>{oldItem.importDate}</td>
-                                                    <td>{oldItem.expiry}</td>
-                                                    <td className='text-center'>
+                                                    <td style={{verticalAlign: "middle"}}>{oldItem.quantity}</td>
+                                                    <td style={{verticalAlign: "middle"}}>{oldItem.importDate}</td>
+                                                    <td style={{verticalAlign: "middle"}}>{oldItem.expiry}</td>
+                                                    <td className='text-center' style={{verticalAlign: "middle"}}>
                                                         <button className="btn btn-warning" style={{backgroundColor: "#F58220", color: "white"}}
                                                                 onClick={() => showDeleteModal("oldItem", oldItem.id)} >
                                                             Xóa
@@ -190,7 +136,7 @@ export function SuppliesList() {
                                                 </tr>
                                             );
                                         })}
-                                        </tbody>
+                                        </tbody> : "Không vật tư nào được tìm thấy!"}
                                     </Table>
                                 </Card.Body>
                             </Card>
@@ -211,29 +157,30 @@ export function SuppliesList() {
                                     <Table table hover size="sm">
                                         <thead>
                                         <tr>
-                                            <th scope="col"> Mã vật tư </th>
-                                            <th scope="col"> Tên vật tư </th>
-                                            <th scope="col"> Số lượng</th>
-                                            <th scope="col"> Ngày nhập kho </th>
-                                            <th scope="col"> Hạn sử dụng </th>
+                                            <th scope="col" style={{verticalAlign: "middle"}}> Mã vật tư </th>
+                                            <th scope="col" style={{verticalAlign: "middle"}}> Tên vật tư </th>
+                                            <th scope="col" style={{verticalAlign: "middle"}}> Số lượng</th>
+                                            <th scope="col" style={{verticalAlign: "middle"}}> Ngày nhập kho </th>
+                                            <th scope="col" style={{verticalAlign: "middle"}}> Hạn sử dụng </th>
                                             <th> </th>
                                         </tr>
                                         </thead>
+                                        {newItems ?
                                         <tbody>
                                         {newItems.map((newItem) => {
                                             return (
                                                 <tr key={newItem.id}>
-                                                    <td>{newItem.code}</td>
-                                                    <td>
+                                                    <td style={{verticalAlign: "middle"}}>{newItem.code}</td>
+                                                    <td style={{verticalAlign: "middle"}}>
                                                         <NavLink to={`#`}
                                                                  style={{textDecoration: "none", color: "black"}}>
-                                                            {newItem.newName}
+                                                            {newItem.name}
                                                         </NavLink>
                                                     </td>
-                                                    <td>{newItem.quantity}</td>
-                                                    <td>{newItem.importDate}</td>
-                                                    <td>{newItem.expiry}</td>
-                                                    <td className='text-center'>
+                                                    <td style={{verticalAlign: "middle"}}>{newItem.quantity}</td>
+                                                    <td style={{verticalAlign: "middle"}}>{newItem.importDate}</td>
+                                                    <td style={{verticalAlign: "middle"}}>{newItem.expiry}</td>
+                                                    <td className='text-center' style={{verticalAlign: "middle"}}>
                                                         <button className="btn btn-warning" style={{backgroundColor: "#F58220", color: "white"}}
                                                                 onClick={() => showDeleteModal("newItem", newItem.id)} >
                                                         Xóa
@@ -245,7 +192,7 @@ export function SuppliesList() {
                                                 </tr>
                                             );
                                         })}
-                                        </tbody>
+                                        </tbody>: "Hôm nay không có vật tư nào được nhập mới!"}
                                     </Table>
                                 </Card.Body>
                             </Card>
