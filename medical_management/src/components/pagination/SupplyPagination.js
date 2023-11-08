@@ -6,12 +6,13 @@ import PaginationItem from '@mui/material/PaginationItem';
 export function Content() {
     const location = useLocation();
     const query = new URLSearchParams(location.search);
-    const page = parseInt(query.get('page') || '1', 10);
+    const page = parseInt(query.get('page') || '1', 5);
+
     return (
         <Pagination className="pagination justify-content-center"
                     style={{fontSize: "20px"}}
             page={page}
-            count={10}
+            count={5}
             renderItem={(item) => (
                 <PaginationItem
                     component={Link}
