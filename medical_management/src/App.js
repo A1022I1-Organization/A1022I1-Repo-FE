@@ -1,4 +1,5 @@
 import "./App.css";
+import { LoginGoogle } from "./components/modal/LoginGoogle";
 import { Header } from "./layouts/HeaderLayout";
 import {SuppliesList} from "./layouts/medical_supplies/SuppliesList";
 import {Information} from "./layouts/medical_supplies/Information";
@@ -6,8 +7,7 @@ import {Information} from "./layouts/medical_supplies/Information";
 function App() {
   return (
     <div>
-      
-      {/*<Header />*/}
+      <Header />
         <SuppliesList />
       {/*  <Information />*/}
     </div>

@@ -2,20 +2,25 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import "../css/LoginModalCss.css";
-import logoLoginFb from "../../logo/logoLoginFb.png";
-import logoLoginGg from "../../logo/logoLoginGg.png";
+import logoLoginFb from "../img/logoLoginFb.png";
+import logoLoginGg from "../img/logoLoginGg.png";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../redux/action/LoginAcction";
-import { Field, Form, Formik } from "formik";
+import { loginByAccount, loginByOauth2 } from "../../redux/action/LoginAcction";
+import { Field, Form, Formik, ErrorMessage, validateYupSchema } from "formik";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
+import { LoginGoogle } from "./LoginGoogle";
+
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 export const LoginModal = (props) => {
   //Open modal login
   const [show, setShow] = useState(false);
-
+  const [loginGoogle, setLoginGoogle] = useState(false);
   //call store get data
-  const token = useSelector((store) => store.auth);
-  console.log(token);
+  const account = useSelector((store) => store.auth);
+  console.log(account);
   const dispatch = useDispatch();
-
   //Close modal login
   const handleClose = () => {
     closeModalLogin();
@@ -30,8 +35,9 @@ export const LoginModal = (props) => {
     setShow(openModalLogin);
   }, []);
 
-  const handleLogin = (account) => {
-    dispatch(login(account));
+  const handleLoginByAccount = async (account) => {
+    const checkAccount = await dispatch(loginByAccount(account));
+    return checkAccount;
   };
 
   return (
@@ -48,9 +54,29 @@ export const LoginModal = (props) => {
                   username: "",
                   password: "",
                 }}
-                onSubmit={(values, { setSubmitting }) => {
-                  console.log(values);
-                  handleLogin(values);
+                validationSchema={Yup.object({
+                  username: Yup.string().required(
+                    "Vui lòng nhập tên tài khoản"
+                  ),
+                  password: Yup.string().required("Vui lòng nhập mật khẩu"),
+                })}
+                onSubmit={async (values, { setSubmitting, setFieldError }) => {
+                  const checkLogin = await handleLoginByAccount(values);
+                  console.log(checkLogin);
+                  if (checkLogin === undefined) {
+                    toast.error("Đăng nhập không công !");
+                    setFieldError(
+                      "password",
+                      "Tên đăng nhập hoặc mật khẩu không đúng"
+                    );
+                    setFieldError(
+                      "username",
+                      "Tên đăng nhập hoặc mật khẩu không đúng"
+                    );
+                  } else {
+                    toast.success("Đăng nhập thành công !");
+                    handleClose();
+                  }
                 }}
               >
                 <Form>
@@ -62,6 +88,11 @@ export const LoginModal = (props) => {
                       placeholder="Tên tài khoản"
                       name="username"
                     />
+                    <ErrorMessage
+                      name="username"
+                      component="span"
+                      className="form-login-error"
+                    />
                   </div>
                   <div className="mb-3" id="input-password">
                     <Field
@@ -70,6 +101,11 @@ export const LoginModal = (props) => {
                       id="inputPassword"
                       placeholder="Nhập mật khẩu"
                       name="password"
+                    />
+                    <ErrorMessage
+                      name="password"
+                      component="span"
+                      className="form-login-error"
                     />
                   </div>
                   <div className="form-login-checkbox">
@@ -91,12 +127,15 @@ export const LoginModal = (props) => {
                   src={logoLoginFb}
                   className="icon-form-fb"
                   alt="Facebook Icon"
+                  // onClick={handleFacebookLogin}
                 />
                 <img
                   src={logoLoginGg}
                   className="icon-form-gg"
                   alt="Google Icon"
+                  htmlFor="loginGoogle"
                 />
+                <LoginGoogle  />
               </div>
             </div>
             <hr id="hr-form-login" />
