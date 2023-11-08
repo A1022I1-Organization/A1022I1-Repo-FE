@@ -74,26 +74,22 @@ export function SuppliesList() {
 
         <>
             <Container>
-                 {/*Search menu*/}
-                <nav className="navbar sticky-top" style={{backgroundColor: "white"}}>
-                    <div className="container-fluid">
-                        <form className="search-menu">
-                            <DropdownSearch />
-                        </form>
-                        <div className="create-button">
-                            <button type="button" className="btn btn-success" style={{backgroundColor: "#26B24B", float: "right"}}>
-                                <span>Thêm mới</span>
-                            </button>
-                        </div>
-                    </div>
-                </nav>
-
-                <br/>
-
-                {/*<Container>*/}
                     <Row>
                         <Col md={{ span: 10, offset: 1 }}>
-                            <h1 style={{textAlign: "center"}}>Thông tin vật tư</h1>
+                            {/*Search menu*/}
+                            <nav className="navbar sticky-top" style={{backgroundColor: "white"}}>
+                                <form className="search-menu">
+                                    <DropdownSearch />
+                                </form>
+                                <div className="create-button">
+                                    <button type="button" className="btn btn-success" style={{backgroundColor: "#26B24B", float: "right"}}>
+                                        <span>Thêm mới</span>
+                                    </button>
+                                </div>
+                            </nav>
+
+                            <br/>
+
                             <Card className="mt-2">
                                 <Card.Header style={{textAlign: "center", fontSize: "30px", fontWeight: "bold"}}>Vật tư cũ</Card.Header>
                                 <Card.Body>
