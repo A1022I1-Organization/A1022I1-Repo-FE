@@ -18,7 +18,7 @@ function App() {
 
       <Footer />
       
-       {/*<SuppliesList /> */}
+      
         {/* <Information /> */}
     </div>
   );
