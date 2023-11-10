@@ -68,3 +68,7 @@ label{
 th, td {
     word-wrap: break-word; /* Sử dụng 'overflow-wrap' nếu cần */
   }
+
+.dropdown-item:active {
+    background-color: grey;
+}
