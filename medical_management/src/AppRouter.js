@@ -4,6 +4,7 @@ import { Header } from "./layouts/HeaderLayout";
 import HomePage from "./layouts/HomePage";
 import List from "./layouts/List";
 
+
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -16,12 +17,10 @@ export const AppRouter = () => {
 
         <Route path="/admin" element={<Outlet />}>
           <Route path="" element={""} />
-
           <Route />
         </Route>
         <Route path="/supply" element={<Outlet />}>
           <Route path="" element={""} />
-
           <Route />
         </Route>
        
