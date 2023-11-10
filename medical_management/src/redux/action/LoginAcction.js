@@ -1,6 +1,7 @@
 import * as securityService from "../../services/security_service/securityService";
 import {
   GET_USER_LOGIN,
+  GET_USER_LOGIN_GOOGLE,
   LOG_IN_ACCOUNT,
   LOG_IN_OAUTH2,
   LOG_OUT,
@@ -13,7 +14,7 @@ export const loginByAccount = (account) => async (dispatch) => {
   } else {
     const token = JwtAccount.token;
 
-    localStorage.setItem("token", token);
+    localStorage.setItem("tokenAccount", token);
     localStorage.setItem(
       "username",
       JwtAccount.accountRole.appAccount.username
@@ -37,18 +38,30 @@ export const loginByOauth2 = (data) => async (dispatch) => {
 export const logOut = (token) => async (dispatch) => {
   await securityService.logOut(token);
   localStorage.removeItem("username");
-  localStorage.removeItem("token");
+  localStorage.removeItem("tokenGoogle");
+  localStorage.removeItem("tokenAccount");
   dispatch({
     type: LOG_OUT,
     payload: null,
   });
 };
 
-export const getUserLogin = (token, username) => async (dispatch) => {
-  const accountLogin = await securityService.getUserLogin(token, username);
+export const getUserLoginAccount = (token, username) => async (dispatch) => {
+  const accountLogin = await securityService.getUserLoginAccount(
+    token,
+    username
+  );
   console.log(accountLogin);
   dispatch({
     type: GET_USER_LOGIN,
+    payload: accountLogin,
+  });
+};
+export const getUserLoginGoogle = (token) => async (dispatch) => {
+  const accountLogin = await securityService.getUserLoginGoogle(token);
+  console.log(accountLogin);
+  dispatch({
+    type: GET_USER_LOGIN_GOOGLE,
     payload: accountLogin,
   });
 };

@@ -5,24 +5,26 @@ import "../css/LoginModalCss.css";
 import logoLoginFb from "../img/logoLoginFb.png";
 import logoLoginGg from "../img/logoLoginGg.png";
 import { useDispatch, useSelector } from "react-redux";
-import { loginByAccount, loginByOauth2 } from "../../redux/action/LoginAcction";
-import { Field, Form, Formik, ErrorMessage, validateYupSchema } from "formik";
+import { loginByAccount } from "../../redux/action/LoginAcction";
+import { Field, Form, Formik, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { LoginGoogle } from "./LoginGoogle";
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { GoogleLogin } from "@react-oauth/google";
 export const LoginModal = (props) => {
   //Open modal login
   const [show, setShow] = useState(false);
-  const [loginGoogle, setLoginGoogle] = useState(false);
   //call store get data
   const account = useSelector((store) => store.auth);
   console.log(account);
   const dispatch = useDispatch();
   //Close modal login
   const handleClose = () => {
+    closeModalLogin();
+    setShow(false);
+  };
+  const checkCloseModalGg = () => {
     closeModalLogin();
     setShow(false);
   };
@@ -109,7 +111,7 @@ export const LoginModal = (props) => {
                     />
                   </div>
                   <div className="form-login-checkbox">
-                    <Field type="checkbox" id="inputRemember" />
+                    <input type="checkbox" id="inputRemember" />
                     <label htmlFor="inputRemember" className="form-label">
                       Nhớ mật khẩu
                     </label>
@@ -127,15 +129,16 @@ export const LoginModal = (props) => {
                   src={logoLoginFb}
                   className="icon-form-fb"
                   alt="Facebook Icon"
-                  // onClick={handleFacebookLogin}
                 />
-                <img
-                  src={logoLoginGg}
-                  className="icon-form-gg"
-                  alt="Google Icon"
-                  htmlFor="loginGoogle"
-                />
-                <LoginGoogle  />
+                <GoogleOAuthProvider clientId="619186749605-ir7smdf223og7pb0bit1680qqtn7cro9.apps.googleusercontent.com">
+                  <img
+                    src={logoLoginGg}
+                    className="icon-form-gg"
+                    alt="Google Icon"
+                    htmlFor="loginGoogle"
+                  />
+                  <LoginGoogle closeModalLogin={checkCloseModalGg} />
+                </GoogleOAuthProvider>
               </div>
             </div>
             <hr id="hr-form-login" />

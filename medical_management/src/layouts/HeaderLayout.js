@@ -5,7 +5,11 @@ import { LoginModal } from "../components/modal/LoginModal";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../redux/action/LoginAcction";
 import * as securityService from "../services/security_service/securityService";
-import { getUserLogin } from "../redux/action/LoginAcction";
+import {
+  getUserLoginAccount,
+  getUserLoginGoogle,
+} from "../redux/action/LoginAcction";
+import { toast } from "react-toastify";
 export const Header = () => {
   const [openModalLogin, setOpenModalLogin] = useState(false);
 
@@ -22,18 +26,28 @@ export const Header = () => {
   const dispatch = useDispatch();
   console.log(account);
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const tokenAccount = localStorage.getItem("tokenAccount");
+    const tokenGoogle = localStorage.getItem("tokenGoogle");
+    console.log(tokenGoogle);
     const username = localStorage.getItem("username");
-    if (token && username !== undefined) {
-      getUserLogins(token, username);
+    if ((tokenAccount && username) !== null && tokenGoogle === null) {
+      getUserLoginByAccount(tokenAccount, username);
+      console.log("chạy 1");
+    } else if (tokenGoogle !== null) {
+      console.log("chạy 2");
+      getUserLoginByGoogle(tokenGoogle);
     }
   }, []);
 
   const handleLogout = () => {
     dispatch(logOut(account.token));
+    toast.success("Đăng xuất thành công !");
   };
-  const getUserLogins = async (token, username) => {
-    dispatch(getUserLogin(token, username));
+  const getUserLoginByAccount = async (token, username) => {
+    dispatch(getUserLoginAccount(token, username));
+  };
+  const getUserLoginByGoogle = async (token) => {
+    dispatch(getUserLoginGoogle(token));
   };
   const role = useMemo(() => {
     if (account === null) {
