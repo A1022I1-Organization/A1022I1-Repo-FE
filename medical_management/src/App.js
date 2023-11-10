@@ -15,8 +15,8 @@ function App() {
       {/*          <Route path="/detail/:id" element={<Information />}/>*/}
       {/*      </Routes>*/}
       {/*  </BrowserRouter>*/}
-        <SuppliesList />
-        {/*<Information />*/}
+      {/*  <SuppliesList />*/}
+        <Information />
     </>
   );
 }
