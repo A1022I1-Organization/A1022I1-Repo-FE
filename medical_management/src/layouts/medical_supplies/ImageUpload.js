@@ -3,7 +3,6 @@ import { storage } from "../../firebase/firebaseConfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
  
 function ImageUpload() {
-    // State to store uploaded file
     const [file, setFile] = useState("");
  
     // progress

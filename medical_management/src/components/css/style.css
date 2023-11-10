@@ -62,6 +62,12 @@ input[type="file"] {
 label{
     font-weight: bold;
 }
+.form-err {
+    color: red;
+}
+th, td {
+    word-wrap: break-word; /* Sử dụng 'overflow-wrap' nếu cần */
+  }
 
 .dropdown-item:active {
     background-color: grey;
