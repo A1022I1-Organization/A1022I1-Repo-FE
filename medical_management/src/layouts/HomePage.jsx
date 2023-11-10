@@ -1,6 +1,9 @@
 import axios from 'axios'
 import React, { useMemo, useState } from 'react'
-import imageLocal from '../imageLocal';
+import imageLocal1 from '../components/img/img/img1.jpg';
+import imageLocal2 from '../components/img/img/img2.jpg';
+import imageLocal3 from '../components/img/img/img3.jpg';
+import imageLocal4 from '../components/img/img/img4.jpg';
 
 export default function HomePage() {
   const [state, setState] = useState([]);
@@ -23,13 +26,13 @@ export default function HomePage() {
       </div>
       <div className="carousel-inner">
         <div className="carousel-item active">
-          <img src= {imageLocal.image1} className="d-block w-100" alt="..." height="500px" />
+          <img src= {imageLocal1} className="d-block w-100" alt="..." height="500px" />
         </div>
         <div className="carousel-item">
-          <img src= {imageLocal.image2} className="d-block w-100" alt="..." height="500px" />
+          <img src= {imageLocal2} className="d-block w-100" alt="..." height="500px" />
         </div>
         <div className="carousel-item">
-          <img src= {imageLocal.image3}  className="d-block w-100" alt="..." height="500px" />
+          <img src= {imageLocal3}  className="d-block w-100" alt="..." height="500px" />
         </div>
       </div>
       <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -66,7 +69,7 @@ export default function HomePage() {
   <div className="container">
     <div className="row mt-3">
       <div className="col-md-6">
-        <img src={imageLocal.image2} alt width="100%" />
+        <img src={imageLocal2} alt width="100%" />
       </div>
       <div className="col-md-6 px-3">
         <h2 className="font-text-footer">Băng gạc</h2>
@@ -85,12 +88,12 @@ export default function HomePage() {
         </p>
       </div>
       <div className="col-md-6">
-        <img src={imageLocal.image1} alt width="100%" />
+        <img src={imageLocal1} alt width="100%" />
       </div>
     </div>
     <div className="row mt-3">
       <div className="col-md-6">
-        <img src={imageLocal.image4} alt width="100%" />
+        <img src={imageLocal4} alt width="100%" />
       </div>
       <div className="col-md-6 px-3">
         <h2 className="font-text-footer">Bông gòn</h2>

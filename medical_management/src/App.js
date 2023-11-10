@@ -12,16 +12,16 @@ import { AppRouter } from "./AppRouter";
 function App() {
   return (
     <div>
-      <Header />
+      {/* <Header />
 
       <List />
 
-      {/* <HomePage />  */}
+      <HomePage /> 
 
       <Footer />
       
       
-        {/* <Information /> */}
+        <Information /> */}
 =======
       <AppRouter />
     </div>
