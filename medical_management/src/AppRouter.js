@@ -1,6 +1,7 @@
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { SuppliesList } from "./layouts/medical_supplies/SuppliesList";
 import { Header } from "./layouts/HeaderLayout";
+import HomePage from "./layouts/HomePage";
 
 export const AppRouter = () => {
   return (
@@ -12,12 +13,10 @@ export const AppRouter = () => {
         </Route>
         <Route path="/admin" element={<Outlet />}>
           <Route path="" element={""} />
-
           <Route />
         </Route>
         <Route path="/supply" element={<Outlet />}>
           <Route path="" element={""} />
-
           <Route />
         </Route>
       </Routes>

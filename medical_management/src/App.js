@@ -12,17 +12,6 @@ import { AppRouter } from "./AppRouter";
 function App() {
   return (
     <div>
-      <Header />
-
-      <List />
-
-      {/* <HomePage />  */}
-
-      <Footer />
-      
-      
-        {/* <Information /> */}
-=======
       <AppRouter />
     </div>
 
