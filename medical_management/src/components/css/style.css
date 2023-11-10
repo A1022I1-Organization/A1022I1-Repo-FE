@@ -72,3 +72,26 @@ th, td {
 .dropdown-item:active {
     background-color: grey;
 }
+
+.btn-green {
+    background: #26B24B;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    padding: 6px 12px;
+}
+.btn-green:hover {
+    background: #1F8C3B;
+    color: white;
+}
+.btn-orange {
+    background: #F58220;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    padding: 6px 12px;
+}
+.btn-orange:hover {
+    background: #CC6D1B;
+    color: white;
+}
