@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import DeleteConfirmation from "../../components/modal/DeleteConfirmation";
 import {DropdownSearch} from "../../components/bootsrap/DropdownSearch";
 import {MemoryRouter, Route, Routes} from "react-router-dom";
-import {Content} from "../../components/pagination/SupplyPagination";
+import PaginationRanges, {Content} from "../../components/pagination/SupplyPagination";
 import * as suppliesService from "../../services/medical_supplies/MedicalSupplyService";
 import "../../components/css/style.css";
 
@@ -74,26 +74,22 @@ export function SuppliesList() {
 
         <>
             <Container>
-                 {/*Search menu*/}
-                <nav className="navbar sticky-top" style={{backgroundColor: "white"}}>
-                    <div className="container-fluid">
-                        <form className="search-menu">
-                            <DropdownSearch />
-                        </form>
-                        <div className="create-button">
-                            <button type="button" className="btn btn-success" style={{backgroundColor: "#26B24B", float: "right"}}>
-                                <span>Thêm mới</span>
-                            </button>
-                        </div>
-                    </div>
-                </nav>
-
-                <br/>
-
-                {/*<Container>*/}
                     <Row>
                         <Col md={{ span: 10, offset: 1 }}>
-                            <h1 style={{textAlign: "center"}}>Thông tin vật tư</h1>
+                            {/*Search menu*/}
+                            <nav className="navbar sticky-top" style={{backgroundColor: "white"}}>
+                                <form className="search-menu">
+                                    <DropdownSearch />
+                                </form>
+                                <div className="create-button">
+                                    <button type="button" className="btn btn-success" style={{backgroundColor: "#26B24B", float: "right"}}>
+                                        <span>Thêm mới</span>
+                                    </button>
+                                </div>
+                            </nav>
+
+                            <br/>
+
                             <Card className="mt-2">
                                 <Card.Header style={{textAlign: "center", fontSize: "30px", fontWeight: "bold"}}>Vật tư cũ</Card.Header>
                                 <Card.Body>
@@ -116,7 +112,7 @@ export function SuppliesList() {
                                                 <tr key={oldItem.id}>
                                                     <td style={{verticalAlign: "middle"}}>{oldItem.code}</td>
                                                     <td style={{verticalAlign: "middle"}}>
-                                                        <NavLink to={'#'}
+                                                        <NavLink to={`/detail/${oldItem.id}`}
                                                                  style={{textDecoration: "none", color: "black"}}>
                                                             {oldItem.name}
                                                         </NavLink>
@@ -142,12 +138,8 @@ export function SuppliesList() {
                             </Card>
                             <br/>
 
-                            {/*Pagination*/}
-                            <MemoryRouter initialEntries={['/inbox']} initialIndex={0}>
-                                <Routes>
-                                    <Route path="*" element={<Content />} />
-                                </Routes>
-                            </MemoryRouter>
+                            {/*/!*Pagination*!/*/}
+                            <PaginationRanges />
                             <br/>
 
                             <Card className="mt-2">
@@ -172,7 +164,7 @@ export function SuppliesList() {
                                                 <tr key={newItem.id}>
                                                     <td style={{verticalAlign: "middle"}}>{newItem.code}</td>
                                                     <td style={{verticalAlign: "middle"}}>
-                                                        <NavLink to={`#`}
+                                                        <NavLink to={`/supply/detail/${newItem.id}`}
                                                                  style={{textDecoration: "none", color: "black"}}>
                                                             {newItem.name}
                                                         </NavLink>
@@ -199,11 +191,7 @@ export function SuppliesList() {
                             <br/>
 
                             {/*Pagination*/}
-                            <MemoryRouter initialEntries={['/inbox']} initialIndex={0}>
-                                <Routes>
-                                    <Route path="*" element={<Content />} />
-                                </Routes>
-                            </MemoryRouter>
+                            <PaginationRanges />
                             <br/>
 
                         </Col>

@@ -9,6 +9,7 @@
 .form-label {
     text-align: center;
     cursor: pointer;
+    font-weight: normal;
 }
 /* .card-body{
     position: relative;
