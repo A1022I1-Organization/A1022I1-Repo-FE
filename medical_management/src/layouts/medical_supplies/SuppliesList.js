@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import DeleteConfirmation from "../../components/modal/DeleteConfirmation";
 import {DropdownSearch} from "../../components/bootsrap/DropdownSearch";
 import {MemoryRouter, Route, Routes} from "react-router-dom";
-import {Content} from "../../components/pagination/SupplyPagination";
+import PaginationRanges, {Content} from "../../components/pagination/SupplyPagination";
 import * as suppliesService from "../../services/medical_supplies/MedicalSupplyService";
 import "../../components/css/style.css";
 
@@ -112,7 +112,7 @@ export function SuppliesList() {
                                                 <tr key={oldItem.id}>
                                                     <td style={{verticalAlign: "middle"}}>{oldItem.code}</td>
                                                     <td style={{verticalAlign: "middle"}}>
-                                                        <NavLink to={'#'}
+                                                        <NavLink to={`/detail/${oldItem.id}`}
                                                                  style={{textDecoration: "none", color: "black"}}>
                                                             {oldItem.name}
                                                         </NavLink>
@@ -138,12 +138,8 @@ export function SuppliesList() {
                             </Card>
                             <br/>
 
-                            {/*Pagination*/}
-                            <MemoryRouter initialEntries={['/inbox']} initialIndex={0}>
-                                <Routes>
-                                    <Route path="*" element={<Content />} />
-                                </Routes>
-                            </MemoryRouter>
+                            {/*/!*Pagination*!/*/}
+                            <PaginationRanges />
                             <br/>
 
                             <Card className="mt-2">
@@ -168,7 +164,7 @@ export function SuppliesList() {
                                                 <tr key={newItem.id}>
                                                     <td style={{verticalAlign: "middle"}}>{newItem.code}</td>
                                                     <td style={{verticalAlign: "middle"}}>
-                                                        <NavLink to={`#`}
+                                                        <NavLink to={`/supply/detail/${newItem.id}`}
                                                                  style={{textDecoration: "none", color: "black"}}>
                                                             {newItem.name}
                                                         </NavLink>
@@ -195,11 +191,7 @@ export function SuppliesList() {
                             <br/>
 
                             {/*Pagination*/}
-                            <MemoryRouter initialEntries={['/inbox']} initialIndex={0}>
-                                <Routes>
-                                    <Route path="*" element={<Content />} />
-                                </Routes>
-                            </MemoryRouter>
+                            <PaginationRanges />
                             <br/>
 
                         </Col>
