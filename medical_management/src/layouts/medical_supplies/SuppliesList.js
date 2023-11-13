@@ -3,11 +3,16 @@ import {Row, Col, Container, Card, Table} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DeleteConfirmation from "../../components/modal/DeleteConfirmation";
 import {DropdownSearch} from "../../components/bootsrap/DropdownSearch";
-import PaginationRanges, {Content} from "../../components/pagination/SupplyPagination";
 import * as suppliesService from "../../services/medical_supplies/MedicalSupplyService";
 import "../../components/css/style.css";
 import {toast} from "react-toastify";
 import {NavLink} from "react-router-dom";
+import * as React from 'react';
+import Pagination from '@mui/material/Pagination';
+import PaginationItem from '@mui/material/PaginationItem';
+import Stack from '@mui/material/Stack';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 export function SuppliesList() {
     // Set up a list of oldItem and newItem
@@ -16,6 +21,8 @@ export function SuppliesList() {
 
     const [page, setPage] = useState(0);
     const [totalPages, setTotalPages] = useState();
+    const [currPage, setCurrPage] = useState(1);
+    const [loading, setLoading] = useState(true);
 
     const [token, setToken] = useState();
 
@@ -25,14 +32,30 @@ export function SuppliesList() {
     const [deleteMessage, setDeleteMessage] = useState(null);
 
     useEffect(() => {
-        getOldSupplies();
-        getNewSupplies();
+        const fetchOldItems = async () => {
+            setLoading(true);
+            const newData = await getOldSupplies(currPage);
+            setOldItems(newData);
+            setLoading(false);
+        };
+        fetchOldItems();
+
+        const fetchNewItems = async () => {
+            setLoading(true);
+            const newData = await getNewSupplies(currPage);
+            setOldItems(newData);
+            setLoading(false);
+        };
+        fetchNewItems();
+
+        // getOldSupplies();
+        // getNewSupplies();
         getTokenFromLocalStorage();
         if (token) {
             getOldPage(page, token);
             getNewPage(page, token);
         }
-    }, [page, token]);
+    }, [currPage, token]);
 
     const getTokenFromLocalStorage = async () => {
         const token = await localStorage.getItem("token");
@@ -66,6 +89,10 @@ export function SuppliesList() {
     };
     const handlePreviousPage = () => {
         setPage((prev) => prev - 1);
+    };
+
+    const handleChange = (event, value) => {
+        setCurrPage(value);
     };
 
     // Handle the displaying of the modal based on type and id
@@ -114,9 +141,11 @@ export function SuppliesList() {
                                     <DropdownSearch />
                                 </form>
                                 <div className="create-button">
-                                    <button type="button" className="btn btn-success" style={{backgroundColor: "#26B24B", float: "right"}}>
-                                        <span>Thêm mới</span>
-                                    </button>
+                                    <NavLink to={"/supply/create"} >
+                                        <button type="button" className="btn btn-success" style={{backgroundColor: "#26B24B", float: "right"}}>
+                                            <span>Thêm mới</span>
+                                        </button>
+                                    </NavLink>
                                 </div>
                             </nav>
 
@@ -156,9 +185,11 @@ export function SuppliesList() {
                                                                 onClick={() => showDeleteModal("oldItem", oldItem.id)} >
                                                             Xóa
                                                         </button>
-                                                        <button className="btn btn-success" style={{backgroundColor: "#26B24B", border: "#26B24B"}}>
-                                                            Chỉnh sửa
-                                                        </button>
+                                                        <NavLink to={`/supply/update/${oldItem.id}`}>
+                                                            <button className="btn btn-success" style={{backgroundColor: "#26B24B", border: "#26B24B"}}>
+                                                                Chỉnh sửa
+                                                            </button>
+                                                        </NavLink>
                                                     </td>
                                                 </tr>
                                             );
@@ -170,7 +201,20 @@ export function SuppliesList() {
                             <br/>
 
                             {/*/!*Pagination*!/*/}
-                            <PaginationRanges />
+                            <Stack spacing={2}>
+                                <Pagination
+                                    count={totalPages}  // Replace with the total number of pages
+                                    page={currPage}
+                                    onChange={handleChange}
+                                    renderItem={(oldItems) => (
+                                        <PaginationItem
+                                            slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+                                            {...oldItems}
+                                        />
+                                    )}
+                                />
+                            </Stack>
+                            {/*<SupplyPagination />*/}
                             <br/>
 
                             <Card className="mt-2">
@@ -221,7 +265,19 @@ export function SuppliesList() {
                             <br/>
 
                             {/*Pagination*/}
-                            <PaginationRanges />
+                            <Stack spacing={2}>
+                                <Pagination
+                                    count={totalPages}  // Replace with the total number of pages
+                                    page={currPage}
+                                    onChange={handleChange}
+                                    renderItem={(newItems) => (
+                                        <PaginationItem
+                                            slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+                                            {...newItems}
+                                        />
+                                    )}
+                                />
+                            </Stack>
                             <br/>
 
                         </Col>
