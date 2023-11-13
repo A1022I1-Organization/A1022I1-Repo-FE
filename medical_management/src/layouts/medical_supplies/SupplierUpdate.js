@@ -7,6 +7,9 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import * as service from "../../services/medical_supplies/MedicalSupplyService";
 import {toast} from "react-toastify";
 import * as Yup from 'yup';
+import {useParams, useNavigate} from "react-router-dom";
+import ReactLoading from "react-loading";
+import {getUserLoginAccount} from "../../services/security_service/securityService"
 
 export function SupplierUpdate () {
     const [imageSrc, setImageSrc] = useState("");
@@ -15,14 +18,30 @@ export function SupplierUpdate () {
     const [categories, setCategories] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
     const [units, setUnits] = useState([]);
-    const [imgURL, setImgURL] = useState("");
+    const [account, setAccount] = useState([]);
     const idParam = useParams();
     const [supply, setSupply] = useState([]);
+    const [isLoading, setIsLoading] = useState();
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        getCategories();
-        getSuppliers();
-        getUnits();
+    useEffect( () => {
+        const fetchData = async () => {
+            try {
+                await getSupply();
+                await getCategories();
+                await getSuppliers();
+                await getUnits();
+
+                const tokenAccount = localStorage.getItem('tokenAccount');
+                const username = localStorage.getItem('username');
+            
+                const appAccount = await getUserLoginAccount(tokenAccount, username);
+                setAccount(appAccount.accountRole.appAccount);
+            } catch (error) {
+                console.error('Error in fetchData:', error);
+            }
+        };
+        fetchData();
     }, [])
     const getCategories = async () => {
         const result = await service.getCategories();
@@ -37,14 +56,16 @@ export function SupplierUpdate () {
         setUnits(result);
     };
 
+    const getSupply = async () => {
+        const result = await service.getSupply(idParam.id);
+        setSupply(result);
+    };
+
     const updateSupply = async (id, value) => {
         await service.updateSupply(id, value);
+        navigate("/supply/list")
         toast.success("Cập nhật thành công")
     };
-    // const getService = async () => {
-    //     const result = await service.getService(idParam.id);
-    //     setService(result);
-    // };
 
     const formatVND = () => {
         // Get the input value
@@ -74,36 +95,39 @@ export function SupplierUpdate () {
         }
     };
  
-    const handleUpload = () => {
+    const handleUpload = async () => {
         if (!file) {
             alert("Please upload an image first!");
+            navigate("/supply/create");
+            setIsLoading(false);
+            return undefined;
         }
- 
-        const storageRef = ref(storage, `/files/${file.name}`);
- 
-        // progress can be paused and resumed. It also exposes progress updates.
-        // Receives the storage reference and the file to upload.
-        const uploadTask = uploadBytesResumable(storageRef, file);
- 
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
+        return new Promise((resolve) => {
+            const storageRef = ref(storage, `/files/${file.name}`);
+            // progress can be paused and resumed. It also exposes progress updates.
+            // Receives the storage reference and the file to upload.
+            const uploadTask = uploadBytesResumable(storageRef, file);
+        
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
                 const percent = Math.round(
                     (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                 );
- 
+        
                 // update progress
                 setPercent(percent);
-            },
-            (err) => console.log(err),
-            () => {
+                setIsLoading(true);
+                },
+        
+                (err) => console.log(err),
+                async () => {
                 // download url
-                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                    console.log(url);
-                    setImgURL(url);
-                });
-            }
-        );
+                const url = await getDownloadURL(uploadTask.snapshot.ref);
+                resolve(url);
+                }
+            );
+        });
     };
     return (
         <div>
@@ -126,7 +150,7 @@ export function SupplierUpdate () {
                                     />
                                     <img
                                         className="background-image"
-                                        src={imageSrc}
+                                        src={supply.picture}
                                         id="image"
                                         width="250px"
                                         height="250px"
@@ -135,41 +159,31 @@ export function SupplierUpdate () {
                             <button onClick={handleUpload}>Upload to Firebase</button>
                             <p>{percent} "% done"</p>
                             <Formik
+                                enableReinitialize={true}
                                 initialValues={
                                     {
-                                        picture: "",
-                                        code: "",
-                                        name: "",
-                                        price: "",
-                                        importDate: "",
-                                        expiry: "",
-                                        quantity: "",
-                                        category: undefined,
-                                        supplier: undefined,
-                                        unit: undefined,
-                                        account: {
-                                            "id": 1,
-                                            "employeeCode": "EMP001",
-                                            "username": "john_doe",
-                                            "password": "secure_password",
-                                            "idCard": "123456789",
-                                            "employeeName": "John Doe",
-                                            "gender": true,
-                                            "birthday": "1990-01-15",
-                                            "gmail": "john.doe@example.com",
-                                            "phone": "123-456-7890",
-                                            "address": "123 Main Street, City",
-                                            "imgLink": "https://example.com/john_doe.jpg"
-                                        }
+                                        picture: "aaa",
+                                        code: supply.code,
+                                        name: supply.name,
+                                        price: supply.price,
+                                        importDate: supply.importDate,
+                                        expiry: supply.expiry,
+                                        quantity: supply.quantity,
+                                        category: JSON.stringify(supply.category),
+                                        supplier: JSON.stringify(supply.supplier),
+                                        unit: JSON.stringify(supply.unit),
+                                        account: ""
                                     }
                                 }
-                                onSubmit={(values, {setSubmitting}) => {
+                                onSubmit={async(values, {setSubmitting}) => {
+                                    const urlImg = await handleUpload();
                                     const obj = {
                                         ...values,
-                                        picture: "" + imgURL,
+                                        picture: "" + urlImg,
                                         category: JSON.parse(values.category),
                                         supplier: JSON.parse(values.supplier),
                                         unit: JSON.parse(values.unit),
+                                        account: account,
                                     };
                                     updateSupply(idParam.id, obj);
                                     console.log(obj);
@@ -294,6 +308,13 @@ export function SupplierUpdate () {
                 </div>
                 </div>
             </div>
+            {isLoading && (
+                <div className="loading-overlay" style={{ display: isLoading ? 'flex' : 'none' }}>
+                    <div className="loading-spinner">
+                    <ReactLoading type="spin" color="#F58220" height={50} width={50} />
+                    </div>
+                </div>  
+            )}
         </div>
     )
 }

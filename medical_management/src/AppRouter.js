@@ -1,6 +1,9 @@
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { SuppliesList } from "./layouts/medical_supplies/SuppliesList";
 import { Header } from "./layouts/HeaderLayout";
+import { SupplierCreate } from "./layouts/medical_supplies/SupplierCreate";
+import { SupplierUpdate } from "./layouts/medical_supplies/SupplierUpdate";
+import {Information} from "./layouts/medical_supplies/Information";
 import HomePage from "./layouts/HomePage";
 import List from "./layouts/List";
 
@@ -16,12 +19,15 @@ export const AppRouter = () => {
 
         <Route path="/admin" element={<Outlet />}>
           <Route path="" element={""} />
-
           <Route />
         </Route>
-        <Route path="/supply" element={<Outlet />}>
-          <Route path="" element={""} />
 
+        <Route path="/supply" element={<Outlet />}>
+          <Route path="/supply/create" element={<SupplierCreate />} />
+          <Route path="/supply/update/:id" element={<SupplierUpdate />} />
+          <Route path="/supply/list" element={<SuppliesList />} ></Route>
+          <Route path="/supply/list/:id" element={<Information />} ></Route>
+          <Route path="" element={""} />
           <Route />
         </Route>
        
