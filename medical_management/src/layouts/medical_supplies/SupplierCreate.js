@@ -7,6 +7,9 @@ import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import * as service from "../../services/medical_supplies/MedicalSupplyService";
 import {toast} from "react-toastify";
 import * as Yup from 'yup';
+import ReactLoading from "react-loading";
+import {useNavigate} from "react-router-dom";
+import {getUserLoginAccount} from "../../services/security_service/securityService"
 
 export function SupplierCreate () {
     // Initialization default useState
@@ -16,13 +19,34 @@ export function SupplierCreate () {
     const [categories, setCategories] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
     const [units, setUnits] = useState([]);
-    const [imgURL, setImgURL] = useState("");
+    const [account, setAccount] = useState({});
+    const [isLoading, setIsLoading] = useState();
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        getCategories();
-        getSuppliers();
-        getUnits();
+    useEffect( () => {
+        const fetchData = async () => {
+            try {
+                // Gọi các hàm lấy danh sách categories, suppliers, units
+                await getCategories();
+                await getSuppliers();
+                await getUnits();
+            
+                // Lấy token và username từ localStorage
+                const tokenAccount = localStorage.getItem('tokenAccount');
+                const username = localStorage.getItem('username');
+            
+                // Gọi hàm lấy appAccount
+                const appAccount = await getUserLoginAccount(tokenAccount, username);
+                setAccount(appAccount.accountRole.appAccount);
+            } catch (error) {
+                console.error('Error in fetchData:', error);
+            }
+          };
+        
+          // Gọi fetchData trong useEffect
+          fetchData();
     }, [])
+
     const getCategories = async () => {
         const result = await service.getCategories();
         setCategories(result);
@@ -38,6 +62,7 @@ export function SupplierCreate () {
 
     const addNewSupply = async (value) => {
         await service.addNewSupply(value);
+        navigate("/supply/list")
         toast.success("Thêm mới thành công")
     };
     const formatVND = () => {
@@ -68,36 +93,42 @@ export function SupplierCreate () {
         }
     };
  
-    const handleUpload = () => {
+    const handleUpload = async () => {
         if (!file) {
             alert("Please upload an image first!");
+            navigate("/supply/create");
+            setIsLoading(false);
+            return undefined;
         }
- 
-        const storageRef = ref(storage, `/files/${file.name}`);
- 
-        // progress can be paused and resumed. It also exposes progress updates.
-        // Receives the storage reference and the file to upload.
-        const uploadTask = uploadBytesResumable(storageRef, file);
- 
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
+        return new Promise((resolve) => {
+            const storageRef = ref(storage, `/files/${file.name}`);
+            // progress can be paused and resumed. It also exposes progress updates.
+            // Receives the storage reference and the file to upload.
+            const uploadTask = uploadBytesResumable(storageRef, file);
+        
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
                 const percent = Math.round(
                     (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                 );
- 
+        
                 // update progress
                 setPercent(percent);
-            },
-            (err) => console.log(err),
-            () => {
+                setIsLoading(true);
+                },
+        
+                (err) => console.log(err),
+                async () => {
                 // download url
-                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                    console.log(url);
-                    setImgURL(url);
-                });
-            }
-        );
+                const url = await getDownloadURL(uploadTask.snapshot.ref);
+                resolve(url);
+                if(url){
+                    setIsLoading(false);
+                }
+                }
+            );
+        });
     };
     return (
         <div>
@@ -126,12 +157,12 @@ export function SupplierCreate () {
                                         height="250px"
                                     />
                             </label>
-                            <button onClick={handleUpload}>Upload to Firebase</button>
-                            <p>{percent} "% done"</p>
                             <Formik
+                                enableReinitialize={true}
+
                                 initialValues={
                                     {
-                                        picture: "",
+                                        picture: "aaa",
                                         code: "",
                                         name: "",
                                         price: "",
@@ -141,32 +172,20 @@ export function SupplierCreate () {
                                         category: undefined,
                                         supplier: undefined,
                                         unit: undefined,
-                                        account: {
-                                            "id": 1,
-                                            "employeeCode": "EMP001",
-                                            "username": "john_doe",
-                                            "password": "secure_password",
-                                            "idCard": "123456789",
-                                            "employeeName": "John Doe",
-                                            "gender": true,
-                                            "birthday": "1990-01-15",
-                                            "gmail": "john.doe@example.com",
-                                            "phone": "123-456-7890",
-                                            "address": "123 Main Street, City",
-                                            "imgLink": "https://example.com/john_doe.jpg"
-                                        }
+                                        account: ""
                                     }
                                 }
-                                onSubmit={(values, {setSubmitting}) => {
+                                onSubmit={async(values, {setSubmitting}) => {
+                                    const urlImg = await handleUpload();
                                     const obj = {
                                         ...values,
-                                        picture: "" + imgURL,
+                                        picture: "" + urlImg,
                                         category: JSON.parse(values.category),
                                         supplier: JSON.parse(values.supplier),
                                         unit: JSON.parse(values.unit),
+                                        account: account,
                                     };
                                     addNewSupply(obj);
-                                    console.log(obj);
                                     setSubmitting(false);
                                 }}
                                 validationSchema={
@@ -209,13 +228,13 @@ export function SupplierCreate () {
                                             </div>
                                             <div className="mb-3">
                                             <label className="form-label">Nhà cung cấp</label>
-                                            <Field as="select" name="category" className="form-select">
+                                            <Field as="select" name="supplier" className="form-select">
                                                 <option value=""></option>
-                                                {categories.map((value) => (
+                                                {suppliers.map((value) => (
                                                     <option value={JSON.stringify(value)}>{value.name}</option>
                                                 ))}
                                             </Field>
-                                            <ErrorMessage name="category" className="form-err" component='span'></ErrorMessage>
+                                            <ErrorMessage name="supplier" className="form-err" component='span'></ErrorMessage>
                                             </div>
                                         </div>
                                     </div>
@@ -251,13 +270,13 @@ export function SupplierCreate () {
                                         <div className="col">
                                             <div className="mb-3">
                                             <label className="form-label">Loại vật tư</label>
-                                            <Field as="select" name="supplier" className="form-select">
+                                            <Field as="select" name="category" className="form-select">
                                                 <option value=""></option>
-                                                {suppliers.map((value) => (
+                                                {categories.map((value) => (
                                                     <option value={JSON.stringify(value)}>{value.name}</option>
                                                 ))}
                                             </Field>
-                                            <ErrorMessage name="supplier" className="form-err" component='span'></ErrorMessage>
+                                            <ErrorMessage name="category" className="form-err" component='span'></ErrorMessage>
                                             </div>
                                         </div>
                                     </div>
@@ -288,6 +307,13 @@ export function SupplierCreate () {
                 </div>
                 </div>
             </div>
+            {isLoading && (
+                <div className="loading-overlay" style={{ display: isLoading ? 'flex' : 'none' }}>
+                    <div className="loading-spinner">
+                    <ReactLoading type="spin" color="#F58220" height={50} width={50} />
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

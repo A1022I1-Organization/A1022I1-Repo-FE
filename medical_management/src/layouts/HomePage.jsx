@@ -4,7 +4,6 @@ import imageLocal1 from '../components/img/img/img1.jpg';
 import imageLocal2 from '../components/img/img/img2.jpg';
 import imageLocal3 from '../components/img/img/img3.jpg';
 import imageLocal4 from '../components/img/img/img4.jpg';
-
 export default function HomePage() {
   const [state, setState] = useState([]);
   const [page,setPage] = useState(6)
@@ -18,6 +17,7 @@ export default function HomePage() {
 <div>
   <div>
  
+
     <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
       <div className="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to={0} className="active" aria-current="true" aria-label="Slide 1" />
@@ -106,6 +106,4 @@ export default function HomePage() {
   </div>
   <br /><br /><br /><br />
 </div>
-
-  )
-}
+)}
