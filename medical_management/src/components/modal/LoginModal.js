@@ -10,8 +10,9 @@ import { Field, Form, Formik, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { LoginGoogle } from "./LoginGoogle";
-
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
+
 export const LoginModal = (props) => {
   //Open modal login
   const [show, setShow] = useState(false);
@@ -36,9 +37,11 @@ export const LoginModal = (props) => {
   useEffect(() => {
     setShow(openModalLogin);
   }, []);
+  const navigate = useNavigate();
 
   const handleLoginByAccount = async (account) => {
     const checkAccount = await dispatch(loginByAccount(account));
+
     return checkAccount;
   };
 

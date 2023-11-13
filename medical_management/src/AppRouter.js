@@ -7,6 +7,9 @@ import {Information} from "./layouts/medical_supplies/Information";
 import HomePage from "./layouts/HomePage";
 import List from "./layouts/List";
 
+import { Footer } from "./layouts/FooterLayout";
+
+
 export const AppRouter = () => {
   return (
     <BrowserRouter>
@@ -14,23 +17,22 @@ export const AppRouter = () => {
       <Routes>
         <Route path="" element={<Outlet />}>
           <Route path="" element={<HomePage />} />
-          <Route path="/list" element={<List />} />
+          <Route path="list" element={<List />} />
         </Route>
 
         <Route path="/admin" element={<Outlet />}>
-          <Route path="" element={""} />
-          <Route />
+          {/* <Route path="/create-account" element={} /> */}
+          {/* <Route /> */}
         </Route>
 
         <Route path="/supply" element={<Outlet />}>
           <Route path="/supply/create" element={<SupplierCreate />} />
           <Route path="/supply/update/:id" element={<SupplierUpdate />} />
-          <Route path="/supply/list" element={<SuppliesList />} ></Route>
+          <Route path="list" element={<SuppliesList />} ></Route>
           <Route path="/supply/list/:id" element={<Information />} ></Route>
           <Route path="" element={""} />
           <Route />
         </Route>
-       
       </Routes>
     </BrowserRouter>
   );

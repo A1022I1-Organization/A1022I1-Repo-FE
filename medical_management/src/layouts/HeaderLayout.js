@@ -10,16 +10,25 @@ import {
   getUserLoginGoogle,
 } from "../redux/action/LoginAcction";
 import { toast } from "react-toastify";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { ChangePasswordModal } from "../components/modal/ChangePasswordModal";
 export const Header = () => {
   const [openModalLogin, setOpenModalLogin] = useState(false);
+  const [openModalChangePassword, setOpenModalChangePassword] = useState(false);
+  const navigate = useNavigate();
 
   const closeModalLogin = () => {
     setOpenModalLogin(false);
   };
+  const closeModalChangePassword = () => {
+    setOpenModalChangePassword(false);
+  };
 
   const handleOpenModalLogin = () => {
     setOpenModalLogin(true);
+  };
+  const handleOpenModalChangePassword = () => {
+    setOpenModalChangePassword(true);
   };
 
   //call store get data
@@ -52,13 +61,16 @@ export const Header = () => {
   };
   const role = useMemo(() => {
     if (account === null) {
+      navigate("");
       return "guest";
-    } else if (
-      account.accountRole.appRole.name === "ROLE_ADMIN" ||
-      account.accountRole.appRole.name === "ROLE_EMPLOYEE"
-    ) {
+    } else if (account.accountRole.appRole.name === "ROLE_ADMIN") {
+      navigate("/supply/list");
       return "admin";
+    } else if (account.accountRole.appRole.name === "ROLE_EMPLOYEE") {
+      navigate("/supply/list");
+      return "employee";
     } else if (account.accountRole.appRole.name === "ROLE_USER") {
+      navigate("");
       return "user";
     }
   }, [account]);
@@ -114,9 +126,11 @@ export const Header = () => {
         <div className="header-main">
           <div className="row" id="hd-row-main">
             <div className="col" />
-            <div className="col">
+            {/* <div className="col"> */}
+            <NavLink to="" className="col" style={{ textDecoration: "none" }}>
               <img src={logoHeader} id="hd-main-img-logo" />
-            </div>
+            </NavLink>
+            {/* </div> */}
             <div
               className="col-8 d-flex justify-content-center align-items-center"
               id="hd-main-title"
@@ -139,7 +153,7 @@ export const Header = () => {
                 </div>
               </div>
             )}
-            {(role === "admin" || role === "user") && (
+            {(role === "admin" || role === "user" || role === "employee") && (
               <div className="col">
                 <div className="item-user-cart">
                   <div className="hd-img-user">
@@ -166,16 +180,23 @@ export const Header = () => {
                               className="rounded-circle"
                             />
                             <span id="dropdown-img-text">
-                              {account.accountRole.appAccount.username}
+                              {account.accountRole.appAccount.employeeName}
                             </span>
                           </a>
                         </li>
                         <li>
                           <hr className="dropdown-divider" />
                         </li>
-                        {/* <li>
-      <a class="dropdown-item" href="#">Đổi mật khẩu</a>
-    </li> */}
+                        <li>
+                          {(role === "admin" || role === "employee") && (
+                            <span
+                              class="dropdown-item"
+                              onClick={() => handleOpenModalChangePassword()}
+                            >
+                              Đổi mật khẩu
+                            </span>
+                          )}
+                        </li>
                         <li>
                           <span
                             className="dropdown-item"
@@ -201,22 +222,52 @@ export const Header = () => {
             <div className="col" />
             {(role === "guest" || role === "user") && (
               <div className="col-8 d-flex justify-content-center align-items-center">
-                <NavLink to={''}>
-                <button className="hd-content-navbar">TRANG CHỦ</button>
+                <NavLink
+                  to=""
+                  className="hd-content-navbar"
+                  style={{ textDecoration: "none" }}
+                >
+                  TRANG CHỦ
                 </NavLink>
                 <button className="hd-content-navbar">GIỚI THIỆU</button>
-                <NavLink to={'/list'}>
-                <button className="hd-content-navbar">SẢN PHẨM</button>
+                <NavLink
+                  to="/list"
+                  className="hd-content-navbar"
+                  style={{ textDecoration: "none" }}
+                >
+                  SẢN PHẨM
+
                 </NavLink>
                 <button className="hd-content-navbar">ĐỐI TÁC</button>
                 <button className="hd-content-navbar">LIÊN HỆ</button>
               </div>
             )}
 
-            {role === "admin" && (
+            {(role === "admin" || role === "employee") && (
               <div class="col-4 d-flex justify-content-center align-items-center">
-                <button class="hd-content-navbar">QUẢN LÝ</button>
-                <button class="hd-content-navbar">THỐNG KÊ</button>
+                <NavLink
+                  to="/supply/list"
+                  className="hd-content-navbar"
+                  style={{ textDecoration: "none" }}
+                >
+                  QUẢN LÝ
+                </NavLink>
+                <NavLink
+                  to="/supply/list"
+                  className="hd-content-navbar"
+                  style={{ textDecoration: "none" }}
+                >
+                  THỐNG KÊ
+                </NavLink>
+                {role === "admin" && (
+                  <NavLink
+                    // to=""
+                    className="hd-content-navbar"
+                    style={{ textDecoration: "none" }}
+                  >
+                    TÀI KHOẢN
+                  </NavLink>
+                )}
               </div>
             )}
 
@@ -228,6 +279,12 @@ export const Header = () => {
         <LoginModal
           openModalLogin={openModalLogin}
           closeModalLogin={closeModalLogin}
+        />
+      )}
+      {openModalChangePassword && (
+        <ChangePasswordModal
+          openModalChangePassword={openModalChangePassword}
+          closeModalChangePassword={closeModalChangePassword}
         />
       )}
     </div>
