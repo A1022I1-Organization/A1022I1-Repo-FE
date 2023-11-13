@@ -95,3 +95,7 @@ th, td {
     background: #CC6D1B;
     color: white;
 }
+
+.label {
+    font-weight: bold;
+}
