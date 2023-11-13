@@ -7,12 +7,15 @@ import HomePage from "./layouts/HomePage";
 import { Footer } from "./layouts/FooterLayout";
 import List from "./layouts/List";
 import { AppRouter } from "./AppRouter";
+
 import { BrowserRouter } from "react-router-dom";
+import {ToastContainer} from "react-toastify";
 
 function App() {
   return (
     <div>
       <AppRouter />
+      <ToastContainer />
     </div>
   );
 }
