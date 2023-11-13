@@ -88,3 +88,38 @@ export const checkAuthen = async (token) => {
     console.log(error);
   }
 };
+export const sendEmail = async (data) => {
+  try {
+    let dataSendEmail = {
+      service_id: "service_r9ngdc4",
+      template_id: "template_5f17548",
+      user_id: "POrb-ZsRtcXW7rhlC",
+      template_params: {
+        username: data.username,
+        user_email: data.email,
+        message: data.message,
+      },
+    };
+    const result = await axios
+      .post("https://api.emailjs.com/api/v1.0/email/send", dataSendEmail)
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const randomCodeChangPassword = () => {
+  const min = 100000;
+  const max = 999999;
+
+  const randomSixDigitCode = Math.floor(Math.random() * (max - min + 1)) + min;
+
+  return randomSixDigitCode.toString();
+};

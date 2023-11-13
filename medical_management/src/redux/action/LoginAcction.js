@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import * as securityService from "../../services/security_service/securityService";
 import {
   GET_USER_LOGIN,
@@ -9,11 +10,11 @@ import {
 
 export const loginByAccount = (account) => async (dispatch) => {
   const JwtAccount = await securityService.loginByAccount(account);
+  console.log(JwtAccount);
   if (JwtAccount === undefined) {
     return undefined;
   } else {
     const token = JwtAccount.token;
-
     localStorage.setItem("tokenAccount", token);
     localStorage.setItem(
       "username",

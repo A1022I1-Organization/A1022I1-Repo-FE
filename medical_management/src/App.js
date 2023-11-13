@@ -7,6 +7,7 @@ import HomePage from "./layouts/HomePage";
 import { Footer } from "./layouts/FooterLayout";
 import List from "./layouts/List";
 import { AppRouter } from "./AppRouter";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (

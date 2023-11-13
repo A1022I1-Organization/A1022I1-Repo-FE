@@ -3,7 +3,7 @@ import { SuppliesList } from "./layouts/medical_supplies/SuppliesList";
 import { Header } from "./layouts/HeaderLayout";
 import HomePage from "./layouts/HomePage";
 import List from "./layouts/List";
-
+import { Footer } from "./layouts/FooterLayout";
 
 export const AppRouter = () => {
   return (
@@ -12,18 +12,17 @@ export const AppRouter = () => {
       <Routes>
         <Route path="" element={<Outlet />}>
           <Route path="" element={<HomePage />} />
-          <Route path="/list" element={<List />} />
+          <Route path="list" element={<List />} />
         </Route>
 
         <Route path="/admin" element={<Outlet />}>
-          <Route path="" element={""} />
-          <Route />
+          {/* <Route path="/create-account" element={} /> */}
+          {/* <Route /> */}
         </Route>
         <Route path="/supply" element={<Outlet />}>
-          <Route path="" element={""} />
+          <Route path="list" element={<SuppliesList />} />
           <Route />
         </Route>
-       
       </Routes>
     </BrowserRouter>
   );
