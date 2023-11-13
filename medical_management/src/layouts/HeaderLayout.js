@@ -64,7 +64,7 @@ export const Header = () => {
       navigate("");
       return "guest";
     } else if (account.accountRole.appRole.name === "ROLE_ADMIN") {
-      navigate("/supply/list");
+      // navigate("/supply/list");
       return "admin";
     } else if (account.accountRole.appRole.name === "ROLE_EMPLOYEE") {
       navigate("/supply/list");
