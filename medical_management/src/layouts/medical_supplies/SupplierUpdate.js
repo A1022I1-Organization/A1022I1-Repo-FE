@@ -313,7 +313,7 @@ export function SupplierUpdate () {
                     <div className="loading-spinner">
                     <ReactLoading type="spin" color="#F58220" height={50} width={50} />
                     </div>
-                </div>
+                </div>  
             )}
         </div>
     )

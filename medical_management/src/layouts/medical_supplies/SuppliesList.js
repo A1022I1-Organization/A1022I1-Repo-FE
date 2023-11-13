@@ -1,30 +1,43 @@
 import {useEffect, useState} from "react";
-import {Row, Col, Container, Card, Table, Alert, NavLink} from "react-bootstrap";
+import {Row, Col, Container, Card, Table} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DeleteConfirmation from "../../components/modal/DeleteConfirmation";
 import {DropdownSearch} from "../../components/bootsrap/DropdownSearch";
-import {MemoryRouter, Route, Routes} from "react-router-dom";
 import PaginationRanges, {Content} from "../../components/pagination/SupplyPagination";
 import * as suppliesService from "../../services/medical_supplies/MedicalSupplyService";
 import "../../components/css/style.css";
+import {toast} from "react-toastify";
+import {NavLink} from "react-router-dom";
 
 export function SuppliesList() {
     // Set up a list of oldItem and newItem
     const [oldItems, setOldItems] = useState([]);
-
     const [newItems, setNewItems] = useState([]);
+
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState();
+
+    const [token, setToken] = useState();
 
     const [type, setType] = useState(null);
     const [delId, setDelId] = useState(null);
     const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
     const [deleteMessage, setDeleteMessage] = useState(null);
-    const [newItemMessage, setNewItemMessage] = useState(null);
-    const [oldItemMessage, setOldItemMessage] = useState(null);
 
     useEffect(() => {
         getOldSupplies();
         getNewSupplies();
-    }, [])
+        getTokenFromLocalStorage();
+        if (token) {
+            getOldPage(page, token);
+            getNewPage(page, token);
+        }
+    }, [page, token]);
+
+    const getTokenFromLocalStorage = async () => {
+        const token = await localStorage.getItem("token");
+        setToken(token);
+    };
 
     const getOldSupplies = async () => {
         const list = await suppliesService.getOldSupplies();
@@ -36,12 +49,29 @@ export function SuppliesList() {
         setNewItems(list);
     }
 
+    const getOldPage = async (page, token) => {
+        const [data, totalPage] = await suppliesService.getPage(page, token);
+        setTotalPages(totalPage);
+        setOldItems(data);
+    };
+
+    const getNewPage = async (page, token) => {
+        const [data, totalPage] = await suppliesService.getPage(page, token);
+        setTotalPages(totalPage);
+        setNewItems(data);
+    };
+
+    const handleNextPage = () => {
+        setPage((prev) => prev + 1);
+    };
+    const handlePreviousPage = () => {
+        setPage((prev) => prev - 1);
+    };
+
     // Handle the displaying of the modal based on type and id
     const showDeleteModal = (type, delId) => {
         setType(type);
         setDelId(delId);
-        setOldItemMessage(null);
-        setNewItemMessage(null);
         if (type === "oldItem") {
 
             setDeleteMessage(`Bạn chắc chắn muốn xóa '${oldItems.find((x) => x.id === delId).name}' không?`);
@@ -59,12 +89,14 @@ export function SuppliesList() {
     };
 
     // Handle the actual deletion of the item
-    const submitDelete = (type, delId) => {
+    const submitDelete = async (type, delId) => {
         if (type === "oldItem") {
-            setOldItemMessage(`Xóa '${oldItems.find((x) => x.id === delId).name}' thành công.`);
+            await suppliesService.deleteSupply(delId);
+            toast.success(`Xóa '${oldItems.find((x) => x.id === delId).name}' thành công.`);
             setOldItems(oldItems.filter((oldItem) => oldItem.id !== delId));
         } else if (type === "newItem") {
-            setNewItemMessage(`Xóa '${newItems.find((x) => x.id === delId).name}' thành công.`);
+            await suppliesService.deleteSupply(delId);
+            toast.success(`Xóa '${newItems.find((x) => x.id === delId).name}' thành công.`);
             setNewItems(newItems.filter((newItem) => newItem.id !== delId));
         }
         setDisplayConfirmationModal(false);
@@ -93,7 +125,6 @@ export function SuppliesList() {
                             <Card className="mt-2">
                                 <Card.Header style={{textAlign: "center", fontSize: "30px", fontWeight: "bold"}}>Vật tư cũ</Card.Header>
                                 <Card.Body>
-                                    {oldItemMessage && <Alert variant="success">{oldItemMessage}</Alert>}
                                     <Table table hover size="sm">
                                         <thead>
                                         <tr>
@@ -112,7 +143,7 @@ export function SuppliesList() {
                                                 <tr key={oldItem.id}>
                                                     <td style={{verticalAlign: "middle"}}>{oldItem.code}</td>
                                                     <td style={{verticalAlign: "middle"}}>
-                                                        <NavLink to={`/detail/${oldItem.id}`}
+                                                        <NavLink to={`/supply/list/${oldItem.id}`}
                                                                  style={{textDecoration: "none", color: "black"}}>
                                                             {oldItem.name}
                                                         </NavLink>
@@ -145,7 +176,6 @@ export function SuppliesList() {
                             <Card className="mt-2">
                                 <Card.Header style={{textAlign: "center", fontSize: "30px", fontWeight: "bold"}}>Vật tư mới</Card.Header>
                                 <Card.Body>
-                                    {newItemMessage && <Alert variant="success">{newItemMessage}</Alert>}
                                     <Table table hover size="sm">
                                         <thead>
                                         <tr>
@@ -164,7 +194,7 @@ export function SuppliesList() {
                                                 <tr key={newItem.id}>
                                                     <td style={{verticalAlign: "middle"}}>{newItem.code}</td>
                                                     <td style={{verticalAlign: "middle"}}>
-                                                        <NavLink to={`/supply/detail/${newItem.id}`}
+                                                        <NavLink to={`/list/${newItem.id}`}
                                                                  style={{textDecoration: "none", color: "black"}}>
                                                             {newItem.name}
                                                         </NavLink>
