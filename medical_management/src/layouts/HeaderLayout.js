@@ -201,9 +201,13 @@ export const Header = () => {
             <div className="col" />
             {(role === "guest" || role === "user") && (
               <div className="col-8 d-flex justify-content-center align-items-center">
+                <NavLink to={''}>
                 <button className="hd-content-navbar">TRANG CHỦ</button>
+                </NavLink>
                 <button className="hd-content-navbar">GIỚI THIỆU</button>
+                <NavLink to={'/list'}>
                 <button className="hd-content-navbar">SẢN PHẨM</button>
+                </NavLink>
                 <button className="hd-content-navbar">ĐỐI TÁC</button>
                 <button className="hd-content-navbar">LIÊN HỆ</button>
               </div>

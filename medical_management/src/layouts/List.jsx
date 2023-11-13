@@ -1,4 +1,3 @@
-import { faFontAwesomeLogoFull } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios'
 import React, { useMemo, useState } from 'react'
 
@@ -52,17 +51,16 @@ export default function List() {
         <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div className="container" id="product-container">
                 <div className="row">
-                    {
+                    {state?
                         state.map(item =>  <div className="col-md-4">
                         <div className="card mb-4">
                             <img src={item.picture} className="card-img-top" alt="Ảnh 1" />
                             <div className="card-body">
                                 <h5 className="card-title">{item.name}</h5>
-                                <p className="card-text">Mô tả của card 1.</p>
                                 <p className="card-text">Giá: {item.price}</p>
                             </div>
                         </div>
-                    </div>)
+                    </div>) : "Hiện Tại Không có sản phẩm"
                     }
                 {
                     page <= 6 ? <button onClick={() => setPage(prev => prev += 4)}> xem them ... </button> : 
@@ -71,8 +69,6 @@ export default function List() {
                          <button onClick={() => setPage(prev => prev += 4)}> xem them ... </button>
                         </div>
                 }
-                  
-
                 </div>
             </div>
         </main>
