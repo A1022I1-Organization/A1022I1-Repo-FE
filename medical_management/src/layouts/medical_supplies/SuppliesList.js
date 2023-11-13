@@ -238,7 +238,7 @@ export function SuppliesList() {
                                                 <tr key={newItem.id}>
                                                     <td style={{verticalAlign: "middle"}}>{newItem.code}</td>
                                                     <td style={{verticalAlign: "middle"}}>
-                                                        <NavLink to={`/list/${newItem.id}`}
+                                                        <NavLink to={`/supply/list/${newItem.id}`}
                                                                  style={{textDecoration: "none", color: "black"}}>
                                                             {newItem.name}
                                                         </NavLink>

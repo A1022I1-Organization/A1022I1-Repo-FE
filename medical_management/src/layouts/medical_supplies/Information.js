@@ -47,14 +47,8 @@ export function Information () {
                                         <div className="col-6">
                                             <div className="form-outline">
                                                 <label className="custom-file-upload">
-                                                    {/* <input type="file" name id="imageFile" accept="image/png, image/jpg, image/jpeg" onchange="chooseFile(this)" />
-                                    <img className="background-image" src alt id="image" width="250px" height="250px" /> */}
-                                                    <input
-                                                        type="file"
-                                                        name="imageFile"
-                                                        accept="image/png, image/jpg, image/jpeg"
-                                                    />
                                                     <img
+                                                        src={supply.picture}
                                                         className="background-image"
                                                         id="image"
                                                         width="250px"
