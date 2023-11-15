@@ -58,12 +58,9 @@ input[type="file"] {
 .error-message {
     color: red;
 }
-
-label{
-    font-weight: bold;
-}
 .form-err {
     color: red;
+    font-weight: 500;
 }
 th, td {
     word-wrap: break-word; /* Sử dụng 'overflow-wrap' nếu cần */
@@ -107,8 +104,9 @@ th, td {
     align-items: center;
     z-index: 1000;
   }
-  
-
-.label {
+.input-form {
+    height: 120px;
+}
+.form-label {
     font-weight: bold;
 }
