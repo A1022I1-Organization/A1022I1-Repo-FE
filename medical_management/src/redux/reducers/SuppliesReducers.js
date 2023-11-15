@@ -10,6 +10,8 @@ const suppliesReducer = (supplies = [], action) => {
             return [...supplies, payload];
         case "update_supply":
             return [...supplies, payload];
+        case "delete_supply":
+            return [...supplies,payload];
         default:
             return supplies;
     }
