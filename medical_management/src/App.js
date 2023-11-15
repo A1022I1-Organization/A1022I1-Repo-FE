@@ -13,7 +13,6 @@ function App() {
   return (
     <div>
       <AppRouter />
-      <ToastContainer />
     </div>
   );
 }

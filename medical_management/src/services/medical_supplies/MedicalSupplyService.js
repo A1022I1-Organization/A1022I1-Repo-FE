@@ -1,16 +1,38 @@
 import axios from "axios";
 
 
-export const getPage = async (page, token) => {
+export const getOldSuppliesPage = async (page, token) => {
+
+
     try {
         const response = await axios.get(
-            `http://localhost:8080/api/supply/getPage?page=${page}&size=8`,
+            `http://localhost:8080/api/supply/oldSupplies?page=${page}&size=5`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             }
         );
+
+        return [response.data.content, response.data.totalPages];
+    } catch (error) {
+        console.error("Error fetching page:", error);
+    }
+};
+
+export const getNewSuppliesPage = async (page, token) => {
+
+
+    try {
+        const response = await axios.get(
+            `http://localhost:8080/api/supply/newSupplies?page=${page}&size=5`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
+        console.log(response)
 
         return [response.data.content, response.data.totalPages];
     } catch (error) {
@@ -72,19 +94,28 @@ export const getUnits = async() => {
 //     }
 // }
 
-export const getOldSupplies = async () => {
+export const getOldSupplies = async (token) => {
     try {
-        const result = await axios.get("http://localhost:8080/api/supply/oldSupplies");
-        console.log(result)
+        const result = await axios.get("http://localhost:8080/api/supply/oldSupplies",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
         return result.data.content;
     } catch (e) {
         console.log(e);
     }
 };
 
-export const getNewSupplies = async () => {
+export const getNewSupplies = async (token) => {
     try {
-        const result = await axios.get("http://localhost:8080/api/supply/newSupplies");
+        const result = await axios.get("http://localhost:8080/api/supply/newSupplies",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
         return result.data.content;
     } catch (e) {
         console.log(e);
