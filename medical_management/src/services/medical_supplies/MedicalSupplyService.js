@@ -143,7 +143,7 @@ export const getSupply = async (id) => {
 
 export const deleteSupply = async (id) => {
   try {
-    const result = await axios.delete(`http://localhost:8080/supply/${id}`);
+    const result = await axios.delete(`http://localhost:8080/api/supply/${id}`);
     return result.data;
   } catch (e) {
     console.log(e);

@@ -44,15 +44,15 @@ export function Information () {
                                     {supply === undefined ? "Vật tư này không tồn tại!"  :
                                     <div className="row">
                                         {/*<div className="col-1" />*/}
-                                        <div className="col-6">
+                                        <div className="col-5" style={{paddingRight: "10px", paddingLeft: "0"}}>
                                             <div className="form-outline">
                                                 <label className="custom-file-upload">
                                                     <img
                                                         src={supply.picture}
                                                         className="background-image"
                                                         id="image"
-                                                        width="250px"
-                                                        height="250px"
+                                                        width="240px"
+                                                        height="240px"
                                                     />
                                                 </label>
                                             </div>
@@ -82,7 +82,7 @@ export function Information () {
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className="col-3" style={{padding: "0"}}>
+                                        <div className="col-4" style={{padding: "0"}}>
                                             <div className="mb-3">
                                                 <p>
                                                     <span>{supply.code}</span>

@@ -64,19 +64,22 @@ export function SuppliesList() {
             await suppliesService.deleteSupply(delId);
             toast.success(`Xóa '${oldItems.find((x) => x.id === delId).name}' thành công.`);
             setOldItems(oldItems.filter((oldItem) => oldItem.id !== delId));
+            getOldPage(oldSuplliesPage, token);
         } else if (type === "newItem") {
             await suppliesService.deleteSupply(delId);
             toast.success(`Xóa '${newItems.find((x) => x.id === delId).name}' thành công.`);
             setNewItems(newItems.filter((newItem) => newItem.id !== delId));
+            getNewPage(newSuplliesPage, token);
         }
         setDisplayConfirmationModal(false);
+
     };
 
     useEffect(() => {
         if (true) {
             getOldPage(oldSuplliesPage, token);
         }
-    }, [oldSuplliesPage]);
+    }, [oldSuplliesPage, token]);
 
     const handleNextOSPage = () => {
         setOldSuppliesPage((prev) => prev + 1);
@@ -89,7 +92,7 @@ export function SuppliesList() {
         if(true){
             getNewPage(newSuplliesPage, token);
         }
-    }, [newSuplliesPage]);
+    }, [newSuplliesPage, token]);
 
         const handleNextNSPage = () => {
         setNewSuppliesPage((prev) => prev + 1);
@@ -169,7 +172,7 @@ export function SuppliesList() {
                                 </Card.Body>
 
                                 {/*/!*Pagination*!/*/}
-                                {oldItems ?
+                                {oldItems && totalOSPages > 1 ?
                                 <div
                                     style={{
                                         display: "flex",
@@ -218,7 +221,6 @@ export function SuppliesList() {
                                     : ""}
                             </Card>
                             <br/>
-
 
                             <br/>
 
@@ -269,7 +271,7 @@ export function SuppliesList() {
                                 </Card.Body>
 
                                 {/*Pagination*/}
-                                {newItems ?
+                                {newItems && totalNSPages > 1 ?
                                 <div
                                     style={{
                                         display: "flex",
@@ -317,11 +319,6 @@ export function SuppliesList() {
                                 </div>
                                     : " "}
                             </Card>
-                            <br/>
-
-
-                            <br/>
-
                         </Col>
                     </Row>
                     <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal} type={type} id={delId} message={deleteMessage}  />
