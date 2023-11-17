@@ -142,15 +142,6 @@ export const getSupply = async (id) => {
 };
 
 export const deleteSupply = async (id) => {
-<<<<<<< HEAD
-  try {
-    const result = await axios.delete(`http://localhost:8080/api/supply/${id}`);
-    return result.data;
-  } catch (e) {
-    console.log(e);
-  }
-};
-=======
 
     try {
         const result = await axios.delete(`http://localhost:8080/api/supply/${id}`);
@@ -160,4 +151,4 @@ export const deleteSupply = async (id) => {
     }
 };
 
->>>>>>> 5e62e93a668ef467de0fa29870d2a712f432e508
+
