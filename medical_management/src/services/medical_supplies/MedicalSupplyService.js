@@ -122,9 +122,14 @@ export const getNewSupplies = async (token) => {
     }
 };
 
-export const getSupply = async (id) => {
+export const getSupply = async (id, token) => {
     try {
-        const result = await axios.get(`http://localhost:8080/api/supply/${id}`);
+        const result = await axios.get(`http://localhost:8080/api/supply/${id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
         console.log(id)
         return result.data;
     } catch (e) {
@@ -132,9 +137,14 @@ export const getSupply = async (id) => {
     }
 };
 
-export const deleteSupply = async (id) => {
+export const deleteSupply = async (id, token) => {
     try {
-        const result = await axios.delete(`http://localhost:8080/api/supply/${id}`);
+        const result = await axios.delete(`http://localhost:8080/api/supply/${id}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         return result.data;
     } catch (e) {
         console.log(e);
