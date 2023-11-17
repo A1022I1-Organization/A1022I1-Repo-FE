@@ -22,6 +22,8 @@ export function SupplierCreate () {
     const [account, setAccount] = useState({});
     const [isLoading, setIsLoading] = useState();
     const navigate = useNavigate();
+    const [inputValue, setInputValue] = useState('');
+    const tokenAccount = localStorage.getItem('tokenAccount');
 
     useEffect( () => {
         const fetchData = async () => {
@@ -32,7 +34,6 @@ export function SupplierCreate () {
                 await getUnits();
             
                 // Lấy token và username từ localStorage
-                const tokenAccount = localStorage.getItem('tokenAccount');
                 const username = localStorage.getItem('username');
             
                 // Gọi hàm lấy appAccount
@@ -61,24 +62,28 @@ export function SupplierCreate () {
     };
 
     const addNewSupply = async (value) => {
-        await service.addNewSupply(value);
+        await service.addNewSupply(value, tokenAccount);
         navigate("/supply/list")
         toast.success("Thêm mới thành công")
     };
-    const formatVND = () => {
-        // Get the input value
-        var inputElement = document.getElementById("vndInput");
-        var inputValue = inputElement.value;
 
-        // Remove any non-numeric characters (if any)
-        var numericValue = inputValue.replace(/[^0-9]/g, '');
+    const handleInputChange = (e) => {
 
+        const numericValue = e.target.value.replace(/[^0-9]/g, '');
+    
         // Format the numeric value as VND
-        var formattedValue = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(numericValue);
-        var result = formattedValue.substring(0, formattedValue.length - 1);
+        const formattedValue = new Intl.NumberFormat('vi-VN', {
+          style: 'currency',
+          currency: 'VND',
+        }).format(numericValue);
+        
+        const trimmedValue = formattedValue.replace(/\s/g, '');
+
         // Update the input field with the formatted value
-        inputElement.value = result;
-    }
+        setInputValue(trimmedValue);
+    };
+
+    // }
     // Upload img
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -143,7 +148,7 @@ export function SupplierCreate () {
                                     <h2>Thêm mới vật tư</h2>
                                 </div>
                                 <Formik
-                                    enableReinitialize={true}
+                                    // enableReinitialize={true}
 
                                     initialValues={
                                         {
@@ -164,6 +169,7 @@ export function SupplierCreate () {
                                         const urlImg = await handleUpload();
                                         const obj = {
                                             ...values,
+                                            price: inputValue ,
                                             picture: "" + urlImg,
                                             category: JSON.parse(values.category),
                                             supplier: JSON.parse(values.supplier),
@@ -171,6 +177,7 @@ export function SupplierCreate () {
                                             account: account,
                                         };
                                         addNewSupply(obj);
+                                        console.log("Giá trị" + JSON.stringify(obj));
                                         setSubmitting(false);
                                     }}
                                     validationSchema={
@@ -193,9 +200,8 @@ export function SupplierCreate () {
                                                 .required('Tên vật tư không được để trống')
                                                 .min(2, 'Tên vật tư không được ít hơn 2 ký tự')
                                                 .max(100, 'Tên vật tư không được nhiều hơn 100 ký tự'),
-                                            price: Yup.string()
-                                                .required('Giá thành không được để trống')
-                                                .matches(/^[1-9]\d*$/, 'Giá thành phải là số nguyên dương'),
+                                            // price: Yup.string()
+                                            //     .required('Giá thành không được để trống'),
                                             quantity: Yup.string()
                                                 .required('Số lượng không được để trống')
                                                 .matches(/^[1-9]\d*$/, 'Số lượng phải là số nguyên dương'),
@@ -229,7 +235,9 @@ export function SupplierCreate () {
                                                 </label>
                                                 <div className="input-form">
                                                     <label htmlFor="price" className="form-label">Đơn giá (VNĐ)</label>
-                                                    <Field type="text" name="price" className="form-control"/>
+                                                    {/* <Field type="text" name="price" className="form-control" id="vndInput" onInput={formatVND}/>
+                                                    <ErrorMessage name="price" className="form-err" component='span'></ErrorMessage> */}
+                                                    <Field type="text" name="price" className="form-control" value={inputValue} onChange={handleInputChange} />
                                                     <ErrorMessage name="price" className="form-err" component='span'></ErrorMessage>
                                                 </div>
                                                 {/*  */}

@@ -88,6 +88,24 @@ export const checkAuthen = async (token) => {
     console.log(error);
   }
 };
+export const changePassword = async (account, token) => {
+  console.log(account, token);
+  try {
+    await axios.post(
+      "http://localhost:8080/api/account/change-password",
+      account,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return "OK";
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
+};
 export const sendEmail = async (data) => {
   try {
     let dataSendEmail = {
@@ -100,26 +118,38 @@ export const sendEmail = async (data) => {
         message: data.message,
       },
     };
-    const result = await axios
-      .post("https://api.emailjs.com/api/v1.0/email/send", dataSendEmail)
-      .then(
-        (result) => {
-          console.log(result.text);
-        },
-        (error) => {
-          console.log(error.text);
-        }
+
+    const response = await axios.post(
+      "https://api.emailjs.com/api/v1.0/email/send",
+      dataSendEmail
+    );
+
+    if (response.status === 200) {
+      return "Ok";
+    } else {
+      console.log(
+        "Gửi email không thành công. Mã trạng thái:",
+        response.status
       );
+      return undefined;
+    }
   } catch (error) {
-    console.log(error);
+    console.error("Có lỗi khi gửi email:", error);
+    return undefined;
   }
 };
 
 export const randomCodeChangPassword = () => {
   const min = 100000;
   const max = 999999;
-
   const randomSixDigitCode = Math.floor(Math.random() * (max - min + 1)) + min;
-
   return randomSixDigitCode.toString();
 };
+
+// export const checkPermission = (account, allowedRoles) => {
+//   if (!account || !account.accountRole || !account.accountRole.appRole) {
+//     return false;
+//   }
+//   const userRole = account.accountRole.appRole.name;
+//   return allowedRoles.includes(userRole);
+// };

@@ -1,20 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
-import logoLoginFb from "../img/logoLoginFb.png";
-import logoLoginGg from "../img/logoLoginGg.png";
-import { useDispatch, useSelector } from "react-redux";
-import { loginByAccount } from "../../redux/action/LoginAcction";
+import { useSelector } from "react-redux";
 import { Field, Form, Formik, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
-import { LoginGoogle } from "./LoginGoogle";
-import emailjs from "@emailjs/browser";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import { SendEmail } from "../SendEmail";
 import "../css/ChangePassword.css";
 import * as securityService from "../../services/security_service/securityService";
-
 export const ChangePasswordModal = (props) => {
   //Open modal login
   const [show, setShow] = useState(false);
@@ -24,7 +16,9 @@ export const ChangePasswordModal = (props) => {
   const { openModalChangePassword, closeModalChangePassword } = props;
   const [countDown, setCountDown] = useState(0);
   const [codeRandom, setCodeRandom] = useState();
-  //   const [isCounting, setIsCounting] = useState(false);
+  const [conformCode, setConformCode] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   //Close modal login
   const handleClose = () => {
@@ -38,7 +32,7 @@ export const ChangePasswordModal = (props) => {
   }, []);
 
   const handleGetCodeChangePassword = async () => {
-    setCountDown(60);
+    setIsLoading(true);
     const codeRandom = securityService.randomCodeChangPassword();
     setCodeRandom(codeRandom);
     const dataSendEmail = {
@@ -46,11 +40,15 @@ export const ChangePasswordModal = (props) => {
       email: account.accountRole.appAccount.gmail,
       message: codeRandom,
     };
-    await securityService.sendEmail(dataSendEmail);
+    const checkSendEmail = await securityService.sendEmail(dataSendEmail);
+    if (checkSendEmail) {
+      setIsLoading(false);
+      setCountDown(60);
+    }
   };
 
   useEffect(() => {
-    if (countDown > 0) {
+    if (countDown > 0 && !conformCode) {
       const countdown = setInterval(() => {
         setCountDown((prevSeconds) => prevSeconds - 1);
       }, 1000);
@@ -58,8 +56,10 @@ export const ChangePasswordModal = (props) => {
       return () => {
         clearInterval(countdown);
       };
+    } else if (countDown === 0 || conformCode === true) {
+      setCodeRandom("");
     }
-  }, [countDown]);
+  }, [countDown, conformCode]);
 
   return (
     <>
@@ -68,28 +68,149 @@ export const ChangePasswordModal = (props) => {
           <Modal.Title style={{ fontSize: "30px" }}>Đổi mật khẩu</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div
-            className="card-body"
-            style={{ textAlign: "center", alignItems: "center" }}
-          >
-            <input
-              type="text"
-              className="form-change-input"
-              id="inputCode"
-              placeholder="Nhập mã"
-              name="code"
-            />
-            {countDown !== 0 ? (
-              <span id="count-changePassword">{countDown}</span>
-            ) : (
-              <button
-                className="btn btn-primary"
-                id="btn-changePassword"
-                onClick={handleGetCodeChangePassword}
-              >
-                Lấy mã
-              </button>
-            )}
+          {console.log(conformCode)}
+          <div className="card-body">
+            <div class="d-flex justify-content-center">
+              {isLoading && (
+                <div className="overlay">
+                  <div className="spinner-container">
+                    <div className="spinner-border" role="status">
+                      <span className="sr-only"></span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div id="dv-chgane-password">
+              {conformCode === false && (
+                <Formik
+                  initialValues={{
+                    inputCode: "",
+                  }}
+                  validationSchema={Yup.object({
+                    inputCode: Yup.string().required("Không được để trống"),
+                  })}
+                  onSubmit={(values, { setSubmitting, setFieldError }) => {
+                    if (values.inputCode !== codeRandom) {
+                      setFieldError("inputCode", "Mã không chính xác");
+                      setConformCode(false);
+                    } else {
+                      setConformCode(true);
+                    }
+                  }}
+                >
+                  <Form>
+                    <div id="dv-conform-code">
+                      <Field
+                        type="text"
+                        className="form-conform-code"
+                        id="inputCode"
+                        placeholder="Nhập mã"
+                        name="inputCode"
+                      ></Field>
+                      <ErrorMessage
+                        name="inputCode"
+                        component="p"
+                        className="form-change-password-error"
+                      />
+                    </div>
+                    {countDown !== 0 ? (
+                      <span id="count-changePassword">{countDown}</span>
+                    ) : (
+                      <button
+                        type="button"
+                        className="btn-change-password"
+                        id="btn-changePassword"
+                        onClick={handleGetCodeChangePassword}
+                      >
+                        Lấy mã
+                      </button>
+                    )}
+                    <button className="btn-change-password">Xác nhận</button>
+                  </Form>
+                </Formik>
+              )}
+
+              {conformCode && (
+                <Formik
+                  initialValues={{
+                    newPassword: "",
+                    conformNewPassword: "",
+                  }}
+                  validationSchema={Yup.object({
+                    newPassword: Yup.string().required("Không được để trống"),
+                    conformNewPassword: Yup.string()
+                      .required("Không được để trống")
+                      .oneOf([Yup.ref("newPassword")], "Mật khẩu không khớp"),
+                  })}
+                  onSubmit={async (
+                    values,
+                    { setSubmitting, setFieldError }
+                  ) => {
+                    try {
+                      const newPassword = {
+                        username: account.accountRole.appAccount.username,
+                        password: values.newPassword,
+                      };
+                      console.log("Passwords match:", values);
+                      const changePasswordSuccess =
+                        await securityService.changePassword(
+                          newPassword,
+                          account.token
+                        );
+                      if (changePasswordSuccess) {
+                        toast.success("Thay đổi mật khẩu thành công");
+                        handleClose();
+                      } else {
+                        toast.error("Thay đổi mật khẩu không thành công!");
+                      }
+                    } catch (error) {
+                      console.error("Error submitting form:", error);
+                    } finally {
+                      setSubmitting(false);
+                    }
+                  }}
+                >
+                  <Form>
+                    <div className="mb-3" id="input-username">
+                      <Field
+                        type="password"
+                        className="form-change-input"
+                        id="newPassword"
+                        placeholder="Mật khẩu mới"
+                        name="newPassword"
+                      />
+                      <ErrorMessage
+                        name="newPassword"
+                        component="p"
+                        className="form-change-password-error"
+                      />
+                    </div>
+                    <div className="mb-3" id="input-username">
+                      <Field
+                        type="password"
+                        className="form-change-input"
+                        id="conformNewPassword"
+                        placeholder="Xác nhận mật khẩu mới"
+                        name="conformNewPassword"
+                      />
+                      <ErrorMessage
+                        name="conformNewPassword"
+                        component="p"
+                        className="form-change-password-error"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="btn-change-password"
+                      id="btn-changePassword"
+                    >
+                      Đổi mật khẩu
+                    </button>
+                  </Form>
+                </Formik>
+              )}
+            </div>
           </div>
         </Modal.Body>
         <Modal.Footer style={{ border: "none" }}></Modal.Footer>

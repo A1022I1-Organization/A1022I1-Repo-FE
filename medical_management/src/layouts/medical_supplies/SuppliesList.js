@@ -106,23 +106,22 @@ export function SuppliesList() {
 
         <>
             <Container>
-                {/*<MediaQuery minWidth={1224}>*/}
-                    {/*<MediaQuery minWidth={1824}>*/}
-                        <Row>
-                            <Col md={{ span: 10, offset: 1 }}>
-                                {/*Search menu*/}
-                                <nav className="navbar" style={{backgroundColor: "white"}}>
-                                    <form className="search-menu">
-                                        <DropdownSearch />
-                                    </form>
-                                    <div className="create-button">
-                                        <NavLink to={"/supply/create"} >
-                                            <button type="button" className="btn btn-success" style={{backgroundColor: "#26B24B", float: "right"}}>
-                                                <span>Thêm mới</span>
-                                            </button>
-                                        </NavLink>
-                                    </div>
-                                </nav>
+
+                    <Row>
+                        <Col md={{ span: 10, offset: 1 }}>
+                            {/*Search menu*/}
+                            <nav className="navbar " style={{backgroundColor: "white"}}>
+                                <form className="search-menu">
+                                    <DropdownSearch />
+                                </form>
+                                <div className="create-button">
+                                    <NavLink to={"/supply/create"} >
+                                        <button type="button" className="btn btn-success" style={{backgroundColor: "#26B24B", float: "right"}}>
+                                            <span>Thêm mới</span>
+                                        </button>
+                                    </NavLink>
+                                </div>
+                            </nav>
 
                                 <br/>
 
@@ -224,7 +223,6 @@ export function SuppliesList() {
                                         : ""}
                                 </Card>
                                 <br/>
-
                                 <br/>
 
                                 <Card className="mt-2">
@@ -261,9 +259,11 @@ export function SuppliesList() {
                                                                     onClick={() => showDeleteModal("newItem", newItem.id)} >
                                                             Xóa
                                                             </button>
-                                                            <button className="btn btn-success" style={{backgroundColor: "#26B24B", border: "#26B24B"}}>
-                                                            Chỉnh sửa
-                                                            </button>
+                                                            <NavLink to={`/supply/update/${newItem.id}`}>
+                                                                <button className="btn btn-success" style={{backgroundColor: "#26B24B", border: "#26B24B"}}>
+                                                                    Chỉnh sửa
+                                                                </button>
+                                                            </NavLink>
                                                         </td>
                                                     </tr>
                                                 );
