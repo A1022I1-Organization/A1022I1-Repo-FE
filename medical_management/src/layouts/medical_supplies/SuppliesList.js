@@ -105,7 +105,7 @@ export function SuppliesList() {
                     <Row>
                         <Col md={{ span: 10, offset: 1 }}>
                             {/*Search menu*/}
-                            <nav className="navbar sticky-top" style={{backgroundColor: "white"}}>
+                            <nav className="navbar " style={{backgroundColor: "white"}}>
                                 <form className="search-menu">
                                     <DropdownSearch />
                                 </form>

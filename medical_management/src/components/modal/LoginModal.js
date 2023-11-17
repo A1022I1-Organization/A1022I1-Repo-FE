@@ -74,10 +74,6 @@ export const LoginModal = (props) => {
                       "password",
                       "Tên đăng nhập hoặc mật khẩu không đúng"
                     );
-                    setFieldError(
-                      "username",
-                      "Tên đăng nhập hoặc mật khẩu không đúng"
-                    );
                   } else {
                     toast.success("Đăng nhập thành công !");
                     handleClose();
