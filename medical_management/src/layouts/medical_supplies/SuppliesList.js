@@ -258,9 +258,11 @@ export function SuppliesList() {
                                                                 onClick={() => showDeleteModal("newItem", newItem.id)} >
                                                         Xóa
                                                         </button>
-                                                        <button className="btn btn-success" style={{backgroundColor: "#26B24B", border: "#26B24B"}}>
-                                                        Chỉnh sửa
-                                                        </button>
+                                                        <NavLink to={`/supply/update/${newItem.id}`}>
+                                                            <button className="btn btn-success" style={{backgroundColor: "#26B24B", border: "#26B24B"}}>
+                                                                Chỉnh sửa
+                                                            </button>
+                                                        </NavLink>
                                                     </td>
                                                 </tr>
                                             );

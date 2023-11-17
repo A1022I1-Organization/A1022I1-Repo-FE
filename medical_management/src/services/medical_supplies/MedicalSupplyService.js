@@ -35,11 +35,16 @@ export const getNewSuppliesPage = async (page, token) => {
   }
 };
 
-export const addNewSupply = async (value) => {
+export const addNewSupply = async (value, token) => {
   try {
     const result = await axios.post(
       "http://localhost:8080/api/supply/add",
-      value
+      value,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     return result.data;
   } catch (e) {
@@ -47,11 +52,16 @@ export const addNewSupply = async (value) => {
   }
 };
 
-export const updateSupply = async (id, value) => {
+export const updateSupply = async (value, token) => {
   try {
     const result = await axios.patch(
-      `http://localhost:8080/api/supply/update/${id}`,
-      value
+      `http://localhost:8080/api/supply/update`,
+      value,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     return result.data;
   } catch (e) {
@@ -131,9 +141,13 @@ export const getNewSupplies = async (token) => {
   }
 };
 
-export const getSupply = async (id) => {
+export const getSupply = async (id,token) => {
   try {
-    const result = await axios.get(`http://localhost:8080/api/supply/${id}`);
+    const result = await axios.get(`http://localhost:8080/api/supply/${id}`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     console.log(id);
     return result.data;
   } catch (e) {

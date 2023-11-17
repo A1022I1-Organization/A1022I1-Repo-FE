@@ -9,7 +9,7 @@ import {toast} from "react-toastify";
 import * as Yup from 'yup';
 import {useParams, useNavigate} from "react-router-dom";
 import ReactLoading from "react-loading";
-import {getUserLoginAccount} from "../../services/security_service/securityService"
+import {getUserLoginAccount} from "../../services/security_service/securityService";
 
 export function SupplierUpdate () {
     const [imageSrc, setImageSrc] = useState("");
@@ -23,16 +23,17 @@ export function SupplierUpdate () {
     const [supply, setSupply] = useState([]);
     const [isLoading, setIsLoading] = useState();
     const navigate = useNavigate();
+    const [inputValue, setInputValue] = useState('');
 
     useEffect( () => {
+    const tokenAccount = localStorage.getItem('tokenAccount');
+
         const fetchData = async () => {
             try {
                 await getSupply();
                 await getCategories();
                 await getSuppliers();
                 await getUnits();
-
-                const tokenAccount = localStorage.getItem('tokenAccount');
                 const username = localStorage.getItem('username');
             
                 const appAccount = await getUserLoginAccount(tokenAccount, username);
@@ -57,35 +58,42 @@ export function SupplierUpdate () {
     };
 
     const getSupply = async () => {
-        const result = await service.getSupply(idParam.id);
+        const tokenAccount = localStorage.getItem('tokenAccount');
+        const result = await service.getSupply(idParam.id,tokenAccount);
         setSupply(result);
         setImageSrc(result.picture);
+        setInputValue(result.price);
+        
+        console.log(result.picture);
     };
 
-    const updateSupply = async (id, value) => {
-        await service.updateSupply(id, value);
+    const updateSupply = async (value) => {
+    const tokenAccount = localStorage.getItem('tokenAccount');
+
+        await service.updateSupply(value, tokenAccount);
         navigate("/supply/list")
         toast.success("Cập nhật thành công")
     };
 
-    const formatVND = () => {
-        // Get the input value
-        var inputElement = document.getElementById("vndInput");
-        var inputValue = inputElement.value;
+    const handleInputChange = (e) => {
 
-        // Remove any non-numeric characters (if any)
-        var numericValue = inputValue.replace(/[^0-9]/g, '');
-
+        const numericValue = e.target.value.replace(/[^0-9]/g, '');
+    
         // Format the numeric value as VND
-        var formattedValue = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(numericValue);
-        var result = formattedValue.substring(0, formattedValue.length - 1);
+        const formattedValue = new Intl.NumberFormat('vi-VN', {
+          style: 'currency',    
+          currency: 'VND',
+        }).format(numericValue);
+        
+        const trimmedValue = formattedValue.replace(/\s/g, '');
+
         // Update the input field with the formatted value
-        inputElement.value = result;
-    }
+        setInputValue(trimmedValue);
+    };
+    
     // Upload img
     const handleFileChange = (e) => {
         setFile(imageSrc);
-        console.log(e.target.files[0])
         const fileInput = e.target;
         if (fileInput.files && fileInput.files[0]) {
             const reader = new FileReader();
@@ -97,7 +105,8 @@ export function SupplierUpdate () {
     };
  
     const handleUpload = async () => {
-        if (!file) {
+        if (!file || imageSrc === undefined) {
+            console.log(imageSrc);
             alert("Please upload an image first!");
             navigate("/supply/create");
             setIsLoading(false);
@@ -125,7 +134,11 @@ export function SupplierUpdate () {
                 async () => {
                 // download url
                 const url = await getDownloadURL(uploadTask.snapshot.ref);
+                console.log(url);
                 resolve(url);
+                if(url){
+                    setIsLoading(false);
+                }
                 }
             );
         });
@@ -144,12 +157,13 @@ export function SupplierUpdate () {
                                 </div>
                                 <Formik
                                     enableReinitialize={true}
+
                                     initialValues={
                                         {
-                                            picture: imageSrc,
+                                            picture: supply.picture,
                                             code: supply.code,
                                             name: supply.name,
-                                            price: supply.price,
+                                            price: inputValue,
                                             importDate: supply.importDate,
                                             expiry: supply.expiry,
                                             quantity: supply.quantity,
@@ -160,16 +174,24 @@ export function SupplierUpdate () {
                                         }
                                     }
                                     onSubmit={async(values, {setSubmitting}) => {
-                                        const urlImg = await handleUpload();
+                                       let urlImg = "";
+                                        if(imageSrc) {
+                                            console.log(imageSrc);
+                                            urlImg = imageSrc;
+                                        } else {
+                                            urlImg =  await handleUpload();
+                                        }
                                         const obj = {
                                             ...values,
-                                            picture: "" + urlImg,
+                                            id: supply.id,
+                                            price: inputValue,
+                                            picture: urlImg,
                                             category: JSON.parse(values.category),
                                             supplier: JSON.parse(values.supplier),
                                             unit: JSON.parse(values.unit),
                                             account: account,
                                         };
-                                        updateSupply(idParam.id, obj);
+                                        updateSupply(obj);
                                         console.log(obj);
                                         setSubmitting(false);
                                     }}
@@ -181,10 +203,11 @@ export function SupplierUpdate () {
                                                 .required('Đơn vị tính không được để trống'),
                                             category: Yup.string()
                                                 .required('Loại vật tư không được để trống'),
-                                            picture: Yup.string().required('Ảnh vật tư không được để trống')
-                                                .test('picture', "Ảnh không được để trống", function(value) {
-                                                    return file;
-                                                }),
+                                            picture: Yup.string().required('Ảnh vật tư không được để trống kkkkk')
+                                                // .test('picture', "Ảnh không được để trống Huy", function(value) {
+                                                //     return file;
+                                                // }),
+                                                ,
                                             code: Yup.string()
                                                 .required('Mã vật tư không được để trống')
                                                 .matches(/^MVT-[0-9]{4}$/, 'Mã vật tư phải theo định dạng MVT-XXXX'),
@@ -193,8 +216,7 @@ export function SupplierUpdate () {
                                                 .min(2, 'Tên vật tư không được ít hơn 2 ký tự')
                                                 .max(100, 'Tên vật tư không được nhiều hơn 100 ký tự'),
                                             price: Yup.string()
-                                                .required('Giá thành không được để trống')
-                                                .matches(/^[1-9]\d*$/, 'Giá thành phải là số nguyên dương'),
+                                                .required('Giá thành không được để trống'),
                                             quantity: Yup.string()
                                                 .required('Số lượng không được để trống')
                                                 .matches(/^[1-9]\d*$/, 'Số lượng phải là số nguyên dương'),
@@ -212,8 +234,8 @@ export function SupplierUpdate () {
                                             <div className="col-md-6">
                                                 <label className="custom-file-upload" style={{height : "360px"}}>
                                                     <Field
-                                                            type="file"
-                                                            name="imageFile"
+                                                            type="text"
+                                                            name="picture"
                                                             accept="image/jpeg, image/png"
                                                             onChange={handleFileChange}
                                                         />
@@ -228,7 +250,7 @@ export function SupplierUpdate () {
                                                 </label>
                                                 <div className="input-form">
                                                     <label htmlFor="price" className="form-label">Đơn giá (VNĐ)</label>
-                                                    <Field type="text" name="price" className="form-control"/>
+                                                    <Field type="text" name="price" className="form-control" value={inputValue} onChange={handleInputChange}/>
                                                     <ErrorMessage name="price" className="form-err" component='span'></ErrorMessage>
                                                 </div>
                                                 {/*  */}
@@ -293,7 +315,7 @@ export function SupplierUpdate () {
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="submit" className="btn-green" style={{marginRight: 10}}>Tạo mới</button>
+                                        <button type="submit" className="btn-green" style={{marginRight: 10}}>Lưu</button>
                                         <button className="btn-orange">Huỷ</button>
                                     </Form>
                                 </Formik>
