@@ -64,7 +64,7 @@ export const Header = () => {
       navigate("");
       return "guest";
     } else if (account.accountRole.appRole.name === "ROLE_ADMIN") {
-      navigate("/supply/list");
+      // navigate("/supply/list");
       return "admin";
     } else if (account.accountRole.appRole.name === "ROLE_EMPLOYEE") {
       navigate("/supply/list");
@@ -78,7 +78,6 @@ export const Header = () => {
 
   return (
     <div>
-      {role === "admin" && account !== null ? console.log("chuẩn") : ""}
       <div id="header">
         <div className="header-top">
           <div className="row" id="row-hd-top">
@@ -236,7 +235,6 @@ export const Header = () => {
                   style={{ textDecoration: "none" }}
                 >
                   SẢN PHẨM
-
                 </NavLink>
                 <button className="hd-content-navbar">ĐỐI TÁC</button>
                 <button className="hd-content-navbar">LIÊN HỆ</button>

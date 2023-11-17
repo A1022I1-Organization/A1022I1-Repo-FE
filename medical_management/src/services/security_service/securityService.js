@@ -123,3 +123,12 @@ export const randomCodeChangPassword = () => {
 
   return randomSixDigitCode.toString();
 };
+
+export const checkPermission = (account, allowedRoles) => {
+  if (!account || !account.accountRole || !account.accountRole.appRole) {
+    // Trường hợp không có tài khoản hoặc thông tin quyền
+    return false;
+  }
+  const userRole = account.accountRole.appRole.name;
+  return allowedRoles.includes(userRole);
+};
