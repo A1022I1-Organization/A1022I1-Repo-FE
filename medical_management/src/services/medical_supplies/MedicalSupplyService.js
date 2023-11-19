@@ -100,14 +100,21 @@ export const getUnits = async () => {
   }
 };
 
-// export const getAccounts = async() => {
-//     try {
-//         const result = await axios.patch(`http://localhost:8080/api/medical/getAccount`);
-//         return result.data;
-//     } catch (e) {
-//         console.log(e)
-//     }
-// }
+export const getAllSupply = async (token) => {
+  try {
+    const result = await axios.get(
+      "http://localhost:8080/api/supply/getAllSupply",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return result.data.content;
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 export const getOldSupplies = async (token) => {
   try {
@@ -155,7 +162,25 @@ export const getSupply = async (id,token) => {
   }
 };
 
+<<<<<<< HEAD
+export const getLastSupply = async (token) => {
+  try {
+    const result = await axios.get(`http://localhost:8080/api/supply/lastSupply`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return result.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const deleteSupply = async (id) => {
+
+=======
 export const findAllBetweenDays = async (lastDateInput) => {
+>>>>>>> c040862f76d8daaa251a9004a54d22e276df7fee
     try {
         const result = await axios.get(`http://localhost:8080/api/supply/statistic-supplies/${lastDateInput}`);
         console.log(result.data);

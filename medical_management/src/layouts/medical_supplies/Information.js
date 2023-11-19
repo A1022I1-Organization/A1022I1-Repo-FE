@@ -25,7 +25,8 @@ export function Information () {
     }, []);
 
     const getSupply = async () => {
-        const supplyDetail = await supplyServices.getSupply(param.id);
+        const tokenAccount = localStorage.getItem('tokenAccount');
+        const supplyDetail = await supplyServices.getSupply(param.id, tokenAccount);
         console.log(supplyDetail)
         setSupply(supplyDetail);
     };
