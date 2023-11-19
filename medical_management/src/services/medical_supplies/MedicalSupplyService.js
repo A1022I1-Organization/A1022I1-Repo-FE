@@ -161,8 +161,6 @@ export const getSupply = async (id,token) => {
     console.log(e);
   }
 };
-
-<<<<<<< HEAD
 export const getLastSupply = async (token) => {
   try {
     const result = await axios.get(`http://localhost:8080/api/supply/lastSupply`,{
@@ -175,12 +173,7 @@ export const getLastSupply = async (token) => {
     console.log(e);
   }
 };
-
-export const deleteSupply = async (id) => {
-
-=======
 export const findAllBetweenDays = async (lastDateInput) => {
->>>>>>> c040862f76d8daaa251a9004a54d22e276df7fee
     try {
         const result = await axios.get(`http://localhost:8080/api/supply/statistic-supplies/${lastDateInput}`);
         console.log(result.data);
