@@ -1,11 +1,24 @@
-import * as React from 'react';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+import MediaQuery from 'react-responsive'
+import React from 'react'
+import { useMediaQuery } from 'react-responsive'
+import {SuppliesList} from "../../layouts/medical_supplies/SuppliesList";
 
-export default function PaginationRanges() {
-    return (
-        <Stack spacing={2}>
-            <Pagination count={10} defaultPage={1} siblingCount={0} />
-        </Stack>
-    );
+const Example = () => {
+    const isDesktopOrLaptop = useMediaQuery({
+        query: '(min-width: 1224px)'
+    })
+    const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' })
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+    const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
+    const isRetina = useMediaQuery({ query: '(min-resolution: 2dppx)' })
+
+    return <div>
+        <h1>Device Test!</h1>
+        {isDesktopOrLaptop && <SuppliesList />}
+        {isBigScreen && <SuppliesList />}
+        {isTabletOrMobile && <SuppliesList />}
+        {isRetina && <SuppliesList />}
+    </div>
 }
+
+export default Example;

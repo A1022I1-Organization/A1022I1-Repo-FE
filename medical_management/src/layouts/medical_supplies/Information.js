@@ -1,9 +1,9 @@
 import '../../components/css/style.css'
 import 'bootstrap/dist/js/bootstrap.bundle';
-import {Field, Form, Formik} from 'formik';
 import {useEffect, useState} from 'react';
-import {useNavigate, useParams} from "react-router-dom";
+import {NavLink, useParams} from "react-router-dom";
 import * as supplyServices from  "../../services/medical_supplies/MedicalSupplyService";
+import "../../components/css/style.css";
 
 export function Information () {
     // const [imageSrc, setImageSrc] = useState("");
@@ -19,7 +19,7 @@ export function Information () {
     // };
     const [supply, setSupply] = useState();
     const param = useParams();
-
+    //
     useEffect(() => {
         getSupply();
     }, []);
@@ -27,10 +27,8 @@ export function Information () {
     const getSupply = async () => {
         const supplyDetail = await supplyServices.getSupply(param.id);
         console.log(supplyDetail)
-
         setSupply(supplyDetail);
     };
-
     return (
         <div>
             <div className="all">
@@ -43,75 +41,98 @@ export function Information () {
                                     <div className="header-form">
                                         <h2>Thông tin vật tư</h2>
                                     </div>
-                                    {supply === undefined ? "Vật tư này không tồn tại!" :
-                                    <div className="row mb-4">
-                                        <div className="col">
+                                    {supply === undefined ? "Vật tư này không tồn tại!"  :
+                                    <div className="row">
+                                        {/*<div className="col-1" />*/}
+                                        <div className="col-5" style={{paddingRight: "10px", paddingLeft: "0"}}>
                                             <div className="form-outline">
                                                 <label className="custom-file-upload">
-                                                    {/* <input type="file" name id="imageFile" accept="image/png, image/jpg, image/jpeg" onchange="chooseFile(this)" />
-                                    <img className="background-image" src alt id="image" width="250px" height="250px" /> */}
-                                                    <input
-                                                        type="file"
-                                                        name="imageFile"
-                                                        accept="image/png, image/jpg, image/jpeg"
-                                                    />
                                                     <img
+                                                        src={supply.picture}
                                                         className="background-image"
                                                         id="image"
-                                                        width="250px"
-                                                        height="250px"
+                                                        width="240px"
+                                                        height="240px"
                                                     />
                                                 </label>
                                             </div>
                                         </div>
-                                        <div className="col">
+                                        <div className="col-3">
                                             <div className="mb-3">
-                                                <div className="fields">
-                                                    <label htmlFor="code" className="form-label">Mã vật tư</label>
+                                                <p>
+                                                    <span className="label">Mã vật tư: </span>
+                                                </p>
+                                                <p>
+                                                    <span className="label">Tên vật tư: </span>
+                                                </p>
+                                                <p>
+                                                    <span className="label">Loại vật tư: </span>
+                                                </p>
+                                                <p>
+                                                    <span className="label">Đơn giá (VND): </span>
+                                                </p>
+                                                <p>
+                                                    <span className="label">Đơn vị tính: </span>
+                                                </p>
+                                                <p>
+                                                    <span className="label">Số lượng: </span>
+                                                </p>
+                                                <p>
+                                                    <span className="label">Nhà cung cấp: </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="col-4" style={{padding: "0"}}>
+                                            <div className="mb-3">
+                                                <p>
                                                     <span>{supply.code}</span>
-                                                </div>
-                                                <div className="fields">
-                                                    <label htmlFor="name" className="form-label">Tên vật tư</label>
+                                                </p>
+                                                <p>
                                                     <span>{supply.name}</span>
-                                                </div>
-                                                <div className="fields">
-                                                    <label className="form-label">Nhà cung cấp</label>
-                                                    <span>{supply.supplier}</span>
-                                                </div>
+                                                </p>
+                                                <p>
+                                                    <span>{supply.category.name}</span>
+                                                </p>
+                                                <p>
+                                                    <span>{supply.price}</span>
+                                                </p>
+                                                <p>
+                                                    <span>{supply.unit.name}</span>
+                                                </p>
+                                                <p>
+                                                    <span>{supply.quantity}</span>
+                                                </p>
+                                                <p>
+                                                    <span>{supply.supplier.name}</span>
+                                                </p>
                                             </div>
                                         </div>
-                                        <div className="col">
+                                        <hr/>
+                                        <div className="col-6">
                                             <div className="mb-3">
-                                                <label htmlFor="price" className="form-label">Đơn giá (VNĐ)</label>
-                                                <span></span>
+                                                <p>
+                                                    <span className="label">Ngày nhập kho: </span>
+                                                    <span>{supply.importDate}</span>
+                                                </p>
                                             </div>
                                         </div>
-                                        <div className="col">
+                                        <div className="col-3">
                                             <div className="mb-3">
-                                                <label htmlFor="price" className="form-label">Số lượng</label>
-                                                <span></span>
+                                                <p>
+                                                    <span className="label">Hạn sử dụng: </span>
+                                                </p>
                                             </div>
                                         </div>
-                                        <div className="col">
-                                            <div className="mb-3">
-                                                <label className="form-label">Loại vật tư</label>
-                                                <span></span>
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="mb-3">
-                                                <label htmlFor="nsx" className="form-label">Ngày nhập hàng</label>
-                                                <span></span>
-                                            </div>
-                                        </div>
-                                        <div className="col">
-                                            <div className="mb-3">
-                                                <label htmlFor="hsd" className="form-label">Hạn sử dụng</label>
-                                                <span></span>
-                                            </div>
+                                        <div className="col-3" style={{padding: "0"}}>
+                                            <p>
+                                                <span>{supply.expiry}</span>
+                                            </p>
                                         </div>
                                     </div> }
-                                    <button type="submit" className="btn-orange">Trở về</button>
+                                    <button type="submit" className="btn-orange">
+                                        <NavLink to={"/supply/list"}
+                                                 style={{textDecoration: "none", color: "white"}}>Trở về</NavLink>
+                                    </button>
                                 </div>
                             </div>
                         </div>
