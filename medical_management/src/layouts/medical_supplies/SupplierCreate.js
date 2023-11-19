@@ -10,12 +10,14 @@ import * as Yup from 'yup';
 import ReactLoading from "react-loading";
 import {useNavigate} from "react-router-dom";
 import {getUserLoginAccount} from "../../services/security_service/securityService"
+import {NavLink} from "react-router-dom";
 
 export function SupplierCreate () {
     // Initialization default useState
     const [imageSrc, setImageSrc] = useState("");
     const [file, setFile] = useState("");
     const [percent, setPercent] = useState(0);
+    const [lastSupply, setLastSupply] = useState([]);
     const [categories, setCategories] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
     const [units, setUnits] = useState([]);
@@ -32,6 +34,7 @@ export function SupplierCreate () {
                 await getCategories();
                 await getSuppliers();
                 await getUnits();
+                await getLastSupply();
             
                 // Lấy token và username từ localStorage
                 const username = localStorage.getItem('username');
@@ -47,6 +50,12 @@ export function SupplierCreate () {
           // Gọi fetchData trong useEffect
           fetchData();
     }, [])
+
+    const getLastSupply = async () => {
+        const tokenAccount = localStorage.getItem('tokenAccount');
+        const result = await service.getLastSupply(tokenAccount);
+        setLastSupply(result);
+    };
 
     const getCategories = async () => {
         const result = await service.getCategories();
@@ -78,9 +87,10 @@ export function SupplierCreate () {
         }).format(numericValue);
         
         const trimmedValue = formattedValue.replace(/\s/g, '');
+        const endValue = trimmedValue.slice(0, -1);
 
         // Update the input field with the formatted value
-        setInputValue(trimmedValue);
+        setInputValue(endValue);
     };
 
     // }
@@ -167,9 +177,11 @@ export function SupplierCreate () {
                                     }
                                     onSubmit={async(values, {setSubmitting}) => {
                                         const urlImg = await handleUpload();
+                                        
+                                        const parsePrice = parseFloat(inputValue);
                                         const obj = {
                                             ...values,
-                                            price: inputValue ,
+                                            price: parsePrice ,
                                             picture: "" + urlImg,
                                             category: JSON.parse(values.category),
                                             supplier: JSON.parse(values.supplier),
@@ -193,15 +205,13 @@ export function SupplierCreate () {
                                                 .test('picture', "Ảnh không được để trống", function(value) {
                                                     return file;
                                                 }),
-                                            code: Yup.string()
-                                                .required('Mã vật tư không được để trống')
-                                                .matches(/^MVT-[0-9]{4}$/, 'Mã vật tư phải theo định dạng MVT-XXXX'),
                                             name: Yup.string()
                                                 .required('Tên vật tư không được để trống')
                                                 .min(2, 'Tên vật tư không được ít hơn 2 ký tự')
                                                 .max(100, 'Tên vật tư không được nhiều hơn 100 ký tự'),
                                             // price: Yup.string()
-                                            //     .required('Giá thành không được để trống'),
+                                            //     .required('Giá thành không được để trống')
+                                            //     .matches(/^0$/, 'Giá thành không thể là 0'),
                                             quantity: Yup.string()
                                                 .required('Số lượng không được để trống')
                                                 .matches(/^[1-9]\d*$/, 'Số lượng phải là số nguyên dương'),
@@ -256,7 +266,7 @@ export function SupplierCreate () {
                                             <div className="col-md-6">
                                                 <div className="input-form">
                                                     <label className="form-label">Mã vật tư</label>
-                                                    <Field type="text" name="code" className="form-control"/>
+                                                    <Field type="text" name="code" className="form-control" value={`MVT-${String(lastSupply.supplyId + 1).padStart(4, '0')}`} disabled/>
                                                     <ErrorMessage name="code" className="form-err" component='span'></ErrorMessage>
                                                 </div>
                                                 {/*  */}
@@ -306,7 +316,9 @@ export function SupplierCreate () {
                                             </div>
                                         </div>
                                         <button type="submit" className="btn-green" style={{marginRight: 10}}>Tạo mới</button>
-                                        <button className="btn-orange">Huỷ</button>
+                                        <NavLink to={`/supply/list`}>
+                                            <button className="btn-orange">Huỷ</button>
+                                        </NavLink>
                                     </Form>
                                 </Formik>
                             </div>

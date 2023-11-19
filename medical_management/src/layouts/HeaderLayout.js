@@ -95,9 +95,6 @@ export const Header = () => {
   }, [scrolling]);
   const headerClassName = scrolling ? "header-fixed" : "";
 
-  const handleScrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
   return (
     <div>
       <div id="header">
