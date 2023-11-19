@@ -18,8 +18,8 @@ function App() {
   return (
     <div>
       <AppRouter />
-      <CreateAccount />
       {/*  <SuppliesList />*/}
+      <StatisticsMaterial />
     </div>
   );
 }
