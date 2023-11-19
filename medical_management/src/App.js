@@ -11,15 +11,13 @@ import { StatisticsMaterial } from "./layouts/statistics_material/StatisticsMate
 import { CreateAccount } from "./layouts/account/CreateAccount";
 
 import { BrowserRouter } from "react-router-dom";
-import {ToastContainer} from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import Example from "./components/pagination/SupplyPagination";
 
 function App() {
   return (
     <div>
       <AppRouter />
-      <CreateAccount />
-      {/*  <SuppliesList />*/}
     </div>
   );
 }
