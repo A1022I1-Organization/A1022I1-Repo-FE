@@ -37,6 +37,7 @@ export const LoginGoogle = (props) => {
           },
         },
       };
+      console.log(account);
 
       await addUserOauth2(account);
       localStorage.setItem("tokenGoogle", tokenResponse.access_token);
