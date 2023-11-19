@@ -10,6 +10,7 @@ import * as Yup from 'yup';
 import {useParams, useNavigate} from "react-router-dom";
 import ReactLoading from "react-loading";
 import {getUserLoginAccount} from "../../services/security_service/securityService";
+import {NavLink} from "react-router-dom";
 
 export function SupplierUpdate () {
     const [imageSrc, setImageSrc] = useState("");
@@ -61,15 +62,14 @@ export function SupplierUpdate () {
         const tokenAccount = localStorage.getItem('tokenAccount');
         const result = await service.getSupply(idParam.id,tokenAccount);
         setSupply(result);
-        setImageSrc(result.picture);
+        // setImageSrc(result.picture);
         setInputValue(result.price);
         
         console.log(result.picture);
     };
 
     const updateSupply = async (value) => {
-    const tokenAccount = localStorage.getItem('tokenAccount');
-
+        const tokenAccount = localStorage.getItem('tokenAccount');
         await service.updateSupply(value, tokenAccount);
         navigate("/supply/list")
         toast.success("Cập nhật thành công")
@@ -181,10 +181,13 @@ export function SupplierUpdate () {
                                         } else {
                                             urlImg =  await handleUpload();
                                         }
+
+                                        const parsePrice = parseFloat(inputValue);
+
                                         const obj = {
                                             ...values,
                                             id: supply.id,
-                                            price: inputValue,
+                                            price: parsePrice,
                                             picture: urlImg,
                                             category: JSON.parse(values.category),
                                             supplier: JSON.parse(values.supplier),
@@ -232,20 +235,20 @@ export function SupplierUpdate () {
                                     <Form>
                                         <div className="row" style={{paddingTop : "20px"}}>
                                             <div className="col-md-6">
+                                                <Field
+                                                    type="text"
+                                                    name="picture"
+                                                    style={{display: "none"}}
+                                                />
                                                 <label className="custom-file-upload" style={{height : "360px"}}>
-                                                    <Field
-                                                            type="text"
-                                                            name="picture"
-                                                            accept="image/jpeg, image/png"
-                                                            onChange={handleFileChange}
-                                                        />
-                                                        <img
-                                                            className="background-image"
-                                                            src={imageSrc}
-                                                            id="image"
-                                                            width="370px"
-                                                            height="320px"
-                                                        />
+                                                    <input type="file" accept="image/jpeg, image/png" onChange={handleFileChange}></input>
+                                                    <img
+                                                        className="background-image"
+                                                        src={imageSrc}
+                                                        id="image"
+                                                        width="370px"
+                                                        height="320px"
+                                                    />
                                                     <ErrorMessage name="picture" className="form-err" component='span'></ErrorMessage>
                                                 </label>
                                                 <div className="input-form">
@@ -269,7 +272,7 @@ export function SupplierUpdate () {
                                             <div className="col-md-6">
                                                 <div className="input-form">
                                                     <label className="form-label">Mã vật tư</label>
-                                                    <Field type="text" name="code" className="form-control"/>
+                                                    <Field type="text" name="code" className="form-control" disabled/>
                                                     <ErrorMessage name="code" className="form-err" component='span'></ErrorMessage>
                                                 </div>
                                                 {/*  */}
@@ -316,7 +319,9 @@ export function SupplierUpdate () {
                                             </div>
                                         </div>
                                         <button type="submit" className="btn-green" style={{marginRight: 10}}>Lưu</button>
-                                        <button className="btn-orange">Huỷ</button>
+                                        <NavLink to={`/supply/list`}>
+                                            <button className="btn-orange">Huỷ</button>
+                                        </NavLink>
                                     </Form>
                                 </Formik>
                             </div>
