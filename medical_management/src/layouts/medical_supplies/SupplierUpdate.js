@@ -62,7 +62,7 @@ export function SupplierUpdate() {
     const tokenAccount = localStorage.getItem("tokenAccount");
     const result = await service.getSupply(idParam.id, tokenAccount);
     setSupply(result);
-    // setImageSrc(result.picture);
+    setImageSrc(result.picture);
     setInputValue(result.price);
 
     console.log(result.picture);
