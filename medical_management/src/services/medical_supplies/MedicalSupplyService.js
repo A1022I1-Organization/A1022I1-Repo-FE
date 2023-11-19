@@ -29,3 +29,13 @@ export const getSupply = async (id) => {
         console.log(e);
     }
 };
+
+export const findAllBetweenDays = async (lastDateInput) => {
+    try {
+        const result = await axios.get(`http://localhost:8080/api/supply/statistic-supplies/${lastDateInput}`);
+        console.log(result.data);
+        return result.data;
+    } catch (e) {
+        console.log(e);
+    }
+};
