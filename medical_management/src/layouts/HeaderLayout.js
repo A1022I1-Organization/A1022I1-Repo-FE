@@ -232,7 +232,7 @@ export const Header = () => {
                     QUẢN LÝ
                   </NavLink>
                   <NavLink
-                    to="/supply/list"
+                    to="/admin/meterial"
                     className="hd-content-navbar"
                     style={{ textDecoration: "none" }}
                   >

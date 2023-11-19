@@ -141,9 +141,9 @@ export const getNewSupplies = async (token) => {
   }
 };
 
-export const getSupply = async (id,token) => {
+export const getSupply = async (id, token) => {
   try {
-    const result = await axios.get(`http://localhost:8080/api/supply/${id}`,{
+    const result = await axios.get(`http://localhost:8080/api/supply/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -156,27 +156,29 @@ export const getSupply = async (id,token) => {
 };
 
 export const findAllBetweenDays = async (lastDateInput) => {
-    try {
-        const result = await axios.get(`http://localhost:8080/api/supply/statistic-supplies/${lastDateInput}`);
-        console.log(result.data);
-        return result.data;
-      } catch (e) {
-        console.log(e);
-    }
-  };
-
-export const deleteSupply = async (id, token) => {
-    try {
-        const result = await axios.delete(`http://localhost:8080/api/supply/${id}`,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        return result.data;
-      } catch (e) {
-        console.log(e);
-    }
+  try {
+    const result = await axios.get(
+      `http://localhost:8080/api/supply/statistic-supplies/${lastDateInput}`
+    );
+    console.log(result.data);
+    return result.data;
+  } catch (e) {
+    console.log(e);
+  }
 };
 
-
+export const deleteSupply = async (id, token) => {
+  try {
+    const result = await axios.delete(
+      `http://localhost:8080/api/supply/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return result.data;
+  } catch (e) {
+    console.log(e);
+  }
+};

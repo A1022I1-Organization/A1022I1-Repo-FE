@@ -8,6 +8,8 @@ import HomePage from "./layouts/HomePage";
 import List from "./layouts/List";
 
 import { Footer } from "./layouts/FooterLayout";
+import { CreateAccount } from "./layouts/account/CreateAccount";
+import { StatisticsMaterial } from "./layouts/statistics_material/StatisticsMaterial";
 
 export const AppRouter = () => {
   return (
@@ -20,8 +22,8 @@ export const AppRouter = () => {
         </Route>
 
         <Route path="/admin" element={<Outlet />}>
-          {/* <Route path="/create-account" element={} /> */}
-          {/* <Route /> */}
+          <Route path="create-account" element={<CreateAccount />} />
+          <Route path="meterial" element={<StatisticsMaterial />} />
         </Route>
 
         <Route path="/supply" element={<Outlet />}>
