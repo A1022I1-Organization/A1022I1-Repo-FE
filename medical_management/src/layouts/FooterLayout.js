@@ -1,5 +1,3 @@
-import { NavLink } from "react-router-dom";
-
 export const Footer = () => {
   return (
     <>
@@ -14,7 +12,7 @@ export const Footer = () => {
               <h5>Product</h5>
               <ul>
                 <li>
-                  <NavLink to="/list">Sản phẩm 1</NavLink>
+                  <a href="#">Sản phẩm 1</a>
                 </li>
                 <li>
                   <a href="#">Sản phẩm 2</a>
