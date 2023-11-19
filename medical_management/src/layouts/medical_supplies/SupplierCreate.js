@@ -181,6 +181,7 @@ export function SupplierCreate () {
                                         const parsePrice = parseFloat(inputValue);
                                         const obj = {
                                             ...values,
+                                            code: `MVT-${String(lastSupply.id + 1).padStart(4, '0')}`,
                                             price: parsePrice ,
                                             picture: "" + urlImg,
                                             category: JSON.parse(values.category),
@@ -266,7 +267,7 @@ export function SupplierCreate () {
                                             <div className="col-md-6">
                                                 <div className="input-form">
                                                     <label className="form-label">Mã vật tư</label>
-                                                    <Field type="text" name="code" className="form-control" value={`MVT-${String(lastSupply.supplyId + 1).padStart(4, '0')}`} disabled/>
+                                                    <Field type="text" name="code" className="form-control" value={`MVT-${String(lastSupply.id + 1).padStart(4, '0')}`} disabled/>
                                                     <ErrorMessage name="code" className="form-err" component='span'></ErrorMessage>
                                                 </div>
                                                 {/*  */}
@@ -278,7 +279,7 @@ export function SupplierCreate () {
                                                 <div className="input-form">
                                                     <label className="form-label">Nhà cung cấp</label>
                                                     <Field as="select" name="supplier" className="form-select">
-                                                        <option value=""></option>
+                                                        <option value="">-- Chọn --</option>
                                                         {suppliers.map((value) => (
                                                             <option value={JSON.stringify(value)}>{value.name}</option>
                                                         ))}
@@ -289,7 +290,7 @@ export function SupplierCreate () {
                                                 <div className="input-form">
                                                 <label className="form-label">Đơn vị tính</label>
                                                     <Field as="select" name="unit" className="form-select">
-                                                        <option value=""></option>
+                                                        <option value="">-- Chọn --</option>
                                                         {units.map((value) => (
                                                             <option value={JSON.stringify(value)}>{value.name}</option>
                                                         ))}
@@ -300,7 +301,7 @@ export function SupplierCreate () {
                                                 <div className="input-form">
                                                     <label className="form-label">Loại vật tư</label>
                                                     <Field as="select" name="category" className="form-select">
-                                                        <option value=""></option>
+                                                        <option value="">-- Chọn --</option>
                                                         {categories.map((value) => (
                                                             <option value={JSON.stringify(value)}>{value.name}</option>
                                                         ))}
