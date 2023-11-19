@@ -36,3 +36,43 @@
     transform: rotate(360deg);
   }
 }
+
+@media screen and (max-width: 1366px){
+  body table {
+    font-size: 30px;
+  }
+
+  body button {
+    font-size: 30px;
+  }
+}
+
+@media screen and (max-width: 1024px){
+  body table {
+    font-size: 20px;
+  }
+
+  body button {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 768px){
+  body table {
+    font-size: 10px;
+  }
+
+  body button {
+    font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 480px){
+  body table {
+    font-size: 5px;
+  }
+
+  body button span {
+    font-size: 5px;
+  }
+}

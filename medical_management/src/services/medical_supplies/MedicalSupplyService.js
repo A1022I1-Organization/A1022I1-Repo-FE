@@ -141,28 +141,44 @@ export const getNewSupplies = async (token) => {
   }
 };
 
-export const getSupply = async (id,token) => {
-  try {
-    const result = await axios.get(`http://localhost:8080/api/supply/${id}`,{
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(id);
-    return result.data;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-export const deleteSupply = async (id) => {
-
+export const getSupply = async (id, token) => {
     try {
-        const result = await axios.delete(`http://localhost:8080/api/supply/${id}`);
+        const result = await axios.get(`http://localhost:8080/api/supply/${id}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+        console.log(id)
         return result.data;
     } catch (e) {
         console.log(e);
     }
 };
 
+<<<<<<< HEAD
+export const findAllBetweenDays = async (lastDateInput) => {
+    try {
+        const result = await axios.get(`http://localhost:8080/api/supply/statistic-supplies/${lastDateInput}`);
+        console.log(result.data);
+=======
+export const deleteSupply = async (id, token) => {
+    try {
+        const result = await axios.delete(`http://localhost:8080/api/supply/${id}`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+>>>>>>> 57fdd9492c68ccf784df0f69f7a9dc356fa5e778
+        return result.data;
+    } catch (e) {
+        console.log(e);
+    }
+<<<<<<< HEAD
+};
+=======
+};
 
+
+>>>>>>> 57fdd9492c68ccf784df0f69f7a9dc356fa5e778
