@@ -1,5 +1,4 @@
-import axios from 'axios'
-import React, { useMemo, useState } from 'react'
+
 import imageLocal1 from '../components/img/img/img1.jpg';
 import imageLocal2 from '../components/img/img/img2.jpg';
 import imageLocal4 from '../components/img/img/img4.jpg';
@@ -7,13 +6,13 @@ import imageLocal7 from '../components/img/img/img7.jpg';
 import imageLocal8 from '../components/img/img/img8.jpg';
 import imageLocal9 from '../components/img/img/img9.jpg';
 export default function HomePage() {
-  const [state, setState] = useState([]);
-  const [page,setPage] = useState(6)
-  useMemo(async() => {
-    const value = await axios.get(`http://localhost:8080/api/supply/list?p=${page}`);
-    setState (value.data);
-    console.log(value.data);
-  },[page])
+  // const [state, setState] = useState([]);
+  // const [page,setPage] = useState(6)
+  // useMemo(async() => {
+  //   const value = await axios.get(`http://localhost:8080/api/supply/list?p=${page}`);
+  //   setState (value.data);
+  //   console.log(value.data);
+  // },[page])
   return (
     
 <div>
