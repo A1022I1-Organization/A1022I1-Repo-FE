@@ -1,6 +1,6 @@
 
 import imageLocal1 from '../components/img/img/img1.jpg';
-import imageLocal2 from '../components/img/img/img2.jpg';
+import imageLocal2 from '../components/img/img/img2.png';
 import imageLocal4 from '../components/img/img/img4.jpg';
 import imageLocal7 from '../components/img/img/img7.jpg';
 import imageLocal8 from '../components/img/img/img8.jpg';
