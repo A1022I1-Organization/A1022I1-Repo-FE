@@ -19,7 +19,9 @@ export function StatisticsMaterial() {
   }, [convertedData]);
 
   const fetchData = async () => {
-    const result = await service.findAllBetweenDays(lastDate);
+    const tokenAccount = localStorage.getItem("tokenAccount");
+
+    const result = await service.findAllBetweenDays(lastDate, tokenAccount);
     console.log(result);
     setData(result);
   };
