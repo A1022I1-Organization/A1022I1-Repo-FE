@@ -6,6 +6,7 @@ import * as supplyServices from "../../services/medical_supplies/MedicalSupplySe
 import "../../components/css/style.css";
 
 export function Information() {
+  
   // const [imageSrc, setImageSrc] = useState("");
   // const handleFileChange = (e) => {
   //     const fileInput = e.target;
@@ -17,9 +18,10 @@ export function Information() {
   //         reader.readAsDataURL(fileInput.files[0]);
   //     }
   // };
+
   const [supply, setSupply] = useState();
   const param = useParams();
-  //
+  
   useEffect(() => {
     getSupply();
   }, []);
@@ -31,6 +33,7 @@ export function Information() {
     console.log(supplyDetail);
     setSupply(supplyDetail);
   };
+
   return (
     <div>
       <div className="all">
