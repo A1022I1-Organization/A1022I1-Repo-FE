@@ -111,7 +111,7 @@ export const ChangePasswordModal = (props) => {
                       <ErrorMessage
                         name="inputCode"
                         component="p"
-                        className="form-change-password-error"
+                        className="form-input-code-error"
                       />
                     </div>
                     {countDown !== 0 ? (

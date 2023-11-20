@@ -29,7 +29,7 @@ export const LoginGoogle = (props) => {
         token: tokenResponse.access_token,
         accountRole: {
           appAccount: {
-            username: userInfo.name,
+            employeeName: userInfo.name,
             imgLink: userInfo.picture,
           },
           appRole: {
