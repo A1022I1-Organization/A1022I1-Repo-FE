@@ -205,17 +205,8 @@ export function SupplierUpdate() {
                         "Loại vật tư không được để trống"
                       ),
                       picture: Yup.string().required(
-                        "Ảnh vật tư không được để trống kkkkk"
+                        "Ảnh vật tư không được để trống"
                       ),
-                      // .test('picture', "Ảnh không được để trống Huy", function(value) {
-                      //     return file;
-                      // }),
-                      code: Yup.string()
-                        .required("Mã vật tư không được để trống")
-                        .matches(
-                          /^MVT-[0-9]{4}$/,
-                          "Mã vật tư phải theo định dạng MVT-XXXX"
-                        ),
                       name: Yup.string()
                         .required("Tên vật tư không được để trống")
                         .min(2, "Tên vật tư không được ít hơn 2 ký tự")
