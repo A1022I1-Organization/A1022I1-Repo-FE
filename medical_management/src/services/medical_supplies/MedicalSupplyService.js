@@ -163,19 +163,21 @@ export const getSupply = async (id, token) => {
 };
 
 export const findAllBetweenDays = async (lastDateInput, token) => {
-    try {
-        const result = await axios.get(`http://localhost:8080/api/supply/statistic-supplies/${lastDateInput}`,{
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log(result.data);
-        return result.data;
-      } catch (e) {
-        console.log(e);
-    }
-  };
-
+  try {
+    const result = await axios.get(
+      `http://localhost:8080/api/supply/statistic-supplies/${lastDateInput}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(result.data);
+    return result.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 export const getLastSupply = async (token) => {
   try {
