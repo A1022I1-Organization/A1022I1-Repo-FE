@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useMemo, useState } from 'react'
-
+import "../components/css/HomePage.css"
 export default function List() {
   const [state, setState] = useState([]);
   const [categories, setCategories] = useState([]);

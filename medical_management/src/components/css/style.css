@@ -110,15 +110,4 @@ th, td {
 .form-label {
     font-weight: bold;
 }
-.nav-item:hover {
-    background-color: lightyellow;
-    color: black;
-}
-.card:hover{
-    background-color: rgb(229, 91, 6);
-    color: black;
-}
-#sidebar {
-    position: fixed;
-    overflow-y: auto; /* Thêm thanh cuộn nếu nội dung vượt quá kích thước */
-}
+

@@ -40,7 +40,6 @@ export const Header = () => {
   useEffect(() => {
     const tokenAccount = localStorage.getItem("tokenAccount");
     const tokenGoogle = localStorage.getItem("tokenGoogle");
-    console.log(tokenGoogle);
     const username = localStorage.getItem("username");
     if ((tokenAccount && username) !== null && tokenGoogle === null) {
       getUserLoginByAccount(tokenAccount, username);
@@ -235,7 +234,7 @@ export const Header = () => {
                   </NavLink>
                   {role === "admin" && (
                     <NavLink
-                      // to=""
+                      to="/admin/create-account"
                       className="hd-content-navbar"
                       style={{ textDecoration: "none" }}
                     >

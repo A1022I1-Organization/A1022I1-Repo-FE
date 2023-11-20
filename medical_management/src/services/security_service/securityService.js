@@ -13,7 +13,7 @@ export const loginByAccount = async (account) => {
 
 export const getUserLoginAccount = async (token, username) => {
   try {
-    console.log(token);
+    console.log(username);
     const result = await axios.get(
       `http://localhost:8080/api/getAccount/${username}`,
       {
