@@ -210,9 +210,9 @@ export function SupplierCreate () {
                                                 .required('Tên vật tư không được để trống')
                                                 .min(2, 'Tên vật tư không được ít hơn 2 ký tự')
                                                 .max(100, 'Tên vật tư không được nhiều hơn 100 ký tự'),
-                                            // price: Yup.string()
-                                            //     .required('Giá thành không được để trống')
-                                            //     .matches(/^0$/, 'Giá thành không thể là 0'),
+                                            price: Yup.string()
+                                                .required('Giá thành không được để trống')
+                                                .matches(/^0$/, 'Giá thành không thể là 0'),
                                             quantity: Yup.string()
                                                 .required('Số lượng không được để trống')
                                                 .matches(/^[1-9]\d*$/, 'Số lượng phải là số nguyên dương'),
