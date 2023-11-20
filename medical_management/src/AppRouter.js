@@ -6,8 +6,8 @@ import { SupplierUpdate } from "./layouts/medical_supplies/SupplierUpdate";
 import { Information } from "./layouts/medical_supplies/Information";
 import HomePage from "./layouts/HomePage";
 import List from "./layouts/List";
-
 import { Footer } from "./layouts/FooterLayout";
+
 import { CreateAccount } from "./layouts/account/CreateAccount";
 import { StatisticsMaterial } from "./layouts/statistics_material/StatisticsMaterial";
 
@@ -26,14 +26,13 @@ export const AppRouter = () => {
           <Route path="meterial" element={<StatisticsMaterial />} />
         </Route>
 
-        <Route path="/supply" element={<Outlet />}>
+        <Route path="/supply" element={<Outlet />}/>
           <Route path="/supply/create" element={<SupplierCreate />} />
           <Route path="/supply/update/:id" element={<SupplierUpdate />} />
           <Route path="list" element={<SuppliesList />}></Route>
           <Route path="/supply/list/:id" element={<Information />}></Route>
           <Route path="" element={""} />
           <Route />
-        </Route>
       </Routes>
       <Footer />
     </BrowserRouter>

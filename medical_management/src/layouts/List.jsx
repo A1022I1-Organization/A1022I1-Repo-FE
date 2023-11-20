@@ -9,7 +9,9 @@ export default function List() {
   useMemo(async() => {
     console.log(condition)
     const value = await axios.get(`http://localhost:8080/api/supply/list?c=${condition}&p=${page}`);
+
     setState (value.data);
+
    
   },[page,condition])
   useMemo(async() => {
@@ -53,9 +55,9 @@ export default function List() {
                 <div className="row">
                     {state?
                         state.map(item =>  <div className="col-md-4">
-                        <div className="card mb-4">
+                        <div className="card mb-4" style={{ width: '20rem' }}>
                             <img src={item.picture} className="card-img-top" alt="Ảnh 1" />
-                            <div className="card-body">
+                            <div className="card-body" style={{ height: '8rem' }}>
                                 <h5 className="card-title">{item.name}</h5>
                                 <p className="card-text">Giá: {item.price}</p>
                             </div>
@@ -63,10 +65,10 @@ export default function List() {
                     </div>) : "Hiện Tại Không có sản phẩm"
                     }
                 {
-                    page <= 6 ? <button onClick={() => setPage(prev => prev += 4)}> xem them ... </button> : 
+                    page <= 6 ? <button class="btn btn-primary" onClick={() => setPage(prev => prev += 4)}> xem them ... </button> : 
                     <div>
-                         <button onClick={() => setPage(prev => prev -= 4)}> rut gon ... </button>
-                         <button onClick={() => setPage(prev => prev += 4)}> xem them ... </button>
+                         <button class="btn btn-secondary" onClick={() => setPage(prev => prev -= 4)}> rut gon ... </button>
+                         <button class="btn btn-primary" onClick={() => setPage(prev => prev += 4)}> xem them ... </button>
                         </div>
                 }
                 </div>
