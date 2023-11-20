@@ -8,7 +8,7 @@ export const Footer = ({ categories }) => {
   return (
     <>
      {/* Footer */}
-<footer className="text-center text-lg-start bg-white text-muted">
+<footer  className="text-center text-lg-start bg-white text-muted">
   {/* Section: Social media */}
   <section className="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
     {/* Left */}
@@ -35,8 +35,9 @@ export const Footer = ({ categories }) => {
   </section>
   {/* Section: Social media */}
   {/* Section: Links  */}
-  <section className>
-    <div className="container text-center text-md-start mt-5">
+  <div id='myFooter'>
+  <section className >
+    <div  className="container text-center text-md-start mt-5">
       {/* Grid row */}
       <div className="row mt-3">
         {/* Grid column */}
@@ -100,6 +101,7 @@ export const Footer = ({ categories }) => {
     </div>
   </section>
   {/* Section: Links  */}
+  </div>
 </footer>
 {/* Footer */}
 
