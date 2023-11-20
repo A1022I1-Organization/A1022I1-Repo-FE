@@ -38,8 +38,8 @@ export default function List() {
                             <div className="accordion-body">
                                 <ul className="nav flex-column" >
                                    
-                                    {categories.map(item =>   <li className="nav-item" id='nav21'>
-                                        <p onClick={() => setCondition(item.id)}>{item.name}</p>
+                                    {categories.map(item =>   <li className="btn btn-white" id='nav21'>
+                                        <button className="btn btn-lightyellow" type="button" onClick={() => setCondition(item.id)}>{item.name}</button>
                                     </li>)}
                                 </ul>
                             </div>
