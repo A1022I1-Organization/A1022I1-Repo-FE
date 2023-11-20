@@ -8,7 +8,6 @@ import HomePage from "./layouts/HomePage";
 import List from "./layouts/List";
 import { Footer } from "./layouts/FooterLayout";
 
-import { Footer } from "./layouts/FooterLayout";
 import { CreateAccount } from "./layouts/account/CreateAccount";
 import { StatisticsMaterial } from "./layouts/statistics_material/StatisticsMaterial";
 
