@@ -17,6 +17,82 @@ export const getOldSuppliesPage = async (page, token) => {
   }
 };
 
+export const getSuppliesByName = async (page, token, name) => {
+    try {
+        const response = await axios.get(
+            `http://localhost:8080/api/supply/oldSupplies/searchName?page=${page}&size=5`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+            name
+        );
+
+        return [response.data.content, response.data.totalPages];
+    } catch (error) {
+        console.error("Error fetching page:", error);
+    }
+};
+
+export const getSuppliesByCategory = async (page, token, type) => {
+    try {
+        const response = await axios.get(
+            `http://localhost:8080/api/supply/oldSupplies/searchType?page=${page}&size=5`,
+            type,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+
+            }
+        );
+
+        return [response.data.content, response.data.totalPages];
+    } catch (error) {
+        console.error("Error fetching page:", error);
+    }
+};
+
+export const getSuppliesBySupplier = async (page, token, supplier) => {
+    try {
+        const response = await axios.get(
+            `http://localhost:8080/api/supply/oldSupplies/searchSupplier?page=${page}&size=5`,
+            supplier,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+
+            }
+        );
+
+        return [response.data.content, response.data.totalPages];
+    } catch (error) {
+        console.error("Error fetching page:", error);
+    }
+};
+
+export const getSuppliesByDate = async (page, token, fromDate, toDate) => {
+    try {
+        const response = await axios.get(
+            `http://localhost:8080/api/supply/oldSupplies/searchType?page=${page}&size=5`,
+            fromDate,
+            toDate,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+
+            }
+        );
+
+        return [response.data.content, response.data.totalPages];
+    } catch (error) {
+        console.error("Error fetching page:", error);
+    }
+};
+
 export const getNewSuppliesPage = async (page, token) => {
   try {
     const response = await axios.get(

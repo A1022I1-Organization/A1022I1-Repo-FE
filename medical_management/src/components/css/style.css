@@ -111,6 +111,10 @@ th, td {
     font-weight: bold;
 }
 
+#dropdown-button-dark-example2 {
+    border-radius: 8px;
+    width: 100px;
+}
 #nav21:hover {
     background-color: lightyellow;
     color: black;
@@ -124,8 +128,8 @@ th, td {
     overflow-y: auto; /* Thêm thanh cuộn nếu nội dung vượt quá kích thước */
 }
 #imgitem {
-    height: '200px';
-    width: '100px';
+    height: 200px;
+    width: 100px;
 }
 #myFooter {
     /* CSS styles for the <footer> element with ID "myFooter" */
@@ -135,4 +139,4 @@ th, td {
     text-align: center;
     /* Thêm các thuộc tính CSS khác cần thiết */
   }
-  
+
