@@ -115,3 +115,28 @@ th, td {
     border-radius: 8px;
     width: 100px;
 }
+#nav21:hover {
+    background-color: lightyellow;
+    color: black;
+}
+#cardmb4:hover{
+    background-color: rgb(229, 91, 6);
+    color: black;
+}
+#sidebar21 {
+    position: fixed;
+    overflow-y: auto; /* Thêm thanh cuộn nếu nội dung vượt quá kích thước */
+}
+#imgitem {
+    height: 200px;
+    width: 100px;
+}
+#myFooter {
+    /* CSS styles for the <footer> element with ID "myFooter" */
+    background-color:lightyellow;
+    color: black;
+    padding: 20px;
+    text-align: center;
+    /* Thêm các thuộc tính CSS khác cần thiết */
+  }
+

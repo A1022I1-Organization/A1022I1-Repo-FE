@@ -1,99 +1,112 @@
+
 import {useEffect, useState} from "react";
-import {Row, Col, Container, Card, Table, InputGroup, Button, DropdownButton, Dropdown} from "react-bootstrap";
+import {Row, Col, Container, Card, Table, DropdownButton, Dropdown} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {DropdownSearch} from "../../components/bootsrap/DropdownSearch";
+import { DropdownSearch } from "../../components/bootsrap/DropdownSearch";
 import * as suppliesService from "../../services/medical_supplies/MedicalSupplyService";
 import "../../components/css/style.css";
-import {toast} from "react-toastify";
-import {NavLink} from "react-router-dom";
-import * as React from 'react';
+import { toast } from "react-toastify";
+import { NavLink } from "react-router-dom";
+import * as React from "react";
 import DeleteConfirmation from "../../components/modal/DeleteConfirmation";
-import MediaQuery from 'react-responsive';
-import * as service from "../../services/medical_supplies/MedicalSupplyService";
 import {Field, Form, Formik} from "formik";
+import {getSuppliesByName} from "../../services/medical_supplies/MedicalSupplyService";
 
 export function SuppliesList() {
-    // Set up a list of oldItem and newItem
-    const [oldItems, setOldItems] = useState([]);
-    const [newItems, setNewItems] = useState([]);
+  // Set up a list of oldItem and newItem
+  const [oldItems, setOldItems] = useState([]);
+  const [newItems, setNewItems] = useState([]);
 
-    const [totalOSPages, setTotalOSPages] = useState();
-    const [totalNSPages, setTotalNSPages] = useState();
-    const [oldSuplliesPage, setOldSuppliesPage] = useState(0);
-    const [newSuplliesPage, setNewSuppliesPage] = useState(0);
+  const [totalOSPages, setTotalOSPages] = useState();
+  const [totalNSPages, setTotalNSPages] = useState();
+  const [oldSuplliesPage, setOldSuppliesPage] = useState(0);
+  const [newSuplliesPage, setNewSuppliesPage] = useState(0);
 
-    const [type, setType] = useState(null);
-    const [delId, setDelId] = useState(null);
-    const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
-    const [deleteMessage, setDeleteMessage] = useState(null);
+  const [type, setType] = useState(null);
+  const [delId, setDelId] = useState(null);
+  const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState(null);
 
-    const [selectedForm, setSelectedForm] = useState(null);
 
-    const token = localStorage.getItem("tokenAccount");
+  const [selectedForm, setSelectedForm] = useState(null);
+  const token = localStorage.getItem("tokenAccount");
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  const getOldPage = async (page, token) => {
+    const [data, totalPage] = await suppliesService.getOldSuppliesPage(page, token);
+    setTotalOSPages(totalPage);
+    setOldItems(data);
+  };
 
-    const getOldPage = async (page, token) => {
-        const [data, totalPage] = await suppliesService.getOldSuppliesPage(page, token);
-        setTotalOSPages(totalPage);
-        setOldItems(data);
-    };
+  const getNewPage = async (page, token) => {
+    const [data, totalPage] = await suppliesService.getNewSuppliesPage(page,token);
+    setTotalNSPages(totalPage);
+    setNewItems(data);
+  };
 
-    const getNewPage = async (page, token) => {
-        const [data, totalPage] = await suppliesService.getNewSuppliesPage(page, token);
-        setTotalNSPages(totalPage);
-        setNewItems(data);
-    };
+  // Handle the displaying of the modal based on type and id
+  const showDeleteModal = (type, delId) => {
+    setType(type);
+    setDelId(delId);
+    if (type === "oldItem") {
+      setDeleteMessage(
+        `Bạn chắc chắn muốn xóa '${
+          oldItems.find((x) => x.id === delId).name
+        }' không?`
+      );
+    } else if (type === "newItem") {
+      setDeleteMessage(
+        `Bạn chắc chắn muốn xóa '${
+          newItems.find((x) => x.id === delId).name
+        }' không?`
+      );
+    }
+    console.log("asd");
 
-    // Handle the displaying of the modal based on type and id
-    const showDeleteModal = (type, delId) => {
-        setType(type);
-        setDelId(delId);
-        if (type === "oldItem") {
+    setDisplayConfirmationModal(true);
+  };
+  // Hide the modal
+  const hideConfirmationModal = () => {
+    setDisplayConfirmationModal(false);
+  };
 
-            setDeleteMessage(`Bạn chắc chắn muốn xóa '${oldItems.find((x) => x.id === delId).name}' không?`);
-        } else if (type === "newItem") {
+  // Handle the actual deletion of the item
+  const submitDelete = async (type, delId) => {
+    const tokenAccount = localStorage.getItem("tokenAccount");
 
-            setDeleteMessage(`Bạn chắc chắn muốn xóa '${newItems.find((x) => x.id === delId).name}' không?`);
-        }
-        console.log("asd")
+    if (type === "oldItem") {
+      await suppliesService.deleteSupply(delId, tokenAccount);
+      toast.success(
+        `Xóa '${oldItems.find((x) => x.id === delId).name}' thành công.`
+      );
+      setOldItems(oldItems.filter((oldItem) => oldItem.id !== delId));
+      getOldPage(oldSuplliesPage, token);
+    } else if (type === "newItem") {
+      await suppliesService.deleteSupply(delId);
+      toast.success(
+        `Xóa '${newItems.find((x) => x.id === delId).name}' thành công.`
+      );
+      setNewItems(newItems.filter((newItem) => newItem.id !== delId));
+      getNewPage(newSuplliesPage, token);
+    }
+    setDisplayConfirmationModal(false);
+  };
 
-        setDisplayConfirmationModal(true);
-    };
-    // Hide the modal
-    const hideConfirmationModal = () => {
-        setDisplayConfirmationModal(false);
-    };
+  useEffect(() => {
+    if (token) {
+      getOldPage(oldSuplliesPage, token);
+    }
+  }, [oldSuplliesPage, token]);
 
-    // Handle the actual deletion of the item
-    const submitDelete = async (type, delId) => {
-        if (type === "oldItem") {
-            await suppliesService.deleteSupply(delId);
-            toast.success(`Xóa '${oldItems.find((x) => x.id === delId).name}' thành công.`);
-            setOldItems(oldItems.filter((oldItem) => oldItem.id !== delId));
-            getOldPage(oldSuplliesPage, token);
-        } else if (type === "newItem") {
-            await suppliesService.deleteSupply(delId);
-            toast.success(`Xóa '${newItems.find((x) => x.id === delId).name}' thành công.`);
-            setNewItems(newItems.filter((newItem) => newItem.id !== delId));
-            getNewPage(newSuplliesPage, token);
-        }
-        setDisplayConfirmationModal(false);
+  const handleNextOSPage = () => {
+    setOldSuppliesPage((prev) => prev + 1);
+  };
+  const handlePreviousOSPage = () => {
+    setOldSuppliesPage((prev) => prev - 1);
+  };
 
-    };
-
-    useEffect(() => {
-        if (token) {
-            getOldPage(oldSuplliesPage, token);
-        }
-    }, [oldSuplliesPage, token]);
-
-    const handleNextOSPage = () => {
-        setOldSuppliesPage((prev) => prev + 1);
-    };
-    const handlePreviousOSPage = () => {
-        setOldSuppliesPage((prev) => prev - 1);
-    };
-
-    useEffect(() => {
+  useEffect(() => {
         if (token) {
             getNewPage(newSuplliesPage, token);
         }
@@ -106,11 +119,20 @@ export function SuppliesList() {
         setNewSuppliesPage((prev) => prev - 1);
     };
 
+    useEffect(() => {
+        if (token) {
+            getSuppliesByName(oldSuplliesPage, token);
+        }
+    }, [oldSuplliesPage, token]);
 
     const InputSupplyName = () => {
-        const handleSearchByName = async (page, token, name) => {
-            const data = await service.getSuppliesByName(oldSuplliesPage, token, name);
+        const handleSearchByName = async (name) => {
+            const tokenSearchName = localStorage.getItem("tokenAccount");
+            const data = await suppliesService.getSuppliesByName(oldSuplliesPage, name, tokenSearchName);
             setOldSuppliesPage(data);
+            setOldItems(data);
+            console.log(tokenSearchName)
+            console.log(data);
         };
 
         return (
@@ -144,12 +166,12 @@ export function SuppliesList() {
         }, []);
 
         const getCategory = async () => {
-            const list = await service.getCategories();
+            const list = await suppliesService.getCategories();
             setCategory(list);
         }
 
         const handleSearchByCategory = async (page, token) => {
-            const data = await service.getSuppliesByCategory(oldSuplliesPage, token, type);
+            const data = await suppliesService.getSuppliesByCategory(oldSuplliesPage, token, type);
             setOldSuppliesPage(data);
         };
 
@@ -164,7 +186,7 @@ export function SuppliesList() {
                 >
                     <Form>
                         <Field as="select" name="category" className="form-select"
-                               // onChange={() => handleSearchByCategory()}
+                               onChange={() => handleSearchByCategory()}
                             >
                             {category.map((value) => (
                                 <option value={JSON.stringify(value)}>{value.name}</option>
@@ -185,12 +207,12 @@ export function SuppliesList() {
         }, []);
 
         const getSupplier = async () => {
-            const list = await service.getSuppliers();
+            const list = await suppliesService.getSuppliers();
             setSupplier(list);
         }
 
-        const handleSearchBySupplier = async (page, token) => {
-            const data = await service.getOldSuppliesPage(oldSuplliesPage, token);
+        const handleSearchBySupplier = async (page, token, supplier) => {
+            const data = await suppliesService.getSuppliesBySupplier(oldSuplliesPage, token, supplier);
             setOldSuppliesPage(data);
         };
 
@@ -219,24 +241,18 @@ export function SuppliesList() {
     };
 
     const InputExpiry = () => {
-        // const [expiry, setExpiry] = useState();
-        //
-        // const [fromDate, setFromDate] = useState();
-        // const [toDate, setToDate] = useState();
-        //
-        // const handleSearchByDate = async (page, token) => {
-        //     if (fromDate <= expiry <= toDate) {
-        //         const data = await service.getOldSuppliesPage(oldSuplliesPage, token);
-        //         setOldSuppliesPage(data);
-        //     }
-        // };
+        const handleSearchByDate = async (page, token, fromDate, toDate) => {
+            if (fromDate <= oldItems.expiry <= toDate) {
+                const data = await suppliesService.getSuppliesByDate(oldSuplliesPage, token, fromDate, toDate);
+                setOldSuppliesPage(data);
+            }
+        };
 
         return (
             <>
                 <Formik
                     initialValues={
                         {
-                            expiry: oldItems.expiry,
                             fromDate: "",
                             toDate: ""
                         }
@@ -252,7 +268,7 @@ export function SuppliesList() {
                         <Field type="date" name="toDate"></Field>
                         </span>
                         <br/>
-                        {/*<button onChange={() => handleSearchByDate()}>Tìm kiếm</button>*/}
+                        <button onChange={() => handleSearchByDate()}>Tìm kiếm</button>
                     </Form>
                 </Formik>
             </>
@@ -264,10 +280,8 @@ export function SuppliesList() {
     };
 
     return (
-
         <>
-            <Container>
-
+          <Container>
                 <Row>
                     <Col md={{span: 10, offset: 1}}>
                         {/*Search menu*/}

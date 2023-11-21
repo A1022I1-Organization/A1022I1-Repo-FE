@@ -1,6 +1,8 @@
 import axios from 'axios'
 import React, { useMemo, useState } from 'react'
 
+import "../components/css/HomePage.css"
+
 export default function List() {
   const [state, setState] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -9,7 +11,9 @@ export default function List() {
   useMemo(async() => {
     console.log(condition)
     const value = await axios.get(`http://localhost:8080/api/supply/list?c=${condition}&p=${page}`);
+
     setState (value.data);
+
    
   },[page,condition])
   useMemo(async() => {
@@ -21,7 +25,7 @@ export default function List() {
     <div className="container">
     <div className="row">
         
-        <nav id="sidebar" className="col-md-3 col-lg-2 d-md-block bg-light sidebar px-2">
+        <nav id="sidebar21" className="col-md-3 col-lg-2 d-md-block bg-light sidebar px-2">
             <div className="position-sticky">
                 <h3>Sản phẩm</h3>       
                 <div className="accordion" id="accordionCategory2">
@@ -33,10 +37,10 @@ export default function List() {
                         </h2>
                         <div id="collapseCategory2" className="accordion-collapse collapse show" aria-labelledby="headingCategory2" data-bs-parent="#accordionCategory2">
                             <div className="accordion-body">
-                                <ul className="nav flex-column">
+                                <ul className="nav flex-column" >
                                    
-                                    {categories.map(item =>   <li className="nav-item">
-                                        <p onClick={() => setCondition(item.id)}>{item.name}</p>
+                                    {categories.map(item =>   <li className="btn btn-white" id='nav21'>
+                                        <button className="btn btn-lightyellow" type="button" onClick={() => setCondition(item.id)}>{item.name}</button>
                                     </li>)}
                                 </ul>
                             </div>
@@ -53,9 +57,9 @@ export default function List() {
                 <div className="row">
                     {state?
                         state.map(item =>  <div className="col-md-4">
-                        <div className="card mb-4">
-                            <img src={item.picture} className="card-img-top" alt="Ảnh 1" />
-                            <div className="card-body">
+                        <div className="card mb-4" id='cardmb4' style={{ width: '20rem' }}>
+                            <img src={item.picture} id='imgitem' className="card-img-top" alt="Ảnh 1" />
+                            <div className="card-body" id='cardbody' style={{ height: '8rem' }}>
                                 <h5 className="card-title">{item.name}</h5>
                                 <p className="card-text">Giá: {item.price}</p>
                             </div>
@@ -63,10 +67,10 @@ export default function List() {
                     </div>) : "Hiện Tại Không có sản phẩm"
                     }
                 {
-                    page <= 6 ? <button onClick={() => setPage(prev => prev += 4)}> xem them ... </button> : 
+                    page <= 6 ? <button class="btn btn-primary" onClick={() => setPage(prev => prev += 4)}> xem them ... </button> : 
                     <div>
-                         <button onClick={() => setPage(prev => prev -= 4)}> rut gon ... </button>
-                         <button onClick={() => setPage(prev => prev += 4)}> xem them ... </button>
+                         <button class="btn btn-secondary" onClick={() => setPage(prev => prev -= 4)}> rut gon ... </button>
+                         <button class="btn btn-primary" onClick={() => setPage(prev => prev += 4)}> xem them ... </button>
                         </div>
                 }
                 </div>
