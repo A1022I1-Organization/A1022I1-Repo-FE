@@ -17,6 +17,43 @@ export const getOldSuppliesPage = async (page, token) => {
   }
 };
 
+export const getSuppliesByName = async (page, token, name) => {
+    try {
+        const response = await axios.get(
+            `http://localhost:8080/api/supply/oldSupplies?page=${page}&size=5`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                params: name,
+            }
+        );
+
+        return [response.data.content, response.data.totalPages];
+    } catch (error) {
+        console.error("Error fetching page:", error);
+    }
+};
+
+export const getSuppliesByCategory = async (page, token, type) => {
+    try {
+        const response = await axios.get(
+            `http://localhost:8080/api/supply/oldSupplies?page=${page}&size=5`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                params: type,
+            }
+        );
+
+        return [response.data.content, response.data.totalPages];
+    } catch (error) {
+        console.error("Error fetching page:", error);
+    }
+};
+
+
 export const getNewSuppliesPage = async (page, token) => {
   try {
     const response = await axios.get(

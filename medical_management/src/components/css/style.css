@@ -110,3 +110,8 @@ th, td {
 .form-label {
     font-weight: bold;
 }
+
+#dropdown-button-dark-example2 {
+    border-radius: 8px;
+    width: 100px;
+}
