@@ -18,7 +18,7 @@ import { CreateAccount } from "../layouts/account/CreateAccount";
 import { StatisticsMaterial } from "../layouts/statistics_material/StatisticsMaterial";
 import { useSelector } from "react-redux";
 import NotFound from "../components/NotFound";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export const AppRoutes = () => {
   const account = useSelector((store) => store.auth);
@@ -34,6 +34,9 @@ export const AppRoutes = () => {
       return "user";
     }
   }, [account]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <BrowserRouter>
       {(role === "admin" ||

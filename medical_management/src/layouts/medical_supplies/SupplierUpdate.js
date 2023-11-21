@@ -25,7 +25,9 @@ export function SupplierUpdate() {
   const [isLoading, setIsLoading] = useState();
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState("");
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   useEffect(() => {
     const tokenAccount = localStorage.getItem("tokenAccount");
 
@@ -61,9 +63,10 @@ export function SupplierUpdate() {
   const getSupply = async () => {
     const tokenAccount = localStorage.getItem("tokenAccount");
     const result = await service.getSupply(idParam.id, tokenAccount);
+    const stringValue = result.price.toLocaleString("vi-VN");
     setSupply(result);
     setImageSrc(result.picture);
-    setInputValue(result.price);
+    setInputValue(stringValue);
 
     console.log(result.picture);
   };
@@ -85,9 +88,10 @@ export function SupplierUpdate() {
     }).format(numericValue);
 
     const trimmedValue = formattedValue.replace(/\s/g, "");
+    const endValue = trimmedValue.slice(0, -1);
 
     // Update the input field with the formatted value
-    setInputValue(trimmedValue);
+    setInputValue(endValue);
   };
 
   // Upload img
@@ -178,7 +182,9 @@ export function SupplierUpdate() {
                         urlImg = await handleUpload();
                       }
 
-                      const parsePrice = parseFloat(inputValue);
+                      const parsePrice = parseFloat(
+                        inputValue.replace(/\./g, "")
+                      );
 
                       const obj = {
                         ...values,

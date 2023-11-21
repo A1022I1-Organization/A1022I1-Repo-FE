@@ -9,7 +9,9 @@ export function StatisticsMaterial() {
   const [firstDate, setFirstDate] = useState("");
   const [lastDate, setLastDate] = useState("");
   const chartRef = useRef();
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   useEffect(() => {
     fetchData();
   }, [firstDate, lastDate]);

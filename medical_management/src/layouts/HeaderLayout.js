@@ -33,14 +33,18 @@ export const Header = () => {
     setOpenModalChangePassword(true);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   //call store get data
   const account = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   console.log(account);
+
   useEffect(() => {
     const tokenAccount = localStorage.getItem("tokenAccount");
     const tokenGoogle = localStorage.getItem("tokenGoogle");
-    console.log(tokenGoogle);
     const username = localStorage.getItem("username");
     if ((tokenAccount && username) !== null && tokenGoogle === null) {
       getUserLoginByAccount(tokenAccount, username);
@@ -235,7 +239,7 @@ export const Header = () => {
                   </NavLink>
                   {role === "admin" && (
                     <NavLink
-                      // to=""
+                      to="/admin/create-account"
                       className="hd-content-navbar"
                       style={{ textDecoration: "none" }}
                     >
