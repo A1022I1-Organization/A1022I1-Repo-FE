@@ -26,7 +26,9 @@ export function SupplierCreate () {
     const navigate = useNavigate();
     const [inputValue, setInputValue] = useState('');
     const tokenAccount = localStorage.getItem('tokenAccount');
-
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
     useEffect( () => {
         const fetchData = async () => {
             try {
@@ -177,8 +179,7 @@ export function SupplierCreate () {
                                     }
                                     onSubmit={async(values, {setSubmitting}) => {
                                         const urlImg = await handleUpload();
-                                        
-                                        const parsePrice = parseFloat(inputValue);
+                                        const parsePrice = parseFloat(inputValue.replace(/\./g, ''));
                                         const obj = {
                                             ...values,
                                             code: `MVT-${String(lastSupply.id + 1).padStart(4, '0')}`,
@@ -210,9 +211,9 @@ export function SupplierCreate () {
                                                 .required('Tên vật tư không được để trống')
                                                 .min(2, 'Tên vật tư không được ít hơn 2 ký tự')
                                                 .max(100, 'Tên vật tư không được nhiều hơn 100 ký tự'),
-                                            price: Yup.string()
-                                                .required('Giá thành không được để trống')
-                                                .matches(/^0$/, 'Giá thành không thể là 0'),
+                                            // price: Yup.string()
+                                            //     .required('Giá thành không được để trống')
+                                            //     .matches(/^0$/, 'Giá thành không thể là 0'),
                                             quantity: Yup.string()
                                                 .required('Số lượng không được để trống')
                                                 .matches(/^[1-9]\d*$/, 'Số lượng phải là số nguyên dương'),

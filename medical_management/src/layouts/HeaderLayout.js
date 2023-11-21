@@ -33,10 +33,15 @@ export const Header = () => {
     setOpenModalChangePassword(true);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   //call store get data
   const account = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   console.log(account);
+
   useEffect(() => {
     const tokenAccount = localStorage.getItem("tokenAccount");
     const tokenGoogle = localStorage.getItem("tokenGoogle");

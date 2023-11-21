@@ -27,7 +27,9 @@ export function SuppliesList() {
   const [deleteMessage, setDeleteMessage] = useState(null);
 
   const token = localStorage.getItem("tokenAccount");
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const getOldPage = async (page, token) => {
     const [data, totalPage] = await suppliesService.getOldSuppliesPage(
       page,
