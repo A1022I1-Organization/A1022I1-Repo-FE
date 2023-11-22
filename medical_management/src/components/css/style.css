@@ -110,6 +110,7 @@ th, td {
 .form-label {
     font-weight: bold;
 }
+
 #nav21:hover,
 #nav21.active {
     background-color: #f58220;
@@ -146,10 +147,16 @@ th, td {
     text-align: center;
     /* Thêm các thuộc tính CSS khác cần thiết */
   }
+
 #row21{
     margin-top: 20px ;
 }
 #error21{
     color: red;
 }
-  
+
+
+.label {
+    font-weight: bold;
+}
+

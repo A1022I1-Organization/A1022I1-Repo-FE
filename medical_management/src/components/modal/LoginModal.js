@@ -77,6 +77,7 @@ export const LoginModal = (props) => {
                   } else {
                     toast.success("Đăng nhập thành công !");
                     handleClose();
+                    navigate("/supply/list");
                   }
                 }}
               >

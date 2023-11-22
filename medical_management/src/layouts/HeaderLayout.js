@@ -33,27 +33,31 @@ export const Header = () => {
     setOpenModalChangePassword(true);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   //call store get data
   const account = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   console.log(account);
+
   useEffect(() => {
     const tokenAccount = localStorage.getItem("tokenAccount");
     const tokenGoogle = localStorage.getItem("tokenGoogle");
-    console.log(tokenGoogle);
     const username = localStorage.getItem("username");
     if ((tokenAccount && username) !== null && tokenGoogle === null) {
       getUserLoginByAccount(tokenAccount, username);
-      console.log("chạy 1");
     } else if (tokenGoogle !== null) {
-      console.log("chạy 2");
       getUserLoginByGoogle(tokenGoogle);
+    } else {
     }
   }, []);
 
   const handleLogout = () => {
     dispatch(logOut(account.token));
     toast.success("Đăng xuất thành công !");
+    navigate("");
   };
   const getUserLoginByAccount = async (token, username) => {
     dispatch(getUserLoginAccount(token, username));
@@ -63,16 +67,16 @@ export const Header = () => {
   };
   const role = useMemo(() => {
     if (account === null) {
-      navigate("");
+      // navigate("");
       return "guest";
     } else if (account.accountRole.appRole.name === "ROLE_ADMIN") {
-      navigate("/supply/list");
+      // navigate("/supply/list");
       return "admin";
     } else if (account.accountRole.appRole.name === "ROLE_EMPLOYEE") {
-      navigate("/supply/list");
+      // navigate("/supply/list");
       return "employee";
     } else if (account.accountRole.appRole.name === "ROLE_USER") {
-      navigate("");
+      // navigate("");
       return "user";
     }
   }, [account]);
@@ -101,11 +105,9 @@ export const Header = () => {
         <div className="header-main">
           <div className="row" id="hd-row-main">
             <div className="col" />
-            {/* <div className="col"> */}
             <NavLink to="" className="col" style={{ textDecoration: "none" }}>
               <img src={logoHeader} id="hd-main-img-logo" />
             </NavLink>
-            {/* </div> */}
             <div
               className="col-8 d-flex justify-content-center align-items-center"
               id="hd-main-title"
@@ -237,7 +239,7 @@ export const Header = () => {
                   </NavLink>
                   {role === "admin" && (
                     <NavLink
-                      // to=""
+                      to="/admin/create-account"
                       className="hd-content-navbar"
                       style={{ textDecoration: "none" }}
                     >

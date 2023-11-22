@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { storage } from "../../firebase/firebaseConfig";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import * as service from "../../services/medical_supplies/MedicalSupplyService";
+import * as utilities from "../../services/medical_supplies/Utilities";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
 import { useParams, useNavigate } from "react-router-dom";
@@ -25,7 +26,11 @@ export function SupplierUpdate() {
   const [isLoading, setIsLoading] = useState();
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState("");
+  const [changeImg, setChangeImg] = useState(true);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   useEffect(() => {
     const tokenAccount = localStorage.getItem("tokenAccount");
 
@@ -61,17 +66,16 @@ export function SupplierUpdate() {
   const getSupply = async () => {
     const tokenAccount = localStorage.getItem("tokenAccount");
     const result = await service.getSupply(idParam.id, tokenAccount);
+    const stringValue = result.price.toLocaleString('vi-VN');
     setSupply(result);
     setImageSrc(result.picture);
-    setInputValue(result.price);
-
-    console.log(result.picture);
+    setInputValue(stringValue);
   };
 
   const updateSupply = async (value) => {
     const tokenAccount = localStorage.getItem("tokenAccount");
     await service.updateSupply(value, tokenAccount);
-    navigate("/supply/list");
+    navigate("/supply/list", { replace: true });
     toast.success("Cập nhật thành công");
   };
 
@@ -85,32 +89,34 @@ export function SupplierUpdate() {
     }).format(numericValue);
 
     const trimmedValue = formattedValue.replace(/\s/g, "");
+    const endValue = trimmedValue.slice(0, -1);
 
     // Update the input field with the formatted value
-    setInputValue(trimmedValue);
+    setInputValue(endValue);
   };
 
   // Upload img
   const handleFileChange = (e) => {
-    setFile(imageSrc);
+    setFile(e.target.files[0]);
     const fileInput = e.target;
     if (fileInput.files && fileInput.files[0]) {
       const reader = new FileReader();
       reader.onload = (event) => {
         setImageSrc(event.target.result);
+        setChangeImg(false);
       };
       reader.readAsDataURL(fileInput.files[0]);
     }
   };
 
   const handleUpload = async () => {
-    if (!file || imageSrc === undefined) {
-      console.log(imageSrc);
-      alert("Please upload an image first!");
-      navigate("/supply/create");
-      setIsLoading(false);
-      return undefined;
-    }
+    // if (!changeImg) {
+    //   console.log(imageSrc);
+    //   alert("Please upload an image first!");
+    //   navigate("/supply/create");
+    //   setIsLoading(false);
+    //   return undefined;
+    // }
     return new Promise((resolve) => {
       const storageRef = ref(storage, `/files/${file.name}`);
       // progress can be paused and resumed. It also exposes progress updates.
@@ -171,14 +177,15 @@ export function SupplierUpdate() {
                     }}
                     onSubmit={async (values, { setSubmitting }) => {
                       let urlImg = "";
-                      if (imageSrc) {
-                        console.log(imageSrc);
+                      if (changeImg) {
                         urlImg = imageSrc;
                       } else {
                         urlImg = await handleUpload();
                       }
 
-                      const parsePrice = parseFloat(inputValue);
+                      const parsePrice = parseFloat(
+                        inputValue.replace(/\./g, "")
+                      );
 
                       const obj = {
                         ...values,
@@ -246,7 +253,7 @@ export function SupplierUpdate() {
                           />
                           <label
                             className="custom-file-upload"
-                            style={{ height: "360px" }}
+                            style={{ height: "360px", margin: 0 }}
                           >
                             <input
                               type="file"
@@ -308,6 +315,7 @@ export function SupplierUpdate() {
                               type="date"
                               name="importDate"
                               className="form-control"
+                              disabled
                             />
                             <ErrorMessage
                               name="importDate"
@@ -319,17 +327,7 @@ export function SupplierUpdate() {
                         <div className="col-md-6">
                           <div className="input-form">
                             <label className="form-label">Mã vật tư</label>
-                            <Field
-                              type="text"
-                              name="code"
-                              className="form-control"
-                              disabled
-                            />
-                            <ErrorMessage
-                              name="code"
-                              className="form-err"
-                              component="span"
-                            ></ErrorMessage>
+                            <h5>{supply.code}</h5>
                           </div>
                           {/*  */}
                           <div className="input-form">
