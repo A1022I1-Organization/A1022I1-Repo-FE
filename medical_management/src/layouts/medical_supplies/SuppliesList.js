@@ -1,6 +1,6 @@
 
 import {useEffect, useState} from "react";
-import {Row, Col, Container, Card, Table, DropdownButton, Dropdown} from "react-bootstrap";
+import {Row, Col, Container, Card, Table, DropdownButton, Dropdown, Button} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { DropdownSearch } from "../../components/bootsrap/DropdownSearch";
 import * as suppliesService from "../../services/medical_supplies/MedicalSupplyService";
@@ -120,12 +120,11 @@ export function SuppliesList() {
     };
 
     const InputSupplyName = () => {
-        const handleSearchByName = async (name) => {
+        const handleSearchByName = async (searchName) => {
             const tokenSearchName = localStorage.getItem("tokenAccount");
-            const data = await suppliesService.getOldSuppliesPage(oldSuplliesPage, tokenSearchName, "Tên vật tư", name);
-            setOldSuppliesPage(data);
-            setOldItems(data);
-            console.log(tokenSearchName)
+            const data = await suppliesService.searchNameSupplies(searchName, tokenSearchName);
+            getOldPage(oldSuplliesPage, token);
+            console.log(searchName);
             console.log(data);
         };
 
@@ -133,7 +132,7 @@ export function SuppliesList() {
             <>
                 <Formik
                     initialValues={{
-                        search: "",
+                        name: "",
                     }}
                 >
                     <Form>
@@ -141,10 +140,8 @@ export function SuppliesList() {
                             className="form-control me-2"
                             type="text"
                             placeholder="Tên vật tư"
-                            name="search"
-                            onChange={(value) => {
-                                handleSearchByName(value.target.value);
-                            }}
+                            name="name"
+                            onChange={(value) => { handleSearchByName(value.target.value) }}
                         />
                     </Form>
                 </Formik>
@@ -182,6 +179,7 @@ export function SuppliesList() {
                         <Field as="select" name="category" className="form-select"
                                onChange={() => handleSearchByCategory()}
                             >
+                            <option>--Chọn loại vật tư--</option>
                             {category.map((value) => (
                                 <option value={JSON.stringify(value)}>{value.name}</option>
                             ))}
@@ -222,6 +220,7 @@ export function SuppliesList() {
                     <Form>
                         <Field as="select" name="category" className="form-select"
                                onChange={() => handleSearchBySupplier()}>
+                            <option>--Chọn nhà cung cấp--</option>
                             {supplier.map((value) => (
                                 <option value={JSON.stringify(value)}>{value.name}</option>
                             ))}
@@ -279,23 +278,22 @@ export function SuppliesList() {
                 <Row>
                     <Col md={{span: 10, offset: 1}}>
                         {/*Search menu*/}
-                        <nav className="navbar " style={{backgroundColor: "white"}}>
+                        <nav className="navbar " style={{backgroundColor: "white", height: "100px"}}>
                             <form className="search-menu">
                                 <DropdownButton id="dropdown-button-dark-example2"
                                                 variant="secondary"
-                                                title={selectedForm ? `${selectedForm}` : 'Tìm kiếm'}
-                                                style={{borderRadius: "0", width: "100px"}}
+                                                title="Tìm kiếm"
                                                 onSelect={handleSelect}>
-                                    <Dropdown.Item eventKey="Tên vật tư" >Tên vật tư</Dropdown.Item>
-                                    <Dropdown.Item eventKey="Loại vật tư">Loại vật tư</Dropdown.Item>
-                                    <Dropdown.Item eventKey="Nhà cung cấp">Nhà cung cấp</Dropdown.Item>
-                                    <Dropdown.Item eventKey="Hạn sử dụng">Hạn sử dụng</Dropdown.Item>
+                                    <Dropdown.Item eventKey="name" >Tên vật tư</Dropdown.Item>
+                                    <Dropdown.Item eventKey="category">Loại vật tư</Dropdown.Item>
+                                    <Dropdown.Item eventKey="supplier">Nhà cung cấp</Dropdown.Item>
+                                    <Dropdown.Item eventKey="expiry">Hạn sử dụng</Dropdown.Item>
                                 </DropdownButton>
 
                                 {/* Render the selected input form */}
-                                {selectedForm === 'Tên vật tư' && <InputSupplyName/>}
-                                {/*{selectedForm === 'Loại vật tư' && <InputSupplyTypes/>}*/}
-                                {/*{selectedForm === 'Nhà cung cấp' && <InputSupplier/>}*/}
+                                {selectedForm === 'name' && <InputSupplyName/>}
+                                {selectedForm === 'category' && <InputSupplyTypes/>}
+                                {selectedForm === 'supplier' && <InputSupplier/>}
                                 {/*{selectedForm === 'Hạn sử dụng' && <InputExpiry/>}*/}
                             </form>
                             <div className="create-button">

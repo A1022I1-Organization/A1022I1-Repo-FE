@@ -1,6 +1,7 @@
 import axios from "axios";
+import dropdown from "bootstrap/js/src/dropdown";
 
-export const getOldSuppliesPage = async (page, token, dropdown, valueSearch) => {
+export const getOldSuppliesPage = async (page, token) => {
   try {
     const response = await axios.get(
       `http://localhost:8080/api/supply/oldSupplies?page=${page}&size=5`,
@@ -8,8 +9,6 @@ export const getOldSuppliesPage = async (page, token, dropdown, valueSearch) => 
         headers: {
           Authorization: `Bearer ${token}`,
         },
-          dropdown,
-          valueSearch
       }
     );
 
@@ -118,6 +117,22 @@ export const getAllSupply = async (token) => {
   }
 };
 
+export const searchNameSupplies = async (name, token) => {
+  try {
+    const data = await axios.get(`http://localhost:8080/api/supply/oldSupplies?name=${name}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+    const resultSearch = data.data.filter((value) => value.name.includes(name));
+    return resultSearch;
+
+  }catch (e) {
+    console.log(e);
+  }
+}
+
 export const getOldSupplies = async (token) => {
   try {
     const result = await axios.get(
@@ -126,7 +141,7 @@ export const getOldSupplies = async (token) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
     return result.data.content;
   } catch (e) {
