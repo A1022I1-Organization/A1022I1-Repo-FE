@@ -140,3 +140,6 @@ th, td {
     /* Thêm các thuộc tính CSS khác cần thiết */
   }
 
+.label {
+    font-weight: bold;
+}

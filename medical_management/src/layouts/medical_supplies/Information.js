@@ -121,14 +121,18 @@ export function Information() {
                           </p>
                         </div>
                       </div>
-                      <hr />
-                      <div className="col-6">
+                      <hr style={{paddingRight: "0", paddingLeft: "0"}} />
+                      <div className="col-3">
                         <div className="mb-3">
                           <p>
                             <span className="label">Ngày nhập kho: </span>
-                            <span>{supply.importDate}</span>
                           </p>
                         </div>
+                      </div>
+                      <div className="col-2" style={{ padding: "0" }}>
+                        <p>
+                          <span>{supply.importDate}</span>
+                        </p>
                       </div>
                       <div className="col-3">
                         <div className="mb-3">
