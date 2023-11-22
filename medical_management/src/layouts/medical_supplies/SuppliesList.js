@@ -9,6 +9,7 @@ import { NavLink } from "react-router-dom";
 import * as React from "react";
 import DeleteConfirmation from "../../components/modal/DeleteConfirmation";
 import MediaQuery from "react-responsive";
+import * as utilities from "../../services/medical_supplies/Utilities";
 
 export function SuppliesList() {
   // Set up a list of oldItem and newItem
@@ -28,6 +29,32 @@ export function SuppliesList() {
 
   const token = localStorage.getItem("tokenAccount");
 
+  // function formatDate(inputDate) {
+  //   const parts = inputDate.split('/');
+  //   const dateObject = new Date(`${parts[0]}-${parts[1]}-${parts[2]}`);
+  
+  //   const day = dateObject.getDate();
+  //   const month = dateObject.getMonth() + 1; // Tháng bắt đầu từ 0
+  //   const year = dateObject.getFullYear();
+  
+  //   const formattedDate = `${day}/${month}/${year}`;
+  
+  //   return formattedDate;
+  // }
+
+  // const formatDateValue = (inputDate) => {
+  //   const parts = inputDate.split('-');
+  //   const dateObject = new Date(`${parts[0]}-${parts[1]}-${parts[2]}`);
+  
+  //   const day = dateObject.getDate();
+  //   const month = dateObject.getMonth() + 1; // Tháng bắt đầu từ 0
+  //   const year = dateObject.getFullYear();
+  
+  //   const formattedDate = `${day}/${month}/${year}`;
+  
+  //   return formattedDate;
+  // }
+  // -----------------------------
   const getOldPage = async (page, token) => {
     const [data, totalPage] = await suppliesService.getOldSuppliesPage(
       page,
@@ -256,7 +283,7 @@ export function SuppliesList() {
                                 textAlign: "center",
                               }}
                             >
-                              {oldItem.importDate}
+                              {utilities.formatDateValue(oldItem.importDate)}
                             </td>
                             <td
                               style={{
@@ -264,7 +291,7 @@ export function SuppliesList() {
                                 textAlign: "center",
                               }}
                             >
-                              {oldItem.expiry}
+                              {utilities.formatDateValue(oldItem.expiry)}
                             </td>
                             <td
                               className="text-center"
@@ -484,7 +511,7 @@ export function SuppliesList() {
                                 textAlign: "center",
                               }}
                             >
-                              {newItem.importDate}
+                              {utilities.formatDateValue(newItem.importDate)}
                             </td>
                             <td
                               style={{
@@ -492,7 +519,7 @@ export function SuppliesList() {
                                 textAlign: "center",
                               }}
                             >
-                              {newItem.expiry}
+                              {utilities.formatDateValue(newItem.expiry)}
                             </td>
                             <td
                               className="text-center"

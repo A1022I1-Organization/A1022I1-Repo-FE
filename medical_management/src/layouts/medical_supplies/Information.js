@@ -3,6 +3,8 @@ import "bootstrap/dist/js/bootstrap.bundle";
 import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import * as supplyServices from "../../services/medical_supplies/MedicalSupplyService";
+import * as utilities from "../../services/medical_supplies/Utilities";
+
 import "../../components/css/style.css";
 
 export function Information() {
@@ -122,7 +124,7 @@ export function Information() {
                         <div className="mb-3">
                           <p>
                             <span className="label">Ngày nhập kho: </span>
-                            <span>{supply.importDate}</span>
+                            <span>{utilities.formatDateValue(supply.importDate)}</span>
                           </p>
                         </div>
                       </div>
@@ -135,7 +137,7 @@ export function Information() {
                       </div>
                       <div className="col-3" style={{ padding: "0" }}>
                         <p>
-                          <span>{supply.expiry}</span>
+                          <span>{utilities.formatDateValue(supply.expiry)}</span>
                         </p>
                       </div>
                     </div>
