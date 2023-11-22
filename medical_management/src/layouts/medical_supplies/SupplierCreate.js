@@ -179,7 +179,14 @@ export function SupplierCreate () {
                                     }
                                     onSubmit={async(values, {setSubmitting}) => {
                                         const urlImg = await handleUpload();
+<<<<<<< HEAD
+                                        
                                         const parsePrice = parseFloat(inputValue.replace(/\./g, ''));
+
+                                        console.log("Price: " +parsePrice);
+=======
+                                        const parsePrice = parseFloat(inputValue.replace(/\./g, ''));
+>>>>>>> 0fc25e2c7918e3e20c403dc00a843533ebe20328
                                         const obj = {
                                             ...values,
                                             code: `MVT-${String(lastSupply.id + 1).padStart(4, '0')}`,
@@ -229,11 +236,11 @@ export function SupplierCreate () {
                                     <Form>
                                         <div className="row" style={{paddingTop : "20px"}}>
                                             <div className="col-md-6">
-                                                <label className="custom-file-upload" style={{height : "360px"}}>
+                                                <label className="custom-file-upload" style={{height : "360px", margin: 0}}>
                                                     <Field
                                                             type="file"
                                                             name="imageFile"
-                                                            accept="image/jpeg, image/png"
+                                                            accept="image/jpg, image/png"
                                                             onChange={handleFileChange}
                                                         />
                                                         <img
@@ -268,7 +275,8 @@ export function SupplierCreate () {
                                             <div className="col-md-6">
                                                 <div className="input-form">
                                                     <label className="form-label">Mã vật tư</label>
-                                                    <Field type="text" name="code" className="form-control" value={`MVT-${String(lastSupply.id + 1).padStart(4, '0')}`} disabled/>
+                                                    {/* <Field type="text" name="code" className="form-control" value={`MVT-${String(lastSupply.id + 1).padStart(4, '0')}`} disabled/> */}
+                                                    <h5>{`MVT-${String(lastSupply.id + 1).padStart(4, '0')}`}</h5>
                                                     <ErrorMessage name="code" className="form-err" component='span'></ErrorMessage>
                                                 </div>
                                                 {/*  */}
