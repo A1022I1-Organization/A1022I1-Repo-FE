@@ -26,7 +26,9 @@ export function SupplierCreate () {
     const navigate = useNavigate();
     const [inputValue, setInputValue] = useState('');
     const tokenAccount = localStorage.getItem('tokenAccount');
-
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
     useEffect( () => {
         const fetchData = async () => {
             try {
@@ -177,10 +179,14 @@ export function SupplierCreate () {
                                     }
                                     onSubmit={async(values, {setSubmitting}) => {
                                         const urlImg = await handleUpload();
+<<<<<<< HEAD
                                         
                                         const parsePrice = parseFloat(inputValue.replace(/\./g, ''));
 
                                         console.log("Price: " +parsePrice);
+=======
+                                        const parsePrice = parseFloat(inputValue.replace(/\./g, ''));
+>>>>>>> 0fc25e2c7918e3e20c403dc00a843533ebe20328
                                         const obj = {
                                             ...values,
                                             code: `MVT-${String(lastSupply.id + 1).padStart(4, '0')}`,

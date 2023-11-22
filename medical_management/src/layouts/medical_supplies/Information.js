@@ -8,7 +8,6 @@ import * as utilities from "../../services/medical_supplies/Utilities";
 import "../../components/css/style.css";
 
 export function Information() {
-  
   // const [imageSrc, setImageSrc] = useState("");
   // const handleFileChange = (e) => {
   //     const fileInput = e.target;
@@ -20,10 +19,13 @@ export function Information() {
   //         reader.readAsDataURL(fileInput.files[0]);
   //     }
   // };
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [supply, setSupply] = useState();
   const param = useParams();
-  
+  const [formatPrice, setFormatPrice] = useState("");
+
   useEffect(() => {
     getSupply();
   }, []);
@@ -32,8 +34,10 @@ export function Information() {
     const tokenAccount = localStorage.getItem("tokenAccount");
 
     const supplyDetail = await supplyServices.getSupply(param.id, tokenAccount);
+    const stringValue = supplyDetail.price.toLocaleString("vi-VN");
     console.log(supplyDetail);
     setSupply(supplyDetail);
+    setFormatPrice(stringValue);
   };
 
   return (
@@ -106,7 +110,7 @@ export function Information() {
                             <span>{supply.category.name}</span>
                           </p>
                           <p>
-                            <span>{supply.price}</span>
+                            <span>{formatPrice}</span>
                           </p>
                           <p>
                             <span>{supply.unit.name}</span>
@@ -119,14 +123,19 @@ export function Information() {
                           </p>
                         </div>
                       </div>
-                      <hr />
-                      <div className="col-6">
+                      <hr style={{paddingRight: "0", paddingLeft: "0"}} />
+                      <div className="col-3">
                         <div className="mb-3">
                           <p>
                             <span className="label">Ngày nhập kho: </span>
                             <span>{utilities.formatDateValue(supply.importDate)}</span>
                           </p>
                         </div>
+                      </div>
+                      <div className="col-2" style={{ padding: "0" }}>
+                        <p>
+                          <span>{supply.importDate}</span>
+                        </p>
                       </div>
                       <div className="col-3">
                         <div className="mb-3">

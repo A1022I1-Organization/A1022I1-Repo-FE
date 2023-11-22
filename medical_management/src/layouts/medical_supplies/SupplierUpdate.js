@@ -29,6 +29,9 @@ export function SupplierUpdate() {
   const [changeImg, setChangeImg] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  useEffect(() => {
     const tokenAccount = localStorage.getItem("tokenAccount");
 
     const fetchData = async () => {
@@ -180,7 +183,9 @@ export function SupplierUpdate() {
                         urlImg = await handleUpload();
                       }
 
-                      const parsePrice = parseFloat(inputValue);
+                      const parsePrice = parseFloat(
+                        inputValue.replace(/\./g, "")
+                      );
 
                       const obj = {
                         ...values,

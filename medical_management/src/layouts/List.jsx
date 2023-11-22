@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useMemo, useState } from 'react'
 
+import "../components/css/HomePage.css"
 
 export default function List() {
   const [state, setState] = useState([]);
@@ -57,7 +58,7 @@ export default function List() {
                     {state?
                         state.map(item =>  <div className="col-md-4">
                         <div className="card mb-4" id='cardmb4' style={{ width: '20rem' }}>
-                            <img src={item.picture} id='imgitem' className="card-img-top" alt="Ảnh 1" style={{ objectFit: 'cover' }} />
+                            <img src={item.picture} id='imgitem' className="card-img-top" alt="Ảnh 1" />
                             <div className="card-body" id='cardbody' style={{ height: '8rem' }}>
                                 <h5 className="card-title">{item.name}</h5>
                                 <p className="card-text">Giá: {item.price}</p>
