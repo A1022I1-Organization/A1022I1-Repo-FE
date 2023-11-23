@@ -179,14 +179,8 @@ export function SupplierCreate () {
                                     }
                                     onSubmit={async(values, {setSubmitting}) => {
                                         const urlImg = await handleUpload();
-<<<<<<< HEAD
                                         
                                         const parsePrice = parseFloat(inputValue.replace(/\./g, ''));
-
-                                        console.log("Price: " +parsePrice);
-=======
-                                        const parsePrice = parseFloat(inputValue.replace(/\./g, ''));
->>>>>>> 0fc25e2c7918e3e20c403dc00a843533ebe20328
                                         const obj = {
                                             ...values,
                                             code: `MVT-${String(lastSupply.id + 1).padStart(4, '0')}`,
