@@ -111,11 +111,22 @@ th, td {
     font-weight: bold;
 }
 
-#nav21:hover,
+#dropdown-button-dark-example2 {
+    border-radius: 8px;
+    width: 100px;
+    background-color: #26B24B;
+    border: #26B24B;
+    margin-bottom: 10px;
+}
+#nav21:hover {
+    background-color: lightyellow;
+}
+
 #nav21.active {
     background-color: #f58220;
     color: black;
 }
+
 #cardmb4:hover{
     background-color: #f58220;
     color: white;
@@ -147,6 +158,10 @@ th, td {
     text-align: center;
     /* Thêm các thuộc tính CSS khác cần thiết */
   }
+
+.label {
+    font-weight: bold;
+}
 
 #row21{
     margin-top: 20px ;
