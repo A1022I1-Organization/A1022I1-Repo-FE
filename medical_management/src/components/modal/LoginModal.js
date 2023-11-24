@@ -53,17 +53,17 @@ export const LoginModal = (props) => {
           <Modal.Title style={{ fontSize: "30px" }}>Đăng nhập</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {isLoading && (
+            <div className="overlay">
+              <div className="spinner-container">
+                <div className="spinner-border" role="status">
+                  <span className="sr-only"></span>
+                </div>
+              </div>
+            </div>
+          )}
           <div className="card-body">
             <div id="modal-form">
-              {isLoading && (
-                <div className="overlay">
-                  <div className="spinner-container">
-                    <div className="spinner-border" role="status">
-                      <span className="sr-only"></span>
-                    </div>
-                  </div>
-                </div>
-              )}
               <Formik
                 initialValues={{
                   username: "",

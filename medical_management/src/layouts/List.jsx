@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import "../components/css/HomePage.css"
 
@@ -20,6 +20,9 @@ export default function List() {
     setCategories (value.data); 
    
   },[]); 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
 <div className="container" id='row21'>
     <div className="row" >
