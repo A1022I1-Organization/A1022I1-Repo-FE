@@ -26,10 +26,27 @@ export default function List() {
     const value = await axios.get(`http://localhost:8080/api/supply/getCategory`);
     setCategories (value.data); 
    
+<<<<<<< HEAD
+  },[]);
+  const fetchAllProducts = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/supply/list');
+      setState(response.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      // Xử lý lỗi nếu cần thiết
+    }
+  };
+=======
   },[]); 
  
 
+>>>>>>> b6107d4d31192c9c7b421b23cb5efaeb0e5b08da
   const handleSearch = () => {
+    if (searchTerm === '') {
+        fetchAllProducts();
+        return;
+      }
     // Lọc dữ liệu dựa trên cụm từ tìm kiếm trong item.name (không phân biệt chữ hoa và thường)
         const filteredData = state.filter(item => item.name.includes(searchTerm));
         setState(filteredData);
