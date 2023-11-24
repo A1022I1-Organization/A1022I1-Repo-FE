@@ -113,8 +113,8 @@ th, td {
 
 #nav21:hover,
 #nav21.active {
-    background-color: #f58220;
-    color: black;
+    background-color: lightyellow;
+    color: #F58220;
 }
 #cardmb4:hover{
     background-color: #f58220;

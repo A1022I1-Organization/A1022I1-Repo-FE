@@ -25,7 +25,20 @@ export default function List() {
     setCategories (value.data); 
    
   },[]);
+  const fetchAllProducts = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/supply/list');
+      setState(response.data);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      // Xử lý lỗi nếu cần thiết
+    }
+  };
   const handleSearch = () => {
+    if (searchTerm === '') {
+        fetchAllProducts();
+        return;
+      }
     // Lọc dữ liệu dựa trên cụm từ tìm kiếm trong item.name (không phân biệt chữ hoa và thường)
         const filteredData = state.filter(item => item.name.includes(searchTerm));
         setState(filteredData);
