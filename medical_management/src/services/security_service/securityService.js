@@ -3,7 +3,6 @@ import axios from "axios";
 export const loginByAccount = async (account) => {
   try {
     const result = await axios.post("http://localhost:8080/api/login", account);
-    console.log(result.data);
     return result.data;
   } catch (error) {
     console.log(error);
@@ -13,7 +12,6 @@ export const loginByAccount = async (account) => {
 
 export const getUserLoginAccount = async (token, username) => {
   try {
-    console.log(username);
     const result = await axios.get(
       `http://localhost:8080/api/getAccount/${username}`,
       {
@@ -26,7 +24,6 @@ export const getUserLoginAccount = async (token, username) => {
       token: token,
       accountRole: result.data,
     };
-    console.log(account);
     return account;
   } catch (error) {
     console.log(error);
@@ -68,7 +65,6 @@ export const logOut = async (data) => {
     };
 
     const result = await axios.get("http://localhost:8080/api/logout", token);
-    console.log(result);
     return result.data;
   } catch (error) {
     console.log(error);
@@ -89,7 +85,6 @@ export const checkAuthen = async (token) => {
   }
 };
 export const changePassword = async (account, token) => {
-  console.log(account, token);
   try {
     await axios.post(
       "http://localhost:8080/api/account/change-password",
@@ -107,7 +102,6 @@ export const changePassword = async (account, token) => {
   }
 };
 export const conformPassword = async (account, token) => {
-  console.log(account, token);
   try {
     await axios.post(
       "http://localhost:8080/api/account/conform-password",

@@ -3,6 +3,8 @@ import "bootstrap/dist/js/bootstrap.bundle";
 import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import * as supplyServices from "../../services/medical_supplies/MedicalSupplyService";
+import * as utilities from "../../services/medical_supplies/Utilities";
+
 import "../../components/css/style.css";
 
 export function Information() {
@@ -26,16 +28,19 @@ export function Information() {
 
   useEffect(() => {
     getSupply();
+    console.log(supply);
   }, []);
 
   const getSupply = async () => {
     const tokenAccount = localStorage.getItem("tokenAccount");
 
     const supplyDetail = await supplyServices.getSupply(param.id, tokenAccount);
-    const stringValue = supplyDetail.price.toLocaleString("vi-VN");
+    // const stringValue = supplyDetail.price.toLocaleString("vi-VN");
     console.log(supplyDetail);
-    setSupply(supplyDetail);
-    setFormatPrice(stringValue);
+    if (supplyDetail !== undefined){
+      setSupply(supplyDetail);
+    }
+    // setFormatPrice(stringValue);
   };
 
   return (
@@ -99,7 +104,7 @@ export function Information() {
                       <div className="col-4" style={{ padding: "0" }}>
                         <div className="mb-3">
                           <p>
-                            <span>{supply.code}</span>
+                            <span className="label">{supply.code}</span>
                           </p>
                           <p>
                             <span>{supply.name}</span>
@@ -108,7 +113,7 @@ export function Information() {
                             <span>{supply.category.name}</span>
                           </p>
                           <p>
-                            <span>{formatPrice}</span>
+                            <span>{supply.price.toLocaleString("vi-VN")}</span>
                           </p>
                           <p>
                             <span>{supply.unit.name}</span>
@@ -121,14 +126,18 @@ export function Information() {
                           </p>
                         </div>
                       </div>
-                      <hr />
-                      <div className="col-6">
+                      <hr style={{paddingRight: "0", paddingLeft: "0"}} />
+                      <div className="col-3">
                         <div className="mb-3">
                           <p>
                             <span className="label">Ngày nhập kho: </span>
-                            <span>{supply.importDate}</span>
                           </p>
                         </div>
+                      </div>
+                      <div className="col-2" style={{ padding: "0" }}>
+                        <p>
+                          <span>{utilities.formatDateValue(supply.importDate)}</span>
+                        </p>
                       </div>
                       <div className="col-3">
                         <div className="mb-3">
@@ -139,7 +148,7 @@ export function Information() {
                       </div>
                       <div className="col-3" style={{ padding: "0" }}>
                         <p>
-                          <span>{supply.expiry}</span>
+                          <span>{utilities.formatDateValue(supply.expiry)}</span>
                         </p>
                       </div>
                     </div>

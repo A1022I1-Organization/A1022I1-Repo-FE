@@ -40,7 +40,6 @@ export const Header = () => {
   //call store get data
   const account = useSelector((store) => store.auth);
   const dispatch = useDispatch();
-  console.log(account);
 
   useEffect(() => {
     const tokenAccount = localStorage.getItem("tokenAccount");
@@ -81,7 +80,6 @@ export const Header = () => {
     }
   }, [account]);
 
-  console.log(role);
 
   useEffect(() => {
     const handleScroll = () => {

@@ -65,7 +65,6 @@ export const ChangePasswordModal = (props) => {
           <Modal.Title style={{ fontSize: "30px" }}>Đổi mật khẩu</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {console.log(conformCode)}
           <div className="card-body">
             <div class="d-flex justify-content-center">
               {isLoading && (
@@ -146,6 +145,7 @@ export const ChangePasswordModal = (props) => {
                     { setSubmitting, setFieldError }
                   ) => {
                     try {
+                      setIsLoading(true);
                       const newPassword = {
                         username: account.accountRole.appAccount.username,
                         password: values.newPassword,
@@ -159,8 +159,8 @@ export const ChangePasswordModal = (props) => {
                           conformPasswordData,
                           account.token
                         );
-                      console.log(checkConformPassword);
                       if (checkConformPassword) {
+                        setIsLoading(false);
                         const changePasswordSuccess =
                           await securityService.changePassword(
                             newPassword,
@@ -169,10 +169,13 @@ export const ChangePasswordModal = (props) => {
                         if (changePasswordSuccess) {
                           toast.success("Thay đổi mật khẩu thành công");
                           handleClose();
+                          setIsLoading(false);
                         } else {
+                          setIsLoading(false);
                           toast.error("Thay đổi mật khẩu không thành công!");
                         }
                       } else {
+                        setIsLoading(false);
                         setFieldError("conformPassword", "Mật khẩu không đúng");
                       }
                     } catch (error) {
