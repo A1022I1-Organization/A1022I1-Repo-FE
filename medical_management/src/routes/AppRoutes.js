@@ -55,7 +55,7 @@ export const AppRoutes = () => {
         {role === "admin" && (
           <Route path="/admin" element={<Outlet />}>
             <Route path="create-account" element={<CreateAccount />} />
-            <Route path="meterial" element={<StatisticsMaterial />} />
+           
           </Route>
         )}
         {(role === "admin" || role === "employee") && (
@@ -64,6 +64,7 @@ export const AppRoutes = () => {
             <Route path="/supply/update/:id" element={<SupplierUpdate />} />
             <Route path="list" element={<SuppliesList />}></Route>
             <Route path="/supply/list/:id" element={<Information />}></Route>
+            <Route path="meterial" element={<StatisticsMaterial />} />
             <Route path="" element={""} />
             <Route />
           </Route>

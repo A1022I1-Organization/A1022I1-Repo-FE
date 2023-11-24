@@ -195,10 +195,11 @@ export function SuppliesList() {
                 <Row>
                     <Col md={{span: 10, offset: 1}}>
                         {/*Search menu*/}
-                        <nav className="navbar " style={{backgroundColor: "white", height: "100px"}}>
+                        <nav className="navbar " style={{ height: "100px"}}>
                             <form className="search-menu">
                                 <div className="btn-group">
-                                    <button type="submit" className="btn btn-secondary" id="dropdownMenuButton1">Tìm kiếm</button>
+                                    <button type="button" className="btn btn-secondary" id="dropdownMenuButton1">Tìm kiếm</button>
+
                                     <button type="button" id="dropdownMenuButton2"
                                             className="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -206,10 +207,11 @@ export function SuppliesList() {
                                     </button>
                                     <ul className="dropdown-menu"
                                         aria-labelledby="dropdownMenuButton1" >
-                                        <li><a className="dropdown-item" onClick={() => {handleSelect("name")}}>Tên vật tư</a></li>
-                                        <li><a className="dropdown-item" onClick={() => {handleSelect("category")}}>Loại vật tư</a></li>
-                                        <li><a className="dropdown-item" onClick={() => {handleSelect("supplier")}}>Nhà cung cấp</a></li>
-                                        <li><a className="dropdown-item" onClick={() => {handleSelect("expiry")}}>Hạn sử dụng</a></li>
+                                        <li><span className="dropdown-item" onClick={() => {handleSelect("name")}}>Tên vật tư</span></li>
+                                        <li><span className="dropdown-item" onClick={() => {handleSelect("category")}}>Loại vật tư</span></li>
+                                        <li><span className="dropdown-item" onClick={() => {handleSelect("supplier")}}>Nhà cung cấp</span></li>
+                                        <li><span className="dropdown-item" onClick={() => {handleSelect("expiry")}}>Hạn sử dụng</span></li>
+
                                     </ul>
                                 </div>
 
@@ -504,3 +506,4 @@ export function SuppliesList() {
         </>
     )
 }
+

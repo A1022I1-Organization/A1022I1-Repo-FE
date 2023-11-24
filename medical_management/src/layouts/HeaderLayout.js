@@ -14,7 +14,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { ChangePasswordModal } from "../components/modal/ChangePasswordModal";
 export const Header = () => {
   const [scrolling, setScrolling] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [openModalLogin, setOpenModalLogin] = useState(false);
   const [openModalChangePassword, setOpenModalChangePassword] = useState(false);
   const navigate = useNavigate();
@@ -80,7 +80,6 @@ export const Header = () => {
     }
   }, [account]);
 
-
   useEffect(() => {
     const handleScroll = () => {
       const isScrolled = window.scrollY > 80;
@@ -99,6 +98,15 @@ export const Header = () => {
 
   return (
     <div>
+      {isLoading && (
+        <div className="overlay">
+          <div className="spinner-container">
+            <div className="spinner-border" role="status">
+              <span className="sr-only"></span>
+            </div>
+          </div>
+        </div>
+      )}
       <div id="header">
         <div className="header-main">
           <div className="row" id="hd-row-main">
@@ -246,7 +254,7 @@ export const Header = () => {
                     QUẢN LÝ
                   </NavLink>
                   <NavLink
-                    to="/admin/meterial"
+                    to="/supply/meterial"
                     className="hd-content-navbar"
                     style={{ textDecoration: "none" }}
                   >

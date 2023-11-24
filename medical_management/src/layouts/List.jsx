@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import "../components/css/HomePage.css"
 import "../components/bootsrap/searchHomePage"
@@ -14,7 +14,9 @@ export default function List() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState("");
 
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   useMemo(async() => {  
     console.log(`http://localhost:8080/api/supply/list?c=${condition}&p=${page}&ns=${nameSort?"asc":"desc"}&ps=${priceSort?"asc":"desc"}`);
     const value = await axios.get(`http://localhost:8080/api/supply/list?c=${condition}&p=${page}&ns=${nameSort?"asc":"desc"}&ps=${priceSort?"asc":"desc"}`); 
@@ -24,7 +26,9 @@ export default function List() {
     const value = await axios.get(`http://localhost:8080/api/supply/getCategory`);
     setCategories (value.data); 
    
-  },[]);
+  },[]); 
+ 
+
   const handleSearch = () => {
     // Lọc dữ liệu dựa trên cụm từ tìm kiếm trong item.name (không phân biệt chữ hoa và thường)
         const filteredData = state.filter(item => item.name.includes(searchTerm));
@@ -39,7 +43,6 @@ export default function List() {
     setSelectedCategory("");
   };
   
- 
   return (
 <div className="container" id='row21'>
     <div className="row" >
