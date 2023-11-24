@@ -199,6 +199,7 @@ export function SuppliesList() {
                             <form className="search-menu">
                                 <div className="btn-group">
                                     <button type="button" className="btn btn-secondary" id="dropdownMenuButton1">Tìm kiếm</button>
+
                                     <button type="button" id="dropdownMenuButton2"
                                             className="btn btn-secondary dropdown-toggle dropdown-toggle-split"
                                             data-bs-toggle="dropdown" aria-expanded="false">
@@ -210,6 +211,7 @@ export function SuppliesList() {
                                         <li><span className="dropdown-item" onClick={() => {handleSelect("category")}}>Loại vật tư</span></li>
                                         <li><span className="dropdown-item" onClick={() => {handleSelect("supplier")}}>Nhà cung cấp</span></li>
                                         <li><span className="dropdown-item" onClick={() => {handleSelect("expiry")}}>Hạn sử dụng</span></li>
+
                                     </ul>
                                 </div>
 
@@ -504,3 +506,4 @@ export function SuppliesList() {
         </>
     )
 }
+

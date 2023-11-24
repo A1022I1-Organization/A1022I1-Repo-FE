@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useMemo, useState } from 'react'
 
 import "../components/css/HomePage.css"
+import "../components/bootsrap/searchHomePage"
 
 export default function List() {
   const [state, setState] = useState([]);
@@ -10,6 +11,12 @@ export default function List() {
   const [condition,setCondition] = useState("");
   const [nameSort,setNameSort] = useState(true);
   const [priceSort,setPriceSort] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   useMemo(async() => {  
     console.log(`http://localhost:8080/api/supply/list?c=${condition}&p=${page}&ns=${nameSort?"asc":"desc"}&ps=${priceSort?"asc":"desc"}`);
     const value = await axios.get(`http://localhost:8080/api/supply/list?c=${condition}&p=${page}&ns=${nameSort?"asc":"desc"}&ps=${priceSort?"asc":"desc"}`); 
@@ -20,9 +27,22 @@ export default function List() {
     setCategories (value.data); 
    
   },[]); 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+ 
+
+  const handleSearch = () => {
+    // Lọc dữ liệu dựa trên cụm từ tìm kiếm trong item.name (không phân biệt chữ hoa và thường)
+        const filteredData = state.filter(item => item.name.includes(searchTerm));
+        setState(filteredData);
+  };
+  const setConditionAndUpdateCategory = (categoryId) => {
+    setCondition(categoryId);
+    setSelectedCategory(categoryId);
+  };
+  const handleCollapseButtonClick = () => {
+    setCondition("");
+    setSelectedCategory("");
+  };
+  
   return (
 <div className="container" id='row21'>
     <div className="row" >
@@ -32,7 +52,7 @@ export default function List() {
                 <div className="accordion" id="accordionCategory2">
                     <div className="accordion-item">
                         <h2 className="accordion-header" id="headingCategory2">
-                            <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCategory2" aria-expanded="true" aria-controls="collapseCategory2" onClick={() => setCondition("")}>
+                            <button className={`accordion-button ${!selectedCategory ? 'active' : ''}`}  type="button" data-bs-toggle="collapse" data-bs-target="#collapseCategory2" aria-expanded="true" aria-controls="collapseCategory2" onClick={handleCollapseButtonClick}>
                                 Tất cả sản phẩm
                             </button>
                         </h2>
@@ -40,8 +60,8 @@ export default function List() {
                             <div className="accordion-body">
                                 <ul className="nav flex-column" >
                                    
-                                    {categories.map(item =>   <li className="btn btn-lightyellow" id='nav21'>
-                                        <p onClick={() => setCondition(item.id)}>{item.name}</p>
+                                    {categories.map(item =>   <li  className={`btn btn-lightyellow ${selectedCategory === item.id ? 'active' : ''}`} key={`nav${item.id}`} id='nav21'>
+                                        <p onClick={() => setConditionAndUpdateCategory(item.id)}>{item.name}</p>
                                     </li>)}
                                     
                                     {/* {categories.map(item => (
@@ -67,8 +87,11 @@ export default function List() {
                 <div className="col-md-6">
                     
                     <div className="input-group">
-                        <input type="text" className="form-control" placeholder="Tìm kiếm theo tên" id="searchInput"/>
-                        <button className="btn btn-outline-success" type="button" id="searchButton">Tìm kiếm</button>
+                        <input type="text" className="form-control" placeholder="Tìm kiếm theo tên" id="searchInput" value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}/>
+                        <button className="btn btn-outline-success" type="button" id="searchButton" onClick={handleSearch}>
+                            Tìm kiếm
+                        </button>
                     </div>
                 </div>
                 <div className="col-md-6">

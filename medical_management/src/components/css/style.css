@@ -111,13 +111,28 @@ th, td {
     font-weight: bold;
 }
 
-#dropdown-button-dark-example2 {
-    border-radius: 8px;
+#dropdownMenuButton1 {
+    /*border-radius: 8px;*/
     width: 100px;
     background-color: #26B24B;
     border: #26B24B;
     margin-bottom: 10px;
 }
+
+#dropdownMenuButton2 {
+    background-color: #26B24B;
+    border: #26B24B;
+    height: 36px;
+}
+
+.dropdown-item {
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    --bs-dropdown-link-active-bg: grey;
+}
+
 #nav21:hover {
     background-color: lightyellow;
 }
