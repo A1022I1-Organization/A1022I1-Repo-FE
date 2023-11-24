@@ -165,8 +165,8 @@
 } */
 .modal-content .btn-close {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 10px;
+    right: 10px;
   }
   
   /* Adjusting the margin of the modal body to account for the moved close button */
@@ -191,4 +191,8 @@
   /* Đặt màu chữ cho nút Đăng nhập */
   .btn-primary {
     color: white; /* Đặt màu chữ thành trắng */
+  }
+
+  #inputRemember{
+    margin-right: 5px;
   }

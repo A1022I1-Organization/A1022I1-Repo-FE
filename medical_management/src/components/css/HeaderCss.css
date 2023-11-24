@@ -118,6 +118,7 @@ body{
     justify-content: center;
     height: 100%;
     margin: 0;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }
 
 .hd-content-navbar {
@@ -255,4 +256,13 @@ body{
     display: none;
    }
 }
-
+.dropdown-item:hover{
+    cursor: pointer;
+}
+#text-login{
+    font-size: 15px;
+    margin-left: 5px;
+    position: relative;
+    top: 1px;
+    
+}
