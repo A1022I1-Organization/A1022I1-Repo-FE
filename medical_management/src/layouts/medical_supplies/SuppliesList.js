@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Row, Col, Container, Card, Table, DropdownButton, Dropdown} from "react-bootstrap";
+import {Row, Col, Container, Card, Table} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import * as suppliesService from "../../services/medical_supplies/MedicalSupplyService";
 import "../../components/css/style.css";
@@ -29,18 +29,14 @@ export function SuppliesList() {
   const [selectedForm, setSelectedForm] = useState(null);
   const [category, setCategory] = useState([]);
   const [supplier, setSupplier] = useState([]);
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
 
 
   const token = localStorage.getItem("tokenAccount");
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const getOldPage = async (page, token) => {
-    const [data, totalPage] = await suppliesService.getOldSuppliesPage(page, token);
-    setTotalOSPages(totalPage);
-    setOldItems(data);
-      console.log(data);
-  };
 
   const getNewPage = async (page, token) => {
     const [data, totalPage] = await suppliesService.getNewSuppliesPage(page,token);
@@ -65,7 +61,6 @@ export function SuppliesList() {
         }' không?`
       );
     }
-    console.log("asd");
 
     setDisplayConfirmationModal(true);
   };
@@ -97,6 +92,17 @@ export function SuppliesList() {
   };
 
   useEffect(() => {
+      const getOldPage = async (page, token) => {
+          try {
+              // Gọi API để lấy dữ liệu trang hiện tại
+              const [data, totalPage] = await suppliesService.getOldSuppliesPage(page, token);
+              setTotalOSPages(totalPage);
+              setOldItems(data);
+          } catch (error) {
+              console.error('Error fetching data:', error);
+          }
+      };
+
     if (token) {
       getOldPage(oldSuplliesPage, token);
     }
@@ -127,27 +133,27 @@ export function SuppliesList() {
         const [data, totalPage] = await suppliesService.getOldSuppliesPage(oldSuplliesPage, tokenSearchName, "name", searchName);
         setTotalOSPages(totalPage);
         setOldItems(data);
-
     };
+
     useEffect(() => {
         getCategory();
         getSupplier();
     }, []);
 
     const getCategory = async () => {
-        const list = await suppliesService.getCategories();
-        setCategory(list);
-    }
+        const data = await suppliesService.getCategories();
+        setCategory(data);
+    };
 
     const handleSearchByCategory = async (type) => {
         const tokenSearchType = localStorage.getItem("tokenAccount");
 
         const [data, totalPage] = await suppliesService.getOldSuppliesPage(oldSuplliesPage, tokenSearchType, "category", type);
-        const filtered = data.filter((oldItem) => oldItem.category.name.includes(type));
         setTotalOSPages(totalPage);
-        setOldItems(filtered);
-        console.log(filtered)
+        setOldItems(data);
     };
+
+
     const getSupplier = async () => {
         const list = await suppliesService.getSuppliers();
         setSupplier(list);
@@ -160,6 +166,14 @@ export function SuppliesList() {
         setTotalOSPages(totalPage);
         setOldItems(data);
     };
+
+    const handleFromDate = (event) => {
+        setFromDate(event.target.value);
+    }
+
+    const handleToDate = (event) => {
+        setToDate(event.target.value);
+    }
 
     const handleSearchByDate = async (fromDate, toDate) => {
         const tokenSearchDate = localStorage.getItem("tokenAccount");
@@ -183,22 +197,28 @@ export function SuppliesList() {
                         {/*Search menu*/}
                         <nav className="navbar " style={{backgroundColor: "white", height: "100px"}}>
                             <form className="search-menu">
-                                <DropdownButton id="dropdown-button-dark-example2"
-                                                variant="secondary"
-                                                title="Tìm kiếm"
-                                                onSelect={handleSelect}>
-                                    <Dropdown.Item eventKey="name" >Tên vật tư</Dropdown.Item>
-                                    <Dropdown.Item eventKey="category">Loại vật tư</Dropdown.Item>
-                                    <Dropdown.Item eventKey="supplier">Nhà cung cấp</Dropdown.Item>
-                                    <Dropdown.Item eventKey="expiry">Hạn sử dụng</Dropdown.Item>
-                                </DropdownButton>
+                                <div className="btn-group">
+                                    <button type="submit" className="btn btn-secondary" id="dropdownMenuButton1">Tìm kiếm</button>
+                                    <button type="button" id="dropdownMenuButton2"
+                                            className="btn btn-secondary dropdown-toggle dropdown-toggle-split"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span className="visually-hidden">Toggle Dropdown</span>
+                                    </button>
+                                    <ul className="dropdown-menu"
+                                        aria-labelledby="dropdownMenuButton1" >
+                                        <li><a className="dropdown-item" onClick={() => {handleSelect("name")}}>Tên vật tư</a></li>
+                                        <li><a className="dropdown-item" onClick={() => {handleSelect("category")}}>Loại vật tư</a></li>
+                                        <li><a className="dropdown-item" onClick={() => {handleSelect("supplier")}}>Nhà cung cấp</a></li>
+                                        <li><a className="dropdown-item" onClick={() => {handleSelect("expiry")}}>Hạn sử dụng</a></li>
+                                    </ul>
+                                </div>
 
                                 {/* Render the selected input form */}
                                 {selectedForm === 'name' &&
                                     <>
                                         <Formik>
                                             <Form>
-                                                <Field
+                                                <input
                                                     className="form-control me-2"
                                                     type="text"
                                                     placeholder="Tên vật tư"
@@ -209,42 +229,29 @@ export function SuppliesList() {
                                     </>}
                                 {selectedForm === 'category' &&
                                     <>
-                                        <Formik
-                                            initialValues={
-                                                {
-                                                    category: JSON.stringify(oldItems.category)
-                                                }
-                                            }
-                                        >
+                                        <Formik>
                                             <Form>
                                                 <Field as="select" name="category" className="form-select"
                                                        onChange={(e) => handleSearchByCategory(e.target.value)}
                                                 >
                                                     <option>--Chọn loại vật tư--</option>
                                                     {category.map((value) => (
-                                                        <option value={JSON.stringify(value)}>{value.name}</option>
+                                                        <option value={value.name}>{value.name}</option>
                                                     ))}
                                                 </Field>
                                             </Form>
                                         </Formik>
-
                                     </>
                                 }
                                 {selectedForm === 'supplier' &&
                                     <>
-                                        <Formik
-                                            initialValues={
-                                                {
-                                                    supplier: JSON.stringify(supplier)
-                                                }
-                                            }
-                                        >
+                                        <Formik>
                                             <Form>
                                                 <Field as="select" name="category" className="form-select"
                                                        onChange={(e) => handleSearchBySupplier(e.target.value)}>
                                                     <option>--Chọn nhà cung cấp--</option>
                                                     {supplier.map((value) => (
-                                                        <option value={JSON.stringify(value)}>{value.name}</option>
+                                                        <option value={value.name}>{value.name}</option>
                                                     ))}
                                                 </Field>
                                             </Form>
@@ -254,23 +261,21 @@ export function SuppliesList() {
                                 }
                                 {selectedForm === 'expiry' &&
                                     <>
-                                        <Formik
-                                            initialValues={
-                                                {
-                                                    fromDate: "",
-                                                    toDate: ""
-                                                }
-                                            }
-                                        >
+                                        <Formik>
                                             <Form>
                                                 <label> Chọn hạn sử dụng: </label>
                                                 <span style={{paddingLeft: "10px", paddingRight: "5px"}}>
-                                                    <Field type="date" name="fromDate"></Field>
+                                                    <input type="date" name={fromDate} onChange={handleFromDate}></input>
                                                 </span>
                                                 <span> </span>
                                                 <span style={{paddingLeft: "5px", paddingRight: "5px"}}>
-                                                    <Field type="date" name="toDate"
-                                                           onChange={(e) => handleSearchByDate(e.target.value)}></Field>
+                                                    <input type="date" name={toDate} onChange={handleToDate}></input>
+                                                </span>
+                                                <span>
+                                                    <button type="submit" className="btn btn-secondary"
+                                                            onSubmit={handleSearchByDate}
+                                                            style={{height: "30px", paddingTop: "0", paddingBottom: "0", marginBottom: "5px"}}
+                                                    >Tìm</button>
                                                 </span>
                                             </Form>
                                         </Formik>
@@ -352,7 +357,7 @@ export function SuppliesList() {
                                         </tbody>
                                     </Table>
                                     : <h5 style={{textAlign: "center"}}>Không có vật tư nào được tìm thấy!</h5>}
-                                    {/*/!*Pagination*!/*/}
+                                    {/*Pagination*/}
                                     {totalOSPages > 1 ?
                                         <div style={{display: "flex", justifyContent: "center",marginTop: "40px",}}>
                                             <nav aria-label="Page navigation example">
@@ -386,7 +391,6 @@ export function SuppliesList() {
                                             </nav>
                                         </div>
                                     : ""}
-
                             </Card.Body>
                         </Card>
                         <br/>
