@@ -255,4 +255,13 @@ body{
     display: none;
    }
 }
-
+.dropdown-item:hover{
+    cursor: pointer;
+}
+#text-login{
+    font-size: 15px;
+    margin-left: 5px;
+    position: relative;
+    top: 1px;
+    
+}

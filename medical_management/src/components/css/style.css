@@ -128,8 +128,8 @@ th, td {
     overflow-y: auto; /* Thêm thanh cuộn nếu nội dung vượt quá kích thước */
 }
 #imgitem {
-    height: 200px;
-    width: 100px;
+    height: 100%;
+    width: 100%;
 }
 #myFooter {
     /* CSS styles for the <footer> element with ID "myFooter" */

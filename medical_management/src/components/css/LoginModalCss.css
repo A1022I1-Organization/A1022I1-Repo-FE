@@ -192,3 +192,7 @@
   .btn-primary {
     color: white; /* Đặt màu chữ thành trắng */
   }
+
+  #inputRemember{
+    margin-right: 5px;
+  }

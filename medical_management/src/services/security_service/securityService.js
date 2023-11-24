@@ -106,6 +106,24 @@ export const changePassword = async (account, token) => {
     return undefined;
   }
 };
+export const conformPassword = async (account, token) => {
+  console.log(account, token);
+  try {
+    await axios.post(
+      "http://localhost:8080/api/account/conform-password",
+      account,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return "OK";
+  } catch (error) {
+    console.log(error);
+    return undefined;
+  }
+};
 export const sendEmail = async (data) => {
   try {
     let dataSendEmail = {

@@ -8,11 +8,8 @@ import * as Yup from "yup";
 import "../css/ChangePassword.css";
 import * as securityService from "../../services/security_service/securityService";
 export const ChangePasswordModal = (props) => {
-  //Open modal login
   const [show, setShow] = useState(false);
-  //call store get data
   const account = useSelector((store) => store.auth);
-  //props from headerLogin.js
   const { openModalChangePassword, closeModalChangePassword } = props;
   const [countDown, setCountDown] = useState(0);
   const [codeRandom, setCodeRandom] = useState();
@@ -136,6 +133,7 @@ export const ChangePasswordModal = (props) => {
                   initialValues={{
                     newPassword: "",
                     conformNewPassword: "",
+                    conformPassword: "",
                   }}
                   validationSchema={Yup.object({
                     newPassword: Yup.string().required("Không được để trống"),
@@ -152,17 +150,30 @@ export const ChangePasswordModal = (props) => {
                         username: account.accountRole.appAccount.username,
                         password: values.newPassword,
                       };
-                      console.log("Passwords match:", values);
-                      const changePasswordSuccess =
-                        await securityService.changePassword(
-                          newPassword,
+                      const conformPasswordData = {
+                        username: account.accountRole.appAccount.username,
+                        password: values.conformPassword,
+                      };
+                      const checkConformPassword =
+                        await securityService.conformPassword(
+                          conformPasswordData,
                           account.token
                         );
-                      if (changePasswordSuccess) {
-                        toast.success("Thay đổi mật khẩu thành công");
-                        handleClose();
+                      console.log(checkConformPassword);
+                      if (checkConformPassword) {
+                        const changePasswordSuccess =
+                          await securityService.changePassword(
+                            newPassword,
+                            account.token
+                          );
+                        if (changePasswordSuccess) {
+                          toast.success("Thay đổi mật khẩu thành công");
+                          handleClose();
+                        } else {
+                          toast.error("Thay đổi mật khẩu không thành công!");
+                        }
                       } else {
-                        toast.error("Thay đổi mật khẩu không thành công!");
+                        setFieldError("conformPassword", "Mật khẩu không đúng");
                       }
                     } catch (error) {
                       console.error("Error submitting form:", error);
@@ -172,6 +183,21 @@ export const ChangePasswordModal = (props) => {
                   }}
                 >
                   <Form>
+                    <div className="mb-3" id="input-username">
+                      <Field
+                        type="password"
+                        className="form-change-input"
+                        id="newPassword"
+                        placeholder="Nhập lại mật khẩu"
+                        name="conformPassword"
+                      />
+                      <ErrorMessage
+                        name="conformPassword"
+                        component="p"
+                        className="form-change-password-error"
+                      />
+                    </div>
+
                     <div className="mb-3" id="input-username">
                       <Field
                         type="password"
