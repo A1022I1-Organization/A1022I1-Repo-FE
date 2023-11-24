@@ -18,7 +18,8 @@ export const LoginModal = (props) => {
   const [show, setShow] = useState(false);
   //call store get data
   const account = useSelector((store) => store.auth);
-  console.log(account);
+
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   //Close modal login
   const handleClose = () => {
@@ -54,6 +55,15 @@ export const LoginModal = (props) => {
         <Modal.Body>
           <div className="card-body">
             <div id="modal-form">
+              {isLoading && (
+                <div className="overlay">
+                  <div className="spinner-container">
+                    <div className="spinner-border" role="status">
+                      <span className="sr-only"></span>
+                    </div>
+                  </div>
+                </div>
+              )}
               <Formik
                 initialValues={{
                   username: "",
@@ -66,10 +76,11 @@ export const LoginModal = (props) => {
                   password: Yup.string().required("Vui lòng nhập mật khẩu"),
                 })}
                 onSubmit={async (values, { setSubmitting, setFieldError }) => {
+                  setIsLoading(true);
                   const checkLogin = await handleLoginByAccount(values);
-                  console.log(checkLogin);
                   if (checkLogin === undefined) {
-                    toast.error("Đăng nhập không công !");
+                    setIsLoading(false);
+                    // toast.error("Đăng nhập không công !");
                     setFieldError(
                       "password",
                       "Tên đăng nhập hoặc mật khẩu không đúng"
@@ -78,6 +89,7 @@ export const LoginModal = (props) => {
                     toast.success("Đăng nhập thành công !");
                     handleClose();
                     navigate("/supply/list");
+                    setIsLoading(false);
                   }
                 }}
               >

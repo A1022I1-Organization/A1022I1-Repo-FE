@@ -160,6 +160,10 @@ th, td {
     width: 200px; /* Độ rộng của thanh bên */
     height: 55vh; /* Chiều cao của thanh bên, 100% của chiều cao của viewport */
     overflow-y: auto; /* Thêm thanh cuộn nếu nội dung vượt quá kích thước */
+
+}
+#imgitem {
+
     background-color: #f0f0f0; /* Màu nền của thanh bên */
     padding: 10px; /* Khoảng cách đệm bên trong thanh bên */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Đổ bóng cho thanh bên */
