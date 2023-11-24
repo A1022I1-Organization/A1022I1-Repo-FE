@@ -1,0 +1,44 @@
+/* Style for the search input */
+#searchInput {
+    width: 80%;
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  /* Style for the search button */
+  #searchButton {
+    padding: 8px;
+    background-color: #4caf50;
+    color: white;
+    border: 1px solid #4caf50;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  /* Style for the search results */
+  #searchResults {
+    margin-top: 10px;
+  }
+  
+  /* Style for the individual search result item */
+  .searchResult {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+  }
+  
+  /* Highlight for the matched text in the search results */
+  .matchedText {
+    color: #4caf50;
+    font-weight: bold;
+  }
+  .btn-lightyellow.active {
+    background-color: #f58220;
+    color: #000000;
+  }
+  
